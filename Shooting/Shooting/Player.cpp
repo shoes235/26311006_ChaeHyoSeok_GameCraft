@@ -35,6 +35,9 @@ Player::Player()
 	_anim->AddClip("Idle", std::move(idleClip));
 	_anim->ChangeClip("Idle");
 
+	_hurtBoxTex.Load();
+	_shotTex.Load();
+
 }
 
 Player::~Player() = default;
@@ -42,6 +45,16 @@ Player::~Player() = default;
 void Player::Update(float delta)
 {
 	GameObject::Update(delta);
+	if (_shotCooldown > 0.0f)
+		_shotCooldown -= delta;
+	for (auto it = _shots.begin(); it != _shots.end();)
+	{
+		if (!it->Update(delta))
+			it = _shots.erase(it);
+		else
+			++it;
+	}
+
 	float length = sqrtf(_moveDirection.x * _moveDirection.x + _moveDirection.y * _moveDirection.y);
 	if (length > 0.0f)
 	{
@@ -64,7 +77,11 @@ void Player::Render()
 	if (!_isInvincible || ((int)(_invincibleTimer * 12.0f) % 2 == 0))
 	{
 		GameObject::Render();
+		_hurtBoxTex.SetPos(VEC2(_pos.x + 24 ,_pos.y + 24));
+		_hurtBoxTex.Print();
 	}
+	for (const Bullet& shot : _shots)
+		shot.Render(_shotTex);
 }
 
 
@@ -93,7 +110,9 @@ void Player::OnGraze()
 
 void Player::Shoot()
 {
-	// Connect to the player-shot system when it is added to the game.
+	if (_shotCooldown > 0.0f) return;
+	_shots.emplace_back(VEC2(_pos.x + 26.0f, _pos.y - 12.0f), VEC2(0.0f, -720.0f));
+	_shotCooldown = 0.16f;
 }
 
 void Player::UseBomb()

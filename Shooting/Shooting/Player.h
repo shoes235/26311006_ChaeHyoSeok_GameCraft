@@ -1,5 +1,7 @@
 #pragma once
 #include "GameObject.h"
+#include "Bullet.h"
+#include <vector>
 
 class Player : public GameObject
 {
@@ -15,6 +17,11 @@ private:
     float _grazeRadius;
     bool _isInvincible;
     float _invincibleTimer;
+    float _shotCooldown = 0.0f;
+    std::vector<Bullet> _shots;
+
+    Texture _hurtBoxTex{"rsc/imgs/Player/HurtBox.png",_pos};
+    Texture _shotTex{"rsc/imgs/Bullets/PlayerShot.png",_pos};
 
 public:
     Player();

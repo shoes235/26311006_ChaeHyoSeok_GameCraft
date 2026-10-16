@@ -136,6 +136,7 @@
     <ClCompile Include="IScene.cpp" />
     <ClCompile Include="JumpScareScene.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="ProgressBar.cpp" />
     <ClCompile Include="Randomizer.cpp" />
     <ClCompile Include="ResultScene.cpp" />
@@ -162,6 +163,7 @@
     <ClInclude Include="IScene.h" />
     <ClInclude Include="JumpScareScene.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Bullet.h" />
     <ClInclude Include="ProgressBar.h" />
     <ClInclude Include="Randomizer.h" />
     <ClInclude Include="ResultScene.h" />

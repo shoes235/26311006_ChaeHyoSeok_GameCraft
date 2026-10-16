@@ -1,2 +1,3 @@
 #include "GameData.h"
-float GameData::g_score = .0f;
+int GameData::g_score{};
+int GameData::g_stageLast{};

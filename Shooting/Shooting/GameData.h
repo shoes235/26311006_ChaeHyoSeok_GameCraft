@@ -2,6 +2,7 @@
 class GameData
 {
 public:
-	static float g_score;
+	static int g_score;
+	static int g_stageLast;
 };
 

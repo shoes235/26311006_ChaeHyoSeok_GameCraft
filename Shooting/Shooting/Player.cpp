@@ -47,13 +47,9 @@ void Player::Update(float delta)
 	GameObject::Update(delta);
 	if (_shotCooldown > 0.0f)
 		_shotCooldown -= delta;
-	for (auto it = _shots.begin(); it != _shots.end();)
-	{
-		if (!it->Update(delta))
-			it = _shots.erase(it);
-		else
-			++it;
-	}
+	if (_rapidFireTimer > 0.0f) _rapidFireTimer -= delta;
+	if (_powerTimer > 0.0f) _powerTimer -= delta;
+	_shots.Update(delta);
 
 	float length = sqrtf(_moveDirection.x * _moveDirection.x + _moveDirection.y * _moveDirection.y);
 	if (length > 0.0f)
@@ -80,8 +76,7 @@ void Player::Render()
 		_hurtBoxTex.SetPos(VEC2(_pos.x + 24 ,_pos.y + 24));
 		_hurtBoxTex.Print();
 	}
-	for (const Bullet& shot : _shots)
-		shot.Render(_shotTex);
+	_shots.Render(_shotTex);
 }
 
 
@@ -96,11 +91,12 @@ void Player::SetFocus(bool t)
 	_speedCur = (_isFocused) ? LOW_SPEED : DEF_SPEED;
 }
 
-void Player::OnHit()
+bool Player::OnHit()
 {
-	if (_isInvincible) return;
+	if (_isInvincible) return false;
 	_isInvincible = true;
 	_invincibleTimer = 2.0f;
+	return true;
 }
 
 void Player::OnGraze()
@@ -111,11 +107,15 @@ void Player::OnGraze()
 void Player::Shoot()
 {
 	if (_shotCooldown > 0.0f) return;
-	_shots.emplace_back(VEC2(_pos.x + 26.0f, _pos.y - 12.0f), VEC2(0.0f, -720.0f));
-	_shotCooldown = 0.16f;
+	_shots.Spawn(VEC2(_pos.x + 26.0f, _pos.y - 12.0f), VEC2(0.0f, -720.0f));
+	_shotCooldown = _rapidFireTimer > 0.0f ? 0.08f : 0.16f;
 }
 
-void Player::UseBomb()
+bool Player::UseBomb()
 {
-	// Connect to the bomb and enemy-bullet systems when they are added.
+	if (_bombs <= 0) return false;
+	--_bombs;
+	_isInvincible = true;
+	_invincibleTimer = 3.5f;
+	return true;
 }

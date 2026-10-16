@@ -11,6 +11,7 @@ void HowToPlayScene::Init()
 	_inputMgr.RegisterAction
 	(
 		{ VK_SPACE },
+		E_KeyType::DOWN,
 		[=]()
 		{
 			InGameScene* nextScene = new InGameScene();
@@ -29,7 +30,7 @@ void HowToPlayScene::Update()
 	if (_timer >= WAIT_TIME)
 	{
 		_showText = true;
-		_inputMgr.GetKeyDown();
+		_inputMgr.UpdateInput();
 	}
 
 	return;

@@ -17,6 +17,7 @@ void TitleScene::Init()
 	_inputMgr.RegisterAction
 	(
 		{VK_SPACE},
+		E_KeyType::DOWN,
 		[=]() 
 		{
 			HowToPlayScene* nextScene = new HowToPlayScene();
@@ -44,9 +45,7 @@ void TitleScene::Init()
 
 void TitleScene::Update()
 {
-	_inputMgr.GetKeyDown();
-
-
+	_inputMgr.UpdateInput();
 
 	_blinkTimer += 0.016f;
 

@@ -1,22 +1,39 @@
 #include "InputManager.h"
 InputManager::~InputManager()
 {
-	_bindings.clear();
+	_holdBind.clear();
+	_downBind.clear();
 }
 
-int InputManager::RegisterAction(const vector<unsigned char>& keys, function<void()> callback)
+void InputManager::RegisterAction(const vector<unsigned char>& keys,E_KeyType type, function<void()> callback)
 {
-	_bindings.push_back({keys,callback});
+	switch (type)
+	{
+	case E_KeyType::HOLD:
+		_holdBind.push_back({ keys,callback });
+		break;
+	case E_KeyType::DOWN:
+		_downBind.push_back({ keys,callback });
+		break;
+	}
 
-	return 0;
+
+	return;
 }
 
-int InputManager::GetKey()
+void InputManager::UpdateInput()
+{
+	GetKey();
+	GetKeyDown();
+}
+
+
+void InputManager::GetKey()
 {
 	const KEYCODE* pkey = g2_GetKeyboard();
-	if (!pkey) return 0;
+	if (!pkey) return;
 
-	for (const auto& bind : _bindings)
+	for (const auto& bind : _holdBind)
 	{
 		bool isTriggered = false;
 
@@ -33,15 +50,14 @@ int InputManager::GetKey()
 		if (isTriggered) bind.callback();
 	}
 
-	return 0;
 }
 
-int InputManager::GetKeyDown()
+void InputManager::GetKeyDown()
 {
 	const KEYCODE* pkey = g2_GetKeyboard();
-	if (!pkey) return 0;
+	if (!pkey) return;
 	
-	for (const auto& bind : _bindings)
+	for (const auto& bind : _downBind)
 	{
 		bool isTriggered = false;
 
@@ -61,5 +77,4 @@ int InputManager::GetKeyDown()
 	for (int i = 0; i < 256; ++i)
 		_preKeyUp[i] = pkey[i];
 
-	return 0;
 }

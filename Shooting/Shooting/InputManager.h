@@ -7,6 +7,12 @@ using std::vector;
 using std::function;
 
 
+enum class E_KeyType
+{
+	HOLD,
+	DOWN
+};
+
 class InputManager
 {
 public :
@@ -21,12 +27,16 @@ public :
 
 	~InputManager();
 
-	int RegisterAction(const vector<unsigned char>& keys,function<void()> callback);
-	int GetKey();
-	int GetKeyDown();
+	void RegisterAction(const vector<unsigned char>& keys, E_KeyType type, function<void()> callback);
+	void UpdateInput();
 
 private:
-	vector<ActionBinding> _bindings;
+	vector<ActionBinding> _holdBind;
+	vector<ActionBinding> _downBind;
+
 	KEYCODE _preKeyUp[256]{};
+
+	void GetKey();
+	void GetKeyDown();
 };
 

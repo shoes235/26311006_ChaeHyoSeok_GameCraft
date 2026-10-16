@@ -7,6 +7,7 @@ void ResultScene::Init()
 	_inputMgr.RegisterAction
 	(
 		{ VK_SPACE },
+		E_KeyType::DOWN,
 		[=]()
 		{
 			InGameScene* nextScene = new InGameScene();
@@ -80,7 +81,7 @@ void ResultScene::Update()
 	}break;
 	case E_ResultState::GET_INPUT:
 	{
-		_inputMgr.GetKeyDown();
+		_inputMgr.UpdateInput();
 
 	}break;
 	}

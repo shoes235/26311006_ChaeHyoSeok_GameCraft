@@ -28,6 +28,9 @@ private:
 	vector<GameObject> objs;
 	Player _player;
 
+	//UI
+	Texture _layout{ "rsc/imgs/Layout.png", VEC2(0,0)};
+
 	InputManager _inputMgr;
 private:
 

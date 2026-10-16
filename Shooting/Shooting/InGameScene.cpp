@@ -2,7 +2,7 @@
 
 void InGameScene::Init()
 {
-	SetWindow(false);
+	SetFullScreen();
 
 	//input
 	_inputMgr.RegisterAction
@@ -87,7 +87,8 @@ void InGameScene::Init()
 		E_KeyType::DOWN,
 		[this]()
 		{
-			//������
+
+			//정지
 		}
 	);
 
@@ -103,12 +104,12 @@ void InGameScene::Init()
 
 
 
+	
 
 
 
 
-
-
+	_layout.Load();
 
 
 	return;
@@ -117,7 +118,8 @@ void InGameScene::Render()
 {
 	IScene::Render();
 	_player.Render();
-	
+	_layout.Print();
+
 
 	return;
 }

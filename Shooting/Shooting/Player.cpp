@@ -10,14 +10,31 @@ Player::Player()
 	_hurtBoxRadius(2.0f),
 	_grazeRadius(25.0f),
 	_isInvincible(false),
-	_invincibleTimer(0.0f),
-	_texPy("rsc/imgs/Cats/Player/Idle.png", VEC2(0.0f, 0.0f))
+	_invincibleTimer(0.0f)
+
 {
-	_pos = VEC2(300.0f, 600.0f);
+	_pos = VEC2(400.0f, 600.0f);
 	_moveDirection = VEC2(0.0f, 0.0f);
-	_texPy.Load();
-	_areaMin = VEC2(16.0f, 16.0f);
-	_areaMax = VEC2((float)g2_GetScnW() - 16.0f, (float)g2_GetScnH() - 16.0f);
+
+	float halfSprite = 32.0f;
+
+	_areaMin = VEC2(320.0f + halfSprite,.0f + halfSprite);
+	_areaMax = VEC2( 960.0f - halfSprite, 720.0f - halfSprite * 2);
+
+	string prefix = "rsc/imgs/Player/cirno/";
+
+	//auto idleTex = std::make_unique<Texture>(prefix +)
+	auto idleClip = std::make_unique<AnimationClip>("Idle", .05f, true);
+	for (int i = 0; i < 11; i++)
+	{
+		auto idleTex = std::make_unique<Texture>(prefix + std::to_string(i) + ".png", _pos);
+		idleTex->Load();
+		idleClip->AddTexture(std::move(idleTex));
+	}
+
+	_anim->AddClip("Idle", std::move(idleClip));
+	_anim->ChangeClip("Idle");
+
 }
 
 Player::~Player() = default;
@@ -46,8 +63,7 @@ void Player::Render()
 	// Blink while invincible.
 	if (!_isInvincible || ((int)(_invincibleTimer * 12.0f) % 2 == 0))
 	{
-		_texPy.SetPos(_pos);
-		_texPy.Print();
+		GameObject::Render();
 	}
 }
 

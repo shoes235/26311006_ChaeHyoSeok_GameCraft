@@ -15,7 +15,6 @@ private:
     float _grazeRadius;
     bool _isInvincible;
     float _invincibleTimer;
-    Texture _texPy;
 
 public:
     Player();

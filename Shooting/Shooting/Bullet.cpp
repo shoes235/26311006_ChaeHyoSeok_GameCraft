@@ -2,7 +2,7 @@
 #include "Texture.h"
 
 Bullet::Bullet(VEC2 pos, VEC2 velocity, float radius)
-	: _pos(pos), _velocity(velocity), _radius(radius), _active(true)
+	: _pos(pos), _velocity(velocity), _radius(radius), _active(true), _grazed(false)
 {
 }
 
@@ -12,6 +12,7 @@ void Bullet::Reset(VEC2 pos, VEC2 velocity, float radius)
 	_velocity = velocity;
 	_radius = radius;
 	_active = true;
+	_grazed = false;
 }
 
 bool Bullet::Update(float delta)

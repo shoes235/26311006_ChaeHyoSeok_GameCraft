@@ -10,7 +10,8 @@ enum class E_EnemyShotPattern
 	AIMED_SPREAD,
 	STRAIGHT_RAPID,
 	STRAIGHT_SPREAD,
-	RADIAL_BURST
+	RADIAL_BURST,
+	ROTATING_BURST
 };
 
 struct EnemyConfig
@@ -26,15 +27,19 @@ struct EnemyConfig
 	int bulletCount;
 	float spreadAngle;
 	E_EnemyShotPattern shotPattern;
-	std::string spritePath;
-	std::string bulletTexturePath;
+	bool cycleBossPatterns;
+	string spritePath;
+	vector<std::string> animationPaths;
+	float animationFrameDuration;
+	string bulletTexturePath;
 
 	EnemyConfig()
 		: hp(3), radius(18.0f), moveSpeed(80.0f), stopY(130.0f),
 		initialFireDelay(0.8f), fireInterval(1.0f), bulletSpeed(260.0f),
 		bulletRadius(5.0f), bulletCount(5), spreadAngle(0.5f),
-		shotPattern(E_EnemyShotPattern::AIMED_SINGLE),
+		shotPattern(E_EnemyShotPattern::AIMED_SINGLE), cycleBossPatterns(false),
 		spritePath("rsc/imgs/Enemies/RiceSpirit.png"),
+		animationFrameDuration(0.1f),
 		bulletTexturePath("rsc/imgs/Bullets/EnemyShot.png")
 	{
 	}
@@ -48,10 +53,14 @@ private:
 	int _maxHp;
 	float _radius;
 	float _fireCooldown;
+	float _bossPhaseTimer = 0.0f;
+	int _bossPhase = 0;
 	BulletPool _bullets;
 	Texture _bulletTexture;
 	void FirePattern(VEC2 playerPos);
 	void AddBullet(float angle);
+	void SetBossPattern();
+	float _bossPatternAngle{};
 
 public:
 	Enemy(VEC2 pos, const EnemyConfig& config = EnemyConfig());
@@ -61,6 +70,7 @@ public:
 	bool IsAlive() const { return _hp > 0; }
 	int GetHP() const { return _hp; }
 	int GetMaxHP() const { return _maxHp; }
+	const char* GetBossPatternName() const;
 	float GetRadius() const { return _radius; }
 	std::vector<Bullet>& GetBullets() { return _bullets.GetBullets(); }
 };

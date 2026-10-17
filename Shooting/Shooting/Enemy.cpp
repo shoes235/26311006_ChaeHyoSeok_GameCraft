@@ -1,4 +1,5 @@
 #include "Enemy.h"
+#include "EnemyData.h"
 #include <cmath>
 
 namespace
@@ -11,13 +12,26 @@ Enemy::Enemy(VEC2 pos, const EnemyConfig& config)
 	_fireCooldown(config.initialFireDelay),
 	_bulletTexture(config.bulletTexturePath, VEC2(0.0f, 0.0f))
 {
-	auto clip = std::make_unique<AnimationClip>("Idle", 0.1f, true);
-	auto texture = std::make_unique<Texture>(_config.spritePath, pos);
-	texture->Load();
-	clip->AddTexture(std::move(texture));
+	auto clip = std::make_unique<AnimationClip>("Idle", _config.animationFrameDuration, true);
+	if (_config.animationPaths.empty())
+	{
+		auto texture = std::make_unique<Texture>(_config.spritePath, pos);
+		texture->Load();
+		clip->AddTexture(std::move(texture));
+	}
+	else
+	{
+		for (const std::string& path : _config.animationPaths)
+		{
+			auto texture = std::make_unique<Texture>(path, pos);
+			texture->Load();
+			clip->AddTexture(std::move(texture));
+		}
+	}
 	_anim->AddClip("Idle", std::move(clip));
 	_anim->ChangeClip("Idle");
 	_bulletTexture.Load();
+	if (_config.cycleBossPatterns) SetBossPattern();
 }
 
 void Enemy::Update(float delta, VEC2 playerPos)
@@ -27,6 +41,18 @@ void Enemy::Update(float delta, VEC2 playerPos)
 
 	if (_pos.y < _config.stopY)
 		_pos.y += _config.moveSpeed * delta;
+
+	if (_config.cycleBossPatterns)
+	{
+		_bossPhaseTimer += delta;
+		const float phaseDuration = GetStageBossPatternData(_bossPhase).duration;
+		if (_bossPhaseTimer >= phaseDuration)
+		{
+			_bossPhaseTimer -= phaseDuration;
+			_bossPhase = (_bossPhase + 1) % 3;
+			SetBossPattern();
+		}
+	}
 
 	if (_config.fireInterval > 0.0f)
 	{
@@ -39,6 +65,25 @@ void Enemy::Update(float delta, VEC2 playerPos)
 	}
 
 	_bullets.Update(delta);
+}
+
+void Enemy::SetBossPattern()
+{
+	const BossPatternData pattern = GetStageBossPatternData(_bossPhase);
+	_config.shotPattern = pattern.shotPattern;
+	_config.bulletCount = pattern.bulletCount;
+	_config.spreadAngle = pattern.spreadAngle;
+	_config.fireInterval = pattern.fireInterval;
+	_config.bulletSpeed = pattern.bulletSpeed;
+	_fireCooldown = pattern.startDelay;
+
+	_bossPatternAngle = {};
+}
+
+const char* Enemy::GetBossPatternName() const
+{
+	if (!_config.cycleBossPatterns) return "";
+	return GetStageBossPatternData(_bossPhase).name;
 }
 
 void Enemy::FirePattern(VEC2 playerPos)
@@ -56,14 +101,16 @@ void Enemy::FirePattern(VEC2 playerPos)
 	{
 		const float center = _config.shotPattern == E_EnemyShotPattern::AIMED_SPREAD ? aimAngle : straightAngle;
 		const int count = (_config.bulletCount > 0) ? _config.bulletCount : 1;
+
+
 		for (int i = 0; i < count; ++i)
 		{
 			const float offset = count == 1 ? 0.0f
 				: -_config.spreadAngle * 0.5f + _config.spreadAngle * i / (count - 1);
 			AddBullet(center + offset);
 		}
-		break;
-	}
+		
+	}break;
 	case E_EnemyShotPattern::STRAIGHT_RAPID:
 		AddBullet(straightAngle);
 		break;
@@ -72,8 +119,28 @@ void Enemy::FirePattern(VEC2 playerPos)
 		const int count = (_config.bulletCount > 0) ? _config.bulletCount : 1;
 		for (int i = 0; i < count; ++i)
 			AddBullet(2.0f * PI * i / count);
-		break;
-	}
+	}break;
+	case E_EnemyShotPattern::ROTATING_BURST:
+	{
+
+		const int count = (_config.bulletCount > 0)
+			? _config.bulletCount : 1;
+
+		for (int i = 0; i < count; ++i)
+		{
+			const float angle =
+				2.0f * PI * i / count + _bossPatternAngle;
+
+			AddBullet(angle);
+		}
+
+		_bossPatternAngle += 0.15f;
+
+		if (_bossPatternAngle >= 2.0f * PI)
+			_bossPatternAngle -= 2.0f * PI;
+
+
+	}break;
 	}
 }
 

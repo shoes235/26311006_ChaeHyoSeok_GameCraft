@@ -6,7 +6,7 @@ void TitleScene::Init()
 	IScene::Init();
 
 	//audio
-	_bgm = g2_SoundLoad("rsc/audio/Jumper.mp3");
+	_bgm = g2_SoundLoad("rsc/audio/MainTheme.mp3");
 	g2_SoundPlay(_bgm, true);
 
 

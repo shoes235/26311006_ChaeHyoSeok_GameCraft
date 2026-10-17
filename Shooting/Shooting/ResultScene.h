@@ -41,12 +41,12 @@ private:
 	const vector<int> RANK_BY_SCORE
 	{
 		0,
-		50,
-		100,
-		200,
-		500,
-		750,
-		1000,
+		10000,
+		25000,
+		50000,
+		100000,
+		250000,
+		1000000,
 	};
 
 	const vector<string> RANK_TEXT_LIST

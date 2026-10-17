@@ -48,7 +48,16 @@ void Player::Update(float delta)
 	if (_shotCooldown > 0.0f)
 		_shotCooldown -= delta;
 	if (_rapidFireTimer > 0.0f) _rapidFireTimer -= delta;
-	if (_powerTimer > 0.0f) _powerTimer -= delta;
+	if (_powerLevel > 0)
+	{
+		_powerDecayTimer -= delta;
+		while (_powerDecayTimer <= 0.0f && _powerLevel > 0)
+		{
+			--_powerLevel;
+			_powerDecayTimer += POWER_DECAY_INTERVAL;
+		}
+		if (_powerLevel == 0) _powerDecayTimer = 0.0f;
+	}
 	_shots.Update(delta);
 
 	float length = sqrtf(_moveDirection.x * _moveDirection.x + _moveDirection.y * _moveDirection.y);
@@ -101,7 +110,13 @@ bool Player::OnHit()
 
 void Player::OnGraze()
 {
-	// Score and graze counters belong to the game-state system.
+	if (_powerLevel >= MAX_POWER) return;
+	_grazePower += 0.05f;
+	if (_grazePower >= 1.0f)
+	{
+		_grazePower -= 1.0f;
+		AddPower();
+	}
 }
 
 void Player::Shoot()
@@ -118,4 +133,10 @@ bool Player::UseBomb()
 	_isInvincible = true;
 	_invincibleTimer = 3.5f;
 	return true;
+}
+
+void Player::AddPower()
+{
+	if (_powerLevel < MAX_POWER) ++_powerLevel;
+	_powerDecayTimer = POWER_DECAY_INTERVAL;
 }

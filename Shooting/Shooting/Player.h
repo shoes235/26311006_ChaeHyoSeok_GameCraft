@@ -25,13 +25,17 @@ private:
     float _invincibleTimer;
 
     //power
-    float _shotCooldown = 0.0f;
-    float _rapidFireTimer = 0.0f;
-    float _powerTimer = 0.0f;
+    float _shotCooldown{};
+    float _rapidFireTimer{};
+    int _powerLevel{};
+    const int MAX_POWER{ 15 };
+    float _powerDecayTimer{};
+    float _grazePower{};
+    const float POWER_DECAY_INTERVAL{120.0f};
 
     //Æø
-    int _bombs = 3;
-    const int MAX_BOMB = 10;
+    int _bombs{ 3 };
+    const int MAX_BOMB{ 8 };
 
     BulletPool _shots;
 
@@ -51,14 +55,17 @@ public:
     void AddBomb() { ++_bombs; }
 
     void AddRapidFire(float duration = 8.0f) { _rapidFireTimer = duration; }
-    void AddPower(float duration = 8.0f) { _powerTimer = duration; }
+    void AddPower();
     
     int GetMaxBomb() const { return MAX_BOMB; }
     int GetBombs() const { return _bombs; }
-    int GetShotDamage() const { return _powerTimer > 0.0f ? 2 : 1; }
+    int GetShotDamage() const { return 1 + _powerLevel; }
+    int GetPowerLevel() const { return _powerLevel; }
+    int GetMaxPower() const { return MAX_POWER; }
    
     float GetRapidFireTime() const { return _rapidFireTimer; }
-    float GetPowerTime() const { return _powerTimer; }
+    float GetPowerDecayTime() const { return _powerDecayTimer; }
+    float GetGrazePower() const { return _grazePower; }
     
     bool OnHit();
     void OnGraze();

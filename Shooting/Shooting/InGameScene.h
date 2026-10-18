@@ -45,7 +45,7 @@ private:
 	StagePhase _phase = StagePhase::WAVE;
 
 	//time
-	const float STAGE_TIME{60.0f};
+	const float STAGE_TIME{30.0f};
 	float _stageTimer = STAGE_TIME;
 
 	float _spawnTimer = 1.0f;
@@ -108,7 +108,7 @@ public:
 	InGameScene() : IScene(E_SceneType::IN_GAME)
 	{
 		_winName = "InGame";
-		_winColor = 0xE1E1E1;
+		_winColor = 0x1A2835;
 	}
 public:
 	void Init() override;

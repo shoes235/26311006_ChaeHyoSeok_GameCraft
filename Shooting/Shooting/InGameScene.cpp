@@ -186,7 +186,7 @@ void InGameScene::Render()
 	(
 		_uiFont, 
 		{ 1000, 100, 1250, 200 },
-		0xFFFFFFFF,
+		0xFFFF0000,
 		"LIVES\n%s",liv.c_str()
 	);
 
@@ -219,13 +219,14 @@ void InGameScene::Render()
 		if (i < _player.GetPowerLevel())
 			pow += "#";
 		else
-			pow += "  ";
+			pow += " ";
 	}
 	pow += "]";
 
 
-
-	g2_FontDrawText(
+	//POWER
+	g2_FontDrawText
+	(
 		_uiFont, 
 		{ 1000, 330, 1270, 390 },
 		0xFFFF60FF,
@@ -234,8 +235,11 @@ void InGameScene::Render()
 
 	//아이템
 	if (_player.GetRapidFireTime() > 0.0f)
-		g2_FontDrawText(_uiFont, { 1000, 280, 1270, 325 }, 0xFF60FFFF, "RAPID: %.0fs", _player.GetRapidFireTime());
+		g2_FontDrawText(_uiFont, { 1000, 260, 1270, 290 }, 0xFF60FFFF, "RAPID: %.0fs", _player.GetRapidFireTime());
+	if (_player.GetShotgunTime() > 0.0f)
+		g2_FontDrawText(_uiFont, { 1000, 292, 1270, 322 }, 0xFFFFE060, "SHOTGUN: %.0fs", _player.GetShotgunTime());
 	
+	//Power-DECAY
 	if (_player.GetPowerLevel() > 0)
 		g2_FontDrawText(_uiFont, { 1000, 390, 1270, 430 }, 0xFFFF60FF,
 			"DECAY: %.1fs", _player.GetPowerDecayTime());
@@ -280,7 +284,7 @@ void InGameScene::Update()
 
 	if (!g2_SoundIsPlaying(_curBgm))
 	{
-		printf("BGM 종료 감지\n");
+		//printf("BGM 종료 감지\n");
 		g2_SoundReset(_curBgm);
 		_curBgm = _bgms[_randomizer.Rand(0, 2)];
 		g2_SoundReset(_curBgm);
@@ -363,8 +367,8 @@ void InGameScene::Update()
 				enemy->TakeDamage(_player.GetShotDamage());
 				if (!enemy->IsAlive())
 				{
-					GameData::g_score += _randomizer.Rand(100,500);
-					printf("점수 증가 확인: %d\n", GameData::g_score);
+					GameData::g_score += _randomizer.Rand(GameData::g_stageLast * 100, GameData::g_stageLast * 200);
+					//printf("점수 증가 확인: %d\n", GameData::g_score);
 					SpawnDeathParticle(VEC2(enemyPos.x + 24.0f, enemyPos.y + 24.0f));
 					TryDropItem(VEC2(enemyPos.x + 24.0f, enemyPos.y + 24.0f));
 					g2_SoundPlay(_EDeathSFX);
@@ -394,6 +398,7 @@ void InGameScene::Update()
 			case ItemType::BOMB: _player.AddBomb(); break;
 			case ItemType::RAPID_FIRE: _player.AddRapidFire(); break;
 			case ItemType::POWER: _player.AddPower(); break;
+			case ItemType::SHOTGUN: _player.AddShotgun(); break;
 			}
 			item.Collect();
 		}
@@ -480,7 +485,15 @@ void InGameScene::SpawnRandomEnemy()
 
 void InGameScene::SpawnBoss()
 {
-	EnemyConfig config = ScaleEnemyForStage(MakeStageBoss(), GameData::g_stageLast);
+	const int bossType = _randomizer.Rand(0, 2);
+	EnemyConfig config;
+	switch (bossType)
+	{
+	case 1: config = MakeStageBoss2(); break;
+	case 2: config = MakeStageBoss3(); break;
+	default: config = MakeStageBoss(); break;
+	}
+	config = ScaleEnemyForStage(config, GameData::g_stageLast);
 	_enemies.emplace_back(new Enemy(VEC2(610.0f, -60.0f), config));
 	_bossHealthBar.reset(new ProgressBar(VEC2(400.0f, 30.0f)));
 	_bossHealthBar->SetProgress(1.0f);
@@ -489,7 +502,7 @@ void InGameScene::SpawnBoss()
 void InGameScene::TryDropItem(VEC2 pos)
 {
 	if (_randomizer.Rand(0, 99) >= 35) return;
-	_items.emplace_back(pos, static_cast<ItemType>(_randomizer.Rand(0, 3)));
+	_items.emplace_back(pos, static_cast<ItemType>(_randomizer.Rand(0, 4)));
 }
 
 void InGameScene::SpawnDeathParticle(VEC2 pos)

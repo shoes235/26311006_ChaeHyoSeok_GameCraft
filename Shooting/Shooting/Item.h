@@ -6,7 +6,8 @@ enum class ItemType
 	LIFE,
 	BOMB,
 	RAPID_FIRE,
-	POWER
+	POWER,
+	SHOTGUN
 };
 
 class Item

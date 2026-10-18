@@ -45,7 +45,7 @@ void Enemy::Update(float delta, VEC2 playerPos)
 	if (_config.cycleBossPatterns)
 	{
 		_bossPhaseTimer += delta;
-		const float phaseDuration = GetStageBossPatternData(_bossPhase).duration;
+		const float phaseDuration = GetStageBossPatternData(_config.bossType, _bossPhase).duration;
 		if (_bossPhaseTimer >= phaseDuration)
 		{
 			_bossPhaseTimer -= phaseDuration;
@@ -69,7 +69,7 @@ void Enemy::Update(float delta, VEC2 playerPos)
 
 void Enemy::SetBossPattern()
 {
-	const BossPatternData pattern = GetStageBossPatternData(_bossPhase);
+	const BossPatternData pattern = GetStageBossPatternData(_config.bossType, _bossPhase);
 	_config.shotPattern = pattern.shotPattern;
 	_config.bulletCount = pattern.bulletCount;
 	_config.spreadAngle = pattern.spreadAngle;
@@ -83,7 +83,7 @@ void Enemy::SetBossPattern()
 const char* Enemy::GetBossPatternName() const
 {
 	if (!_config.cycleBossPatterns) return "";
-	return GetStageBossPatternData(_bossPhase).name;
+	return GetStageBossPatternData(_config.bossType, _bossPhase).name;
 }
 
 void Enemy::FirePattern(VEC2 playerPos)

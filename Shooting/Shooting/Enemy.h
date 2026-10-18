@@ -28,6 +28,7 @@ struct EnemyConfig
 	float spreadAngle;
 	E_EnemyShotPattern shotPattern;
 	bool cycleBossPatterns;
+	int bossType;
 	string spritePath;
 	vector<std::string> animationPaths;
 	float animationFrameDuration;
@@ -37,7 +38,7 @@ struct EnemyConfig
 		: hp(3), radius(18.0f), moveSpeed(80.0f), stopY(130.0f),
 		initialFireDelay(0.8f), fireInterval(1.0f), bulletSpeed(260.0f),
 		bulletRadius(5.0f), bulletCount(5), spreadAngle(0.5f),
-		shotPattern(E_EnemyShotPattern::AIMED_SINGLE), cycleBossPatterns(false),
+		shotPattern(E_EnemyShotPattern::AIMED_SINGLE), cycleBossPatterns(false), bossType(0),
 		spritePath("rsc/imgs/Enemies/RiceSpirit.png"),
 		animationFrameDuration(0.1f),
 		bulletTexturePath("rsc/imgs/Bullets/EnemyShot.png")

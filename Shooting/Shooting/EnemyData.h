@@ -3,11 +3,6 @@
 #include "Randomizer.h"
 #include <cmath>
 
-// 적 팩토리에서 spritePath는 단일 이미지, animationPaths는 반복 애니메이션 프레임
-// 예: config.animationPaths = { "rsc/imgs/Enemies/Shotgun/0.png", "rsc/imgs/Enemies/Shotgun/1.png" };
-// 애니메이션 속도는 config.animationFrameDuration로 조정합니다.
-
-
 struct BossPatternData
 {
 	const char* name;
@@ -20,7 +15,6 @@ struct BossPatternData
 	float startDelay;
 };
 
-// 스테이지가 오를 때마다 적 최대 HP를 12%씩 올립니다.
 inline EnemyConfig ScaleEnemyForStage(EnemyConfig config, int stage)
 {
 	if (stage < 1) stage = 1;
@@ -28,14 +22,32 @@ inline EnemyConfig ScaleEnemyForStage(EnemyConfig config, int stage)
 	return config;
 }
 
-inline BossPatternData GetStageBossPatternData(int phase)
+inline BossPatternData GetStageBossPatternData(int bossType, int phase)
 {
-	Randomizer _rander;
+	if (bossType == 1)
+	{
+		switch (phase)
+		{
+		case 1: return { "SPELL 1 - GASTER BLAST", 10.0f, E_EnemyShotPattern::AIMED_SINGLE, 1, 0.0f, 0.18f, 290.0f, .65f };
+		case 2: return { "SPELL 2 - SPIRAL BONE", 14.0f, E_EnemyShotPattern::ROTATING_BURST, 14, 0.0f, 0.32f, 185.0f, .65f };
+		default: return { "NORMAL - THOROW BONE", 8.0f, E_EnemyShotPattern::AIMED_SPREAD, 3, 0.55f, 1.2f, 190.0f, .65f };
+		}
+	}
+	if (bossType == 2)
+	{
+		switch (phase)
+		{
+		case 1: return { "SPELL 1 - SAL RAIN", 11.0f, E_EnemyShotPattern::STRAIGHT_SPREAD, 9, 0.8f, 0.75f, 245.0f, .65f };
+		case 2: return { "SPELL 2 - RADIAL", 13.0f, E_EnemyShotPattern::RADIAL_BURST, 20, 0.0f, 1.1f, 165.0f, .65f };
+		default: return { "NORMAL - AIMED SALVO", 8.0f, E_EnemyShotPattern::AIMED_SPREAD, 3, 0.45f, 1.0f, 200.0f, .65f };
+		}
+	}
 
+	//Default
 	switch (phase)
 	{
 	case 1: return { "SPELL 1", 12.0f, E_EnemyShotPattern::AIMED_SPREAD, 5, .65f, 0.9f, 230.0f, .65f };
-	case 2:return { "SPELL 2", 12.0f, E_EnemyShotPattern::ROTATING_BURST, 18, .65f, .5f, 150.0f, .65f };
+	case 2: return { "SPELL 2", 12.0f, E_EnemyShotPattern::ROTATING_BURST, 18, .65f, .5f, 150.0f, .65f };
 	default: return { "NORMAL", 8.0f, E_EnemyShotPattern::AIMED_SINGLE, 1, .0f, .75f, 210.0f, .65f };
 	}
 }
@@ -144,8 +156,6 @@ inline EnemyConfig MakeRadialShotgunEnemy()
 
 
 //Bosses
-
-
 inline EnemyConfig MakeStageBoss()
 {
 	EnemyConfig config;
@@ -160,13 +170,36 @@ inline EnemyConfig MakeStageBoss()
 	config.bulletCount = 3;
 	config.shotPattern = E_EnemyShotPattern::AIMED_SPREAD;
 	config.cycleBossPatterns = true;
+	config.bossType = 0;
 
 	vector<string> paths{};
 	for (int i = 0; i < 50; ++i)
 		paths.push_back("rsc/imgs/Enemies/Boss/(" + std::to_string(i) + ").png");
-
-
 	config.animationPaths = paths;
 
+	return config;
+}
+
+inline EnemyConfig MakeStageBoss2()
+{
+	EnemyConfig config = MakeStageBoss();
+	config.bossType = 1;
+	config.hp = 1250;
+	config.moveSpeed = 35.0f;
+	config.bulletRadius = 6.0f;
+	config.animationPaths = { "rsc/imgs/Enemies/Boss1/0.png" };
+	config.bulletTexturePath = "rsc/imgs/Bullets/BoneShot.png";
+	return config;
+
+}
+
+inline EnemyConfig MakeStageBoss3()
+{
+	EnemyConfig config = MakeStageBoss();
+	config.bossType = 2;
+	config.hp = 850;
+	config.moveSpeed = 60.0f;
+	config.bulletRadius = 5.0f;
+	config.animationPaths = { "rsc/imgs/Enemies/Boss2/0.png" };
 	return config;
 }

@@ -48,6 +48,7 @@ void Player::Update(float delta)
 	if (_shotCooldown > 0.0f)
 		_shotCooldown -= delta;
 	if (_rapidFireTimer > 0.0f) _rapidFireTimer -= delta;
+	if (_shotgunTimer > 0.0f) _shotgunTimer -= delta;
 	if (_powerLevel > 0)
 	{
 		_powerDecayTimer -= delta;
@@ -122,7 +123,15 @@ void Player::OnGraze()
 void Player::Shoot()
 {
 	if (_shotCooldown > 0.0f) return;
-	_shots.Spawn(VEC2(_pos.x + 26.0f, _pos.y - 12.0f), VEC2(0.0f, -720.0f));
+	const VEC2 origin(_pos.x + 26.0f, _pos.y - 12.0f);
+	if (_shotgunTimer > 0.0f)
+	{
+		constexpr float spread[] = { -0.32f, -0.16f, 0.0f, 0.16f, 0.32f };
+		for (float angle : spread)
+			_shots.Spawn(origin, VEC2(sinf(angle) * 720.0f, -cosf(angle) * 720.0f));
+	}
+	else
+		_shots.Spawn(origin, VEC2(0.0f, -720.0f));
 	_shotCooldown = _rapidFireTimer > 0.0f ? 0.08f : 0.16f;
 }
 

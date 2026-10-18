@@ -27,8 +27,9 @@ private:
     //power
     float _shotCooldown{};
     float _rapidFireTimer{};
+    float _shotgunTimer{};
     int _powerLevel{};
-    const int MAX_POWER{ 15 };
+    const int MAX_POWER{ 20 };
     float _powerDecayTimer{};
     float _grazePower{};
     const float POWER_DECAY_INTERVAL{120.0f};
@@ -55,6 +56,7 @@ public:
     void AddBomb() { ++_bombs; }
 
     void AddRapidFire(float duration = 8.0f) { _rapidFireTimer = duration; }
+    void AddShotgun(float duration = 10.0f) { _shotgunTimer = duration; }
     void AddPower();
     
     int GetMaxBomb() const { return MAX_BOMB; }
@@ -64,6 +66,7 @@ public:
     int GetMaxPower() const { return MAX_POWER; }
    
     float GetRapidFireTime() const { return _rapidFireTimer; }
+    float GetShotgunTime() const { return _shotgunTimer; }
     float GetPowerDecayTime() const { return _powerDecayTimer; }
     float GetGrazePower() const { return _grazePower; }
     

@@ -26,6 +26,7 @@ using std::vector;
 #include "ProgressBar.h"
 #include "Particle.h"
 #include "BomParticle.h"
+#include "Collider.h"
 
 // === Scene ===
 #include "JumpScareScene.h"
@@ -41,8 +42,8 @@ private:
 	std::vector<std::unique_ptr<Particle>> _particles;
 	std::unique_ptr<ProgressBar> _bossHealthBar;
 	Randomizer _randomizer;
-	enum class StagePhase { WAVE, BOSS, CLEAR };
-	StagePhase _phase = StagePhase::WAVE;
+	enum class E_StagePhase { WAVE, BOSS, CLEAR };
+	E_StagePhase _phase = E_StagePhase::WAVE;
 
 	//time
 	const float STAGE_TIME{30.0f};

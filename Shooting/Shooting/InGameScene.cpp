@@ -98,6 +98,8 @@ void InGameScene::Init()
 		[this]()
 		{
 			_player.Shoot();
+
+			g2_SoundReset(_shotSFX);
 			g2_SoundPlay(_shotSFX);
 		}
 	);
@@ -111,6 +113,8 @@ void InGameScene::Init()
 			if (!_player.UseBomb()) return;
 			for (const auto& enemy : _enemies)
 				for (Bullet& bullet : enemy->GetBullets()) bullet.Deactivate();
+			
+			g2_SoundReset(_bomSFX);
 			g2_SoundPlay(_bomSFX);
 		}
 	);
@@ -142,6 +146,8 @@ void InGameScene::Render()
 {
 	IScene::Render();
 
+	//============================
+	//OBJS
 	_cloud.Print();
 	_cloud2.Print();
 
@@ -156,7 +162,8 @@ void InGameScene::Render()
 		_bossHealthBar->Render();
 	}
 
-	
+	//============================
+	//UI
 	
 	
 	g2_FontDrawText
@@ -177,10 +184,6 @@ void InGameScene::Render()
 		else
 			liv += "[ ]";
 	}
-
-
-
-
 
 	g2_FontDrawText
 	(
@@ -263,14 +266,19 @@ void InGameScene::Render()
 	
 	
 	
-	g2_FontDrawText(_uiFont, { 0, 140, 1270, 185 }, 0xFFFFFFFF, "STAGE: %d", GameData::g_stageLast);
+	g2_FontDrawText(_uiFont, { 0, 200, 1270, 235 }, 0xFFFFFFFF, "STAGE: %d", GameData::g_stageLast);
 	if (_phase == StagePhase::WAVE)
-		g2_FontDrawText(_uiFont, { 0, 190, 1270, 235 }, 0xFFFFFFFF, "BOSS IN: %.0f", _stageTimer);
+		g2_FontDrawText(_uiFont, { 0, 230, 1270, 265 }, 0xFFFFFFFF, "BOSS IN: %.0f", _stageTimer);
 	else if (_phase == StagePhase::BOSS)
-		g2_FontDrawText(_uiFont, { 0, 190, 1270, 235 }, 0xFFFFFFFF, "BOSS - %s",
+		g2_FontDrawText(_uiFont, { 0, 230, 1270, 265 }, 0xFFFFFFFF, "BOSS - %s",
 			_enemies.empty() ? "" : _enemies.front()->GetBossPatternName());
 	else
 		g2_FontDrawText(_uiFont, { 430, 300, 900, 360 }, 0xFFFFFFFF, "STAGE CLEAR!");
+
+
+	//============================
+
+
 
 
 	return;
@@ -282,6 +290,8 @@ void InGameScene::Update()
 
 	//sound
 
+	//Is Playing 이 제대로 작동할라면
+	// .wav 를 써야돼~~~~~~
 	if (!g2_SoundIsPlaying(_curBgm))
 	{
 		//printf("BGM 종료 감지\n");
@@ -310,7 +320,7 @@ void InGameScene::Update()
 
 	_cloud2.SetPos(posC2);
 
-
+	
 	//py
 
 	_player.SetFocus(false);
@@ -351,79 +361,65 @@ void InGameScene::Update()
 		_bossHealthBar->SetProgress(static_cast<float>(_enemies.front()->GetHP()) /
 			_enemies.front()->GetMaxHP());
 
-	std::vector<Bullet>& playerShots = _player.GetShots();
-	for (Bullet& shot : playerShots)
+	for (Bullet& shot : _player.GetShots())
 	{
 		if (!shot.IsActive()) continue;
 		for (const auto& enemy : _enemies)
 		{
 			if (!enemy->IsAlive()) continue;
-			VEC2 enemyPos = enemy->GetPos();
-			float dx = shot.GetPos().x + 6.0f - (enemyPos.x + 24.0f);
-			float dy = shot.GetPos().y + 10.0f - (enemyPos.y + 24.0f);
-			float radius = shot.GetRadius() + enemy->GetRadius();
-			if (dx * dx + dy * dy <= radius * radius)
+			const VEC2 enemyPos(enemy->GetPos().x + 24.0f, enemy->GetPos().y + 24.0f);
+			const VEC2 shotPos(shot.GetPos().x + 6.0f, shot.GetPos().y + 10.0f);
+			if (!shot.GetCollider().IsEntered(shotPos, enemy->GetCollider(), enemyPos)) continue;
+
+			enemy->TakeDamage(_player.GetShotDamage());
+			if (!enemy->IsAlive())
 			{
-				enemy->TakeDamage(_player.GetShotDamage());
-				if (!enemy->IsAlive())
-				{
-					GameData::g_score += _randomizer.Rand(GameData::g_stageLast * 100, GameData::g_stageLast * 200);
-					//printf("점수 증가 확인: %d\n", GameData::g_score);
-					SpawnDeathParticle(VEC2(enemyPos.x + 24.0f, enemyPos.y + 24.0f));
-					TryDropItem(VEC2(enemyPos.x + 24.0f, enemyPos.y + 24.0f));
-					g2_SoundPlay(_EDeathSFX);
-				}
-				shot.Deactivate();
-				break;
+				GameData::g_score += _randomizer.Rand(GameData::g_stageLast * 100, GameData::g_stageLast * 200);
+				SpawnDeathParticle(enemyPos);
+				TryDropItem(enemyPos);
+				g2_SoundReset(_EDeathSFX);
+				g2_SoundPlay(_EDeathSFX);
 			}
+			shot.Deactivate();
+			break;
 		}
 	}
+	const Collider itemPickupCollider(_player.GetCollider().Radius + 32.0f);
 	for (Item& item : _items)
 	{
 		if (!item.IsActive()) continue;
 		item.Update(dt);
 		if (!item.IsActive()) continue;
-		VEC2 itemPos = item.GetPos();
-		VEC2 core = _player.GetCorePos();
-		const float dx = itemPos.x - core.x;
-		const float dy = itemPos.y - core.y;
-		const float radius = item.GetRadius() + _player.GetCoreRadius() + 32.0f;
-		if (dx * dx + dy * dy <= radius * radius)
-		{
-			g2_SoundPlay(_itemGetSFX);
+		if (!item.GetCollider().IsEntered(item.GetPos(), itemPickupCollider, _player.GetCorePos())) continue;
 
-			switch (item.GetType())
-			{
-			case ItemType::LIFE: ++_lives; break;
-			case ItemType::BOMB: _player.AddBomb(); break;
-			case ItemType::RAPID_FIRE: _player.AddRapidFire(); break;
-			case ItemType::POWER: _player.AddPower(); break;
-			case ItemType::SHOTGUN: _player.AddShotgun(); break;
-			}
-			item.Collect();
+		g2_SoundPlay(_itemGetSFX);
+		switch (item.GetType())
+		{
+		case ItemType::LIFE: ++_lives; break;
+		case ItemType::BOMB: _player.AddBomb(); break;
+		case ItemType::RAPID_FIRE: _player.AddRapidFire(); break;
+		case ItemType::POWER: _player.AddPower(); break;
+		case ItemType::SHOTGUN: _player.AddShotgun(); break;
 		}
+		item.Collect();
 	}
 	_items.erase(std::remove_if(_items.begin(), _items.end(),
 		[](const Item& item) { return !item.IsActive(); }), _items.end());
 
 	for (const auto& enemy : _enemies)
 	{
-		std::vector<Bullet>& enemyBullets = enemy->GetBullets();
-		for (Bullet& bullet : enemyBullets)
+		for (Bullet& bullet : enemy->GetBullets())
 		{
 			if (!bullet.IsActive()) continue;
-			VEC2 core = _player.GetCorePos();
-			float dx = bullet.GetPos().x + 6.0f - core.x;
-			float dy = bullet.GetPos().y + 10.0f - core.y;
-			const float distanceSquared = dx * dx + dy * dy;
-			const float hitRadius = bullet.GetRadius() + _player.GetCoreRadius();
-			const float grazeRadius = bullet.GetRadius() + _player.GetGrazeRadius();
-			if (distanceSquared <= hitRadius * hitRadius)
+			const VEC2 bulletPos(bullet.GetPos().x + 6.0f, bullet.GetPos().y + 10.0f);
+			const VEC2 core = _player.GetCorePos();
+			if (bullet.GetCollider().IsEntered(bulletPos, _player.GetCollider(), core))
 			{
 				if (_player.OnHit()) --_lives;
 				bullet.Deactivate();
 			}
-			else if (!bullet.HasGrazed() && distanceSquared <= grazeRadius * grazeRadius)
+			else if (!bullet.HasGrazed() && bullet.GetCollider().IsEntered(
+				bulletPos, _player.GetGrazeCollider(), core))
 			{
 				bullet.MarkGrazed();
 				_player.OnGraze();

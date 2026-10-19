@@ -1,6 +1,7 @@
 #pragma once
 #include <glc2d.h>
 #include <vector>
+#include "Collider.h"
 
 class Texture;
 
@@ -9,7 +10,7 @@ class Bullet
 private:
 	VEC2 _pos;
 	VEC2 _velocity;
-	float _radius;
+	Collider _collider;
 	bool _active;
 	bool _grazed;
 
@@ -24,7 +25,7 @@ public:
 	void MarkGrazed() { _grazed = true; }
 	VEC2 GetPos() const { return _pos; }
 	VEC2 GetVelocity() const { return _velocity; }
-	float GetRadius() const { return _radius; }
+	const Collider& GetCollider() const { return _collider; }
 };
 
 class BulletPool

@@ -7,13 +7,14 @@ Player::Player()
 	LOW_SPEED(200.0f),
 	_speedCur(400.0f),
 	_isFocused(false),
-	_hurtBoxRadius(2.0f),
 	_grazeRadius(25.0f),
 	_isInvincible(false),
 	_invincibleTimer(0.0f)
 
 {
 	_pos = VEC2(400.0f, 600.0f);
+	_collider.Radius = 2.0f;
+	_grazeCollider.Radius = _grazeRadius;
 	_moveDirection = VEC2(0.0f, 0.0f);
 
 	float halfSprite = 32.0f;

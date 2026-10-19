@@ -8,7 +8,7 @@ namespace
 }
 
 Enemy::Enemy(VEC2 pos, const EnemyConfig& config)
-	: GameObject(pos), _config(config), _hp(config.hp), _maxHp(config.hp), _radius(config.radius),
+	: GameObject(pos, config.radius), _config(config), _hp(config.hp), _maxHp(config.hp),
 	_fireCooldown(config.initialFireDelay),
 	_bulletTexture(config.bulletTexturePath, VEC2(0.0f, 0.0f))
 {

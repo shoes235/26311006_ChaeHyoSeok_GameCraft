@@ -18,8 +18,9 @@ private:
 
 
     //hurt ¾ÆÆÄ
-    float _hurtBoxRadius;
+
     float _grazeRadius;
+    Collider _grazeCollider;
 
     bool _isInvincible;
     float _invincibleTimer;
@@ -73,8 +74,9 @@ public:
     bool OnHit();
     void OnGraze();
    
-    float GetCoreRadius() const { return _hurtBoxRadius; }
+    float GetCoreRadius() const { return _collider.Radius; }
     float GetGrazeRadius() const { return _grazeRadius; }
+    const Collider& GetGrazeCollider() const { return _grazeCollider; }
     
     VEC2 GetCorePos() const { return VEC2(_pos.x + 28.0f, _pos.y + 28.0f); }
     std::vector<Bullet>& GetShots() { return _shots.GetBullets(); }

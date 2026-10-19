@@ -1,5 +1,6 @@
 #pragma once
 #include <glc2d.h>
+#include "Collider.h"
 
 enum class ItemType
 {
@@ -14,6 +15,7 @@ class Item
 {
 private:
 	VEC2 _pos;
+	Collider _collider{14.0f};
 	ItemType _type;
 	float _speed = 120.0f;
 	bool _active = true;
@@ -24,7 +26,7 @@ public:
 	void Render(int font) const;
 	VEC2 GetPos() const { return _pos; }
 	ItemType GetType() const { return _type; }
-	float GetRadius() const { return 14.0f; }
+	const Collider& GetCollider() const { return _collider; }
 	bool IsActive() const { return _active; }
 	void Collect() { _active = false; }
 };

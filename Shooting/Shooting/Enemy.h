@@ -52,7 +52,6 @@ private:
 	EnemyConfig _config;
 	int _hp;
 	int _maxHp;
-	float _radius;
 	float _fireCooldown;
 	float _bossPhaseTimer = 0.0f;
 	int _bossPhase = 0;
@@ -72,6 +71,5 @@ public:
 	int GetHP() const { return _hp; }
 	int GetMaxHP() const { return _maxHp; }
 	const char* GetBossPatternName() const;
-	float GetRadius() const { return _radius; }
 	std::vector<Bullet>& GetBullets() { return _bullets.GetBullets(); }
 };

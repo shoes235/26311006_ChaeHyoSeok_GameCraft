@@ -71,7 +71,7 @@ private:
 
 	//UI
 	int _uiFont = -1;
-	Texture _layout{ "rsc/imgs/Layout.png", VEC2(0,0)};
+	Texture _layout{ "rsc/imgs/UI/Layout.png", VEC2(0,0)};
 	Texture _cloud{ "rsc/imgs/cloud.jpg",VEC2(120,0) };
 	Texture _cloud2{ "rsc/imgs/cloud.jpg",VEC2(120,-720) };
 

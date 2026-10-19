@@ -302,6 +302,7 @@ void InGameScene::Update()
 	_inputMgr.UpdateInput();
 
 	_player.Update(dt);
+
 	if (_phase == E_StagePhase::WAVE)
 	{
 		_stageTimer -= dt;
@@ -321,7 +322,7 @@ void InGameScene::Update()
 	else if (_phase == E_StagePhase::CLEAR)
 	{
 		_clearTimer -= dt;
-		if (_clearTimer <= 0.0f)
+		if (_clearTimer <= .0f)
 		{
 			++GameData::g_stageLast;
 			_phase = E_StagePhase::WAVE;

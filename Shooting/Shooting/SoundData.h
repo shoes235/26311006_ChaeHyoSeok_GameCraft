@@ -26,6 +26,10 @@ namespace SoundData
 	inline bool RegisterAll(SoundManager& soundManager)
 	{
 		bool success = true;
+
+		//&= 연산자
+		//true / false 를 반환
+		//전체 로딩 실패시 무조건 false 
 		success &= soundManager.AddBGM(BGM_Title, "rsc/audio/MainTheme.wav");
 		success &= soundManager.AddBGM(BGM_Result, "rsc/audio/Result.mp3");
 		success &= soundManager.AddBGM(BGM_Game, "rsc/audio/InGameTheme.wav");

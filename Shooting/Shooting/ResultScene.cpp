@@ -6,7 +6,7 @@ void ResultScene::Init()
 
 	_inputMgr.RegisterAction
 	(
-		{ VK_SPACE },
+		{ 'Z' },
 		E_KeyType::DOWN,
 		[=]()
 		{
@@ -110,7 +110,7 @@ void ResultScene::Render()
 			_font,
 			{ 380, 500, 1000, 800 },
 			0xFF000000,
-			"SPACE를 눌러 다시 시작"
+			"Z 를 눌러 다시 시작"
 		);
 	}
 

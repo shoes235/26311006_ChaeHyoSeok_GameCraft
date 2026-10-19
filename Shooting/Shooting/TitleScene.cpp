@@ -6,7 +6,7 @@ void TitleScene::Init()
 	IScene::Init();
 
 	//audio
-	_bgm = g2_SoundLoad("rsc/audio/MainTheme.mp3");
+	_bgm = g2_SoundLoad("rsc/audio/MainTheme.wav");
 	g2_SoundPlay(_bgm, true);
 
 
@@ -16,7 +16,7 @@ void TitleScene::Init()
 	//input 등록
 	_inputMgr.RegisterAction
 	(
-		{VK_SPACE},
+		{ 'Z' },
 		E_KeyType::DOWN,
 		[=]() 
 		{
@@ -131,7 +131,7 @@ void TitleScene::Render()
 
 
 	if(_showText)
-		g2_FontDrawText(nFont, { 380,500,1000,800 }, _color, "SPACE 를 눌러 게임시작");
+		g2_FontDrawText(nFont, { 380,500,1000,800 }, _color, "Z 를 눌러 게임시작");
 
 	return;
 }

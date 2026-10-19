@@ -69,6 +69,9 @@
     <ClCompile Include="SceneManager.cpp">
       <Filter>소스 파일\_Common\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="SoundManager.cpp">
+      <Filter>소스 파일\_Common\Sys</Filter>
+    </ClCompile>
     <ClCompile Include="InGameScene.cpp">
       <Filter>소스 파일\Assets\Levels</Filter>
     </ClCompile>
@@ -126,6 +129,9 @@
     <ClCompile Include="Bullet.cpp">
       <Filter>소스 파일\Assets\Obj</Filter>
     </ClCompile>
+    <ClCompile Include="Collider.cpp">
+      <Filter>소스 파일\_Common\Component</Filter>
+    </ClCompile>
     <ClCompile Include="Enemy.cpp">
       <Filter>소스 파일\Assets\Obj</Filter>
     </ClCompile>
@@ -145,6 +151,12 @@
     </ClInclude>
     <ClInclude Include="SceneManager.h">
       <Filter>헤더 파일\_Common\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundManager.h">
+      <Filter>헤더 파일\_Common\Sys</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundData.h">
+      <Filter>헤더 파일\_Common\Sys</Filter>
     </ClInclude>
     <ClInclude Include="InGameScene.h">
       <Filter>헤더 파일\Assets\Levels</Filter>
@@ -199,6 +211,9 @@
     </ClInclude>
     <ClInclude Include="Bullet.h">
       <Filter>헤더 파일\Assets\Obj</Filter>
+    </ClInclude>
+    <ClInclude Include="Collider.h">
+      <Filter>헤더 파일\_Common\Component</Filter>
     </ClInclude>
     <ClInclude Include="Enemy.h">
       <Filter>헤더 파일\Assets\Obj</Filter>

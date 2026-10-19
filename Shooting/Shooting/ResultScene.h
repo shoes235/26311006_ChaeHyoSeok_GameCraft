@@ -76,14 +76,7 @@ private:
 	//Input text
 	bool _showInputTxt = false;
 
-	//Audio
-	//-bgm
-	int _bgm = 0;
 
-	//-SFX
-	int _drumSFX = 0;
-	int _fartSFX = 0;
-	int _yaySFX = 0;
 
 	InputManager _inputMgr;
 public:

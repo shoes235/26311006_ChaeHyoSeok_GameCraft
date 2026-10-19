@@ -21,6 +21,7 @@
 #include "DeltaTimer.h"
 
 #include "TitleScene.h"
+#include "SoundData.h"
 
 
 
@@ -42,6 +43,7 @@ int main()
 	
 	//Birth
 	g_SceneMgr.InitEngine();
+	SoundData::RegisterAll(g_SoundManager);
 	g_deltaTimer.Init();
 
 	TitleScene* title = new TitleScene();

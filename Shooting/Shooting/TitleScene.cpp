@@ -1,4 +1,5 @@
 #include "TitleScene.h"
+#include "SoundData.h"
 
 
 void TitleScene::Init()
@@ -6,8 +7,7 @@ void TitleScene::Init()
 	IScene::Init();
 
 	//audio
-	_bgm = g2_SoundLoad("rsc/audio/MainTheme.wav");
-	g2_SoundPlay(_bgm, true);
+	g_SoundManager.PlayBGM(SoundData::BGM_Title, true);
 
 
 	//font
@@ -149,8 +149,7 @@ void TitleScene::Destroy()
 
 	_textures.clear();
 
-	g2_SoundRelease(_bgm);
-	_bgm = 0;
+
 
 	return;
 }

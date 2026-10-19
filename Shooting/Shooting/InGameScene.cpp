@@ -1,4 +1,5 @@
 #include "InGameScene.h"
+#include "SoundData.h"
 
 void InGameScene::Init()
 {
@@ -9,30 +10,14 @@ void InGameScene::Init()
 	_particles.clear();
 	_bossHealthBar.reset();
 	_grazeCount = 0;
-	_phase = StagePhase::WAVE;
+	_phase = E_StagePhase::WAVE;
 	_stageTimer = STAGE_TIME;
 	_clearTimer = 0.0f;
 	if (GameData::g_stageLast < 1) GameData::g_stageLast = 1;
 	_spawnTimer = GetRandomSpawnDelay();
 
-	//Sounds
-	_bgms.push_back(g2_SoundLoad("rsc/audio/InGameTheme.wav"));
-	_bgms.push_back(g2_SoundLoad("rsc/audio/theme.wav"));
-	_bgms.push_back(g2_SoundLoad("rsc/audio/MainTheme.wav"));
-	_curBgm = _bgms[_randomizer.Rand(0, 2)];
-
-	_sounds.push_back(_shotSFX = g2_SoundLoad("rsc/audio/SFX/baka-cirno.mp3"));
-	_sounds.push_back(_bomSFX = g2_SoundLoad("rsc/audio/SFX/fart.mp3"));
-
-	_sounds.push_back(_deathSFX = g2_SoundLoad("rsc/audio/SFX/pichuun.mp3"));
-	_sounds.push_back(_grazeSFX = g2_SoundLoad("rsc/audio/SFX/graze.mp3"));
-	_sounds.push_back(_itemGetSFX = g2_SoundLoad("rsc/audio/SFX/Get.mp3"));
-	
-	_sounds.push_back(_EDeathSFX = g2_SoundLoad("rsc/audio/SFX/deltarune-explosion.mp3"));
-
-
-	g2_SoundPlay(_curBgm);
-
+	const string bgmKeys[] = { SoundData::BGM_Game, SoundData::BGM_GameAlt, SoundData::BGM_Title };
+	g_SoundManager.PlayBGM(bgmKeys[_randomizer.Rand(0, 2)], false);
 
 	//input
 	_inputMgr.RegisterAction
@@ -99,8 +84,7 @@ void InGameScene::Init()
 		{
 			_player.Shoot();
 
-			g2_SoundReset(_shotSFX);
-			g2_SoundPlay(_shotSFX);
+			g_SoundManager.PlaySFX(SoundData::SFX_Shot);
 		}
 	);
 
@@ -113,9 +97,8 @@ void InGameScene::Init()
 			if (!_player.UseBomb()) return;
 			for (const auto& enemy : _enemies)
 				for (Bullet& bullet : enemy->GetBullets()) bullet.Deactivate();
-			
-			g2_SoundReset(_bomSFX);
-			g2_SoundPlay(_bomSFX);
+
+			g_SoundManager.PlaySFX(SoundData::SFX_Bomb);
 		}
 	);
 
@@ -127,7 +110,7 @@ void InGameScene::Init()
 		{
 			JumpScareScene* nextScene = new JumpScareScene();
 			g_SceneMgr.ChangeScene(nextScene, E_SceneType::JUMP_SCARE);
-			
+
 		}
 	);
 
@@ -156,7 +139,7 @@ void InGameScene::Render()
 	for (const Item& item : _items) item.Render(_uiFont);
 	for (const auto& particle : _particles) particle->Render();
 	_layout.Print();
-	if (_phase == StagePhase::BOSS && _bossHealthBar)
+	if (_phase == E_StagePhase::BOSS && _bossHealthBar)
 	{
 		g2_FontDrawText(_uiFont, { 350, 0, 920, 30 }, 0xFFFFFFFF, "BOSS HP");
 		_bossHealthBar->Render();
@@ -164,8 +147,8 @@ void InGameScene::Render()
 
 	//============================
 	//UI
-	
-	
+
+
 	g2_FontDrawText
 	(
 		_uiFont,
@@ -173,8 +156,8 @@ void InGameScene::Render()
 		0xFFFFFFFF,
 		"SCORE \n %010d", GameData::g_score
 	);
-	
-	
+
+
 	string liv{};
 
 	for (int i = 0; i < MAX_LIVE; ++i)
@@ -241,12 +224,12 @@ void InGameScene::Render()
 		g2_FontDrawText(_uiFont, { 1000, 260, 1270, 290 }, 0xFF60FFFF, "RAPID: %.0fs", _player.GetRapidFireTime());
 	if (_player.GetShotgunTime() > 0.0f)
 		g2_FontDrawText(_uiFont, { 1000, 292, 1270, 322 }, 0xFFFFE060, "SHOTGUN: %.0fs", _player.GetShotgunTime());
-	
+
 	//Power-DECAY
 	if (_player.GetPowerLevel() > 0)
 		g2_FontDrawText(_uiFont, { 1000, 390, 1270, 430 }, 0xFFFF60FF,
 			"DECAY: %.1fs", _player.GetPowerDecayTime());
-	
+
 	//GRAZE
 	g2_FontDrawText
 	(
@@ -263,13 +246,13 @@ void InGameScene::Render()
 		0xFF80FFFF,
 		"GRAZE POWER: %d%%", static_cast<int>(_player.GetGrazePower() * 100.0f)
 	);
-	
-	
-	
+
+
+
 	g2_FontDrawText(_uiFont, { 0, 200, 1270, 235 }, 0xFFFFFFFF, "STAGE: %d", GameData::g_stageLast);
-	if (_phase == StagePhase::WAVE)
+	if (_phase == E_StagePhase::WAVE)
 		g2_FontDrawText(_uiFont, { 0, 230, 1270, 265 }, 0xFFFFFFFF, "BOSS IN: %.0f", _stageTimer);
-	else if (_phase == StagePhase::BOSS)
+	else if (_phase == E_StagePhase::BOSS)
 		g2_FontDrawText(_uiFont, { 0, 230, 1270, 265 }, 0xFFFFFFFF, "BOSS - %s",
 			_enemies.empty() ? "" : _enemies.front()->GetBossPatternName());
 	else
@@ -288,21 +271,12 @@ void InGameScene::Update()
 	IScene::Update();
 	float dt = g_deltaTimer.GetDeltaTime();
 
-	//sound
-
-	//Is Playing 이 제대로 작동할라면
-	// .wav 를 써야돼~~~~~~
-	if (!g2_SoundIsPlaying(_curBgm))
+	if (!g_SoundManager.IsBGMPlaying())
 	{
-		//printf("BGM 종료 감지\n");
-		g2_SoundReset(_curBgm);
-		_curBgm = _bgms[_randomizer.Rand(0, 2)];
-		g2_SoundReset(_curBgm);
-		g2_SoundPlay(_curBgm);
+		const string bgmKeys[] = { SoundData::BGM_Game, SoundData::BGM_GameAlt, SoundData::BGM_Title };
+		g_SoundManager.PlayBGM(bgmKeys[_randomizer.Rand(0, 2)], false);
 	}
-		//g2_SoundPlay(_curBgm = _bgms[_randomizer.Rand(0, 2)]);
 
-	//구름
 	VEC2 posC = _cloud.GetPos();
 	posC.y += dt * 1000;
 
@@ -320,7 +294,7 @@ void InGameScene::Update()
 
 	_cloud2.SetPos(posC2);
 
-	
+
 	//py
 
 	_player.SetFocus(false);
@@ -328,14 +302,14 @@ void InGameScene::Update()
 	_inputMgr.UpdateInput();
 
 	_player.Update(dt);
-	if (_phase == StagePhase::WAVE)
+	if (_phase == E_StagePhase::WAVE)
 	{
 		_stageTimer -= dt;
 		_spawnTimer -= dt;
 		if (_stageTimer <= 0.0f)
 		{
 			_enemies.clear();
-			_phase = StagePhase::BOSS;
+			_phase = E_StagePhase::BOSS;
 			SpawnBoss();
 		}
 		else if (_spawnTimer <= 0.0f && _enemies.size() < 6)
@@ -344,20 +318,20 @@ void InGameScene::Update()
 			_spawnTimer = GetRandomSpawnDelay();
 		}
 	}
-	else if (_phase == StagePhase::CLEAR)
+	else if (_phase == E_StagePhase::CLEAR)
 	{
 		_clearTimer -= dt;
 		if (_clearTimer <= 0.0f)
 		{
 			++GameData::g_stageLast;
-			_phase = StagePhase::WAVE;
+			_phase = E_StagePhase::WAVE;
 			_stageTimer = STAGE_TIME;
 			_spawnTimer = GetRandomSpawnDelay();
 		}
 	}
 
 	for (const auto& enemy : _enemies) enemy->Update(dt, _player.GetCorePos());
-	if (_phase == StagePhase::BOSS && _bossHealthBar && !_enemies.empty())
+	if (_phase == E_StagePhase::BOSS && _bossHealthBar && !_enemies.empty())
 		_bossHealthBar->SetProgress(static_cast<float>(_enemies.front()->GetHP()) /
 			_enemies.front()->GetMaxHP());
 
@@ -377,8 +351,7 @@ void InGameScene::Update()
 				GameData::g_score += _randomizer.Rand(GameData::g_stageLast * 100, GameData::g_stageLast * 200);
 				SpawnDeathParticle(enemyPos);
 				TryDropItem(enemyPos);
-				g2_SoundReset(_EDeathSFX);
-				g2_SoundPlay(_EDeathSFX);
+				g_SoundManager.PlaySFX(SoundData::SFX_EnemyDeath);
 			}
 			shot.Deactivate();
 			break;
@@ -392,7 +365,7 @@ void InGameScene::Update()
 		if (!item.IsActive()) continue;
 		if (!item.GetCollider().IsEntered(item.GetPos(), itemPickupCollider, _player.GetCorePos())) continue;
 
-		g2_SoundPlay(_itemGetSFX);
+		g_SoundManager.PlaySFX(SoundData::SFX_ItemGet);
 		switch (item.GetType())
 		{
 		case ItemType::LIFE: ++_lives; break;
@@ -424,7 +397,7 @@ void InGameScene::Update()
 				bullet.MarkGrazed();
 				_player.OnGraze();
 				++_grazeCount;
-				g2_SoundPlay(_grazeSFX);
+				g_SoundManager.PlaySFX(SoundData::SFX_Graze);
 				GameData::g_score += 100;
 			}
 		}
@@ -440,7 +413,7 @@ void InGameScene::Update()
 	if (_lives <= 0)
 	{
 		if(!_T_gameOver)
-			g2_SoundPlay(_deathSFX);
+			g_SoundManager.PlaySFX(SoundData::SFX_PlayerDeath);
 
 		_T_gameOver = true;
 
@@ -452,9 +425,9 @@ void InGameScene::Update()
 	}
 	_enemies.erase(std::remove_if(_enemies.begin(), _enemies.end(),
 		[](const std::unique_ptr<Enemy>& enemy) { return !enemy->IsAlive(); }), _enemies.end());
-	if (_phase == StagePhase::BOSS && _enemies.empty())
+	if (_phase == E_StagePhase::BOSS && _enemies.empty())
 	{
-		_phase = StagePhase::CLEAR;
+		_phase = E_StagePhase::CLEAR;
 		GameData::g_score += 1000;
 		_clearTimer = 3.0f;
 		_bossHealthBar.reset();
@@ -516,7 +489,5 @@ float InGameScene::GetRandomSpawnDelay()
 
 void InGameScene::Destroy()
 {
-	for (const auto& i : _sounds)
-		g2_SoundRelease(i);
-	g2_SoundRelease(_curBgm);
+	g_SoundManager.StopBGM();
 }

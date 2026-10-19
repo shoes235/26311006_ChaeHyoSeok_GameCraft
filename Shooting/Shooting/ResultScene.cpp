@@ -1,4 +1,5 @@
 #include "ResultScene.h"
+#include "SoundData.h"
 
 void ResultScene::Init()
 {
@@ -21,11 +22,7 @@ void ResultScene::Init()
 
 	_rank = GetRank(GameData::g_score);
 
-	//audio
-	_bgm = g2_SoundLoad("rsc/audio/Result.mp3");
-	_drumSFX = g2_SoundLoad("rsc/audio/SFX/drum.mp3");
-	_fartSFX = g2_SoundLoad("rsc/audio/SFX/fart.mp3");
-	_yaySFX = g2_SoundLoad("rsc/audio/SFX/yay.mp3");
+	g_SoundManager.PlaySFX(SoundData::SFX_ResultDrum);
 
 	_state = E_ResultState::BEFORE_SHOW;
 }
@@ -52,9 +49,9 @@ void ResultScene::Update()
 	{
 
 		if (static_cast<int>(_rank) < static_cast<int>(E_Rank::C))
-			g2_SoundPlay(_fartSFX, false);
+			g_SoundManager.PlaySFX(SoundData::SFX_ResultBad);
 		else
-			g2_SoundPlay(_yaySFX, false);
+			g_SoundManager.PlaySFX(SoundData::SFX_ResultGood);
 
 		_waitTimer = .0f;
 		_state = E_ResultState::PLAY_SFX;
@@ -72,10 +69,10 @@ void ResultScene::Update()
 	} break;
 	case E_ResultState::PLAY_BGM:
 	{
-		g2_SoundPlay(_bgm, true);
+		g_SoundManager.PlayBGM(SoundData::BGM_Result, true);
 
 		_showInputTxt = true;
-		
+
 		_state = E_ResultState::GET_INPUT;
 
 	}break;
@@ -118,12 +115,7 @@ void ResultScene::Render()
 }
 
 void ResultScene::Destroy()
-{
-	g2_SoundRelease(_bgm);
-	g2_SoundRelease(_drumSFX);
-	g2_SoundRelease(_fartSFX);
-	g2_SoundRelease(_yaySFX);
-}
+{}
 
 
 E_Rank ResultScene::GetRank(float score)

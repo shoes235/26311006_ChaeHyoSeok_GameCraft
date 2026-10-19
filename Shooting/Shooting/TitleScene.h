@@ -12,7 +12,6 @@ using std::vector;
 class TitleScene : public IScene
 {
 private:
-	int _bgm = 0;
 
 	vector<Texture*> _textures;
 	float _texTimer = 0.0f;

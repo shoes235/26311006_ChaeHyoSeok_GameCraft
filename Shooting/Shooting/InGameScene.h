@@ -79,27 +79,7 @@ private:
 	InputManager _inputMgr;
 
 
-	//Sounds
-	//bgm
-	vector<int> _sounds;
 
-	vector<int> _bgms{};
-
-	int _curBgm{};
-
-	//SFX
-	
-
-	//py
-	int _shotSFX{};
-	int _bomSFX{};
-
-	int _deathSFX{};
-	int _grazeSFX{};
-	int _itemGetSFX{};
-
-	//E
-	int _EDeathSFX{};
 
 
 

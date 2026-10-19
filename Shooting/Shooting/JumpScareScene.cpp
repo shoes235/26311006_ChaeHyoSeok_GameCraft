@@ -1,13 +1,14 @@
 #include "JumpScareScene.h"
+#include "SoundData.h"
 
 void JumpScareScene::Init()
 {
 	SetFullScreen();
 
 	_img->Load();
-	
-	_sfx = g2_SoundLoad("rsc/audio/SFX/JumpScare.mp3");
-	
+
+	g_SoundManager.StopBGM();
+
 	return;
 }
 
@@ -19,7 +20,7 @@ void JumpScareScene::Update()
 	if (_timer >= JUMP_SCARE_TIME)
 	{
 		if(!_trigger)
-			g2_SoundPlay(_sfx,false);
+			g_SoundManager.PlaySFX(SoundData::SFX_JumpScare);
 		_trigger = true;
 
 	}
@@ -43,6 +44,4 @@ void JumpScareScene::Render()
 }
 
 void JumpScareScene::Destroy()
-{
-	g2_SoundRelease(_sfx);
-}
+{}

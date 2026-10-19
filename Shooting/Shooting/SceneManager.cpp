@@ -1,4 +1,5 @@
 #include "SceneManager.h"
+#include "SoundManager.h"
 
 int FrameMove()
 {
@@ -29,8 +30,8 @@ void SceneManager::InitEngine()
 {
 	g2_InitSdk();
 	g2_CreateWin(100, 100, 1280, 720, "None");
-	
-	
+
+
 	g2_SetRender(G_AppRender);
 	g2_SetFrameMove(FrameMove);
 
@@ -46,6 +47,7 @@ void SceneManager::Run()
 		delete _curScenePtr;
 		_curScenePtr = nullptr;
 	}
+	g_SoundManager.Clear();
 	g2_DestroyWin();
 }
 

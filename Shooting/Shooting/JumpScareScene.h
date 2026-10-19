@@ -15,8 +15,6 @@ private:
 
 	Texture* _img = new Texture("rsc/imgs/Cats/UnCanny.png", VEC2(300, 0));
 
-	int _sfx = 0;
-
 public:
 	JumpScareScene() : IScene(E_SceneType::JUMP_SCARE)
 	{

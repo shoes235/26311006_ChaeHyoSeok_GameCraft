@@ -23,6 +23,9 @@ namespace SoundData
 	constexpr char SFX_ResultBad[] = "SFX_ResultBad";
 	constexpr char SFX_ResultGood[] = "SFX_ResultGood";
 
+	constexpr char SFX_Select[] = "SFX_Select";
+	constexpr char SFX_SelectAction[] = "SFX_SelectAction";
+
 	inline bool RegisterAll(SoundManager& soundManager)
 	{
 		bool success = true;
@@ -45,6 +48,10 @@ namespace SoundData
 		success &= soundManager.AddSFX(SFX_ResultDrum, "rsc/audio/SFX/drum.mp3");
 		success &= soundManager.AddSFX(SFX_ResultBad, "rsc/audio/SFX/fart.mp3");
 		success &= soundManager.AddSFX(SFX_ResultGood, "rsc/audio/SFX/yay.mp3");
+
+		success &= soundManager.AddSFX(SFX_Select, "rsc/audio/SFX/select06.mp3");
+		success &= soundManager.AddSFX(SFX_SelectAction, "rsc/audio/SFX/coin01.mp3");
+
 		return success;
 	}
 }

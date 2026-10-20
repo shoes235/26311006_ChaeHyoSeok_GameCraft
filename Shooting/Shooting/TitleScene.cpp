@@ -20,6 +20,7 @@ void TitleScene::Init()
 		E_KeyType::DOWN,
 		[=]() 
 		{
+			g_SoundManager.PlaySFX(SoundData::SFX_SelectAction);
 			switch (_curType)
 			{
 			case E_TitleSceneType::MAIN:
@@ -78,6 +79,7 @@ void TitleScene::Init()
 		{
 			if (_curType == E_TitleSceneType::SELECTOR)
 			{
+				g_SoundManager.PlaySFX(SoundData::SFX_Select);
 				_selectWheel--;
 
 				if (_selectWheel > MAX_SELECT_WHEEL)
@@ -101,6 +103,7 @@ void TitleScene::Init()
 		{
 			if (_curType == E_TitleSceneType::SELECTOR)
 			{
+				g_SoundManager.PlaySFX(SoundData::SFX_Select);
 				_selectWheel++;
 
 				if (_selectWheel > MAX_SELECT_WHEEL)

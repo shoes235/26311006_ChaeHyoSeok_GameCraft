@@ -41,7 +41,7 @@ void SoundManager::PlaySFX(const string& key)
 	if (i == _SFXDict.end())
 		return;
 
-	g2_SoundReset(i->second);
+	//g2_SoundReset(i->second);
 	g2_SoundPlay(i->second);
 }
 
@@ -112,6 +112,15 @@ void SoundManager::StopBGM()
 	g2_SoundStop(_curBGM);
 	g2_SoundReset(_curBGM);
 	_curBGM = 0;
+}
+
+void SoundManager::StopAll()
+{
+	StopBGM();
+	for (const auto& pair : _SFXDict) {
+		g2_SoundStop(pair.second);
+		g2_SoundReset(pair.second);
+	}
 }
 
 void SoundManager::RemoveBGM(const string& key)

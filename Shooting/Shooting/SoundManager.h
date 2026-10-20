@@ -28,6 +28,7 @@ public:
     void PlayBGM(const string& key, bool loop);
     bool IsBGMPlaying();
     void StopBGM();
+    void StopAll();
     void RemoveBGM(const string& key);
     void Clear();
 };

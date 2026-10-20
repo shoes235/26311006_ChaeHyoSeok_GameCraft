@@ -17,6 +17,18 @@ void ResultScene::Init()
 	);
 
 
+	_inputMgr.RegisterAction
+	(
+		{ 'X' },
+		E_KeyType::DOWN,
+		[=]()
+		{
+			TitleScene* nextScene = new TitleScene();
+			g_SceneMgr.ChangeScene(nextScene, E_SceneType::TITLE);
+		}
+	);
+
+
 	_font = g2_FontCreate("굴림", 48, 0);
 	_rankFont = g2_FontCreate("궁서", 100, 0);
 
@@ -90,7 +102,7 @@ void ResultScene::Render()
 {
 	g2_FontDrawText(_font, { 380,200,1000,400}, 0xFF000000, "당신의 랭크는...");
 
-	g2_FontDrawText(_font, { 380, 130, 1000, 180 }, 0xFF000000, "SCORE: %010d", _finalScore);
+	//g2_FontDrawText(_font, { 380, 130, 1000, 180 }, 0xFF000000, "SCORE: %010d", _finalScore);
 
 	if (_showRank)
 	{
@@ -110,7 +122,7 @@ void ResultScene::Render()
 			_font,
 			{ 380, 500, 1000, 800 },
 			0xFF000000,
-			"Z 를 눌러 다시 시작"
+			"Z 를 눌러 다시 시작\nX 를 눌러 타이틀로"
 		);
 	}
 

@@ -351,7 +351,13 @@ void TitleScene::Render()
 			"[%s] 조작 설명 스킵",(_skipIntro)? "X" : " "
 		);
 
-
+		g2_FontDrawText
+		(
+			nFont,
+			{ 50,650,1200,720},
+			0xFFFFFFFF,
+			"[Z] 선택 [X] 취소"
+		);
 
 
 	}break;
@@ -364,7 +370,7 @@ void TitleScene::Render()
 		};
 		g2_FontDrawText(nFont, { 40, 40, 700, 140 }, 0xFFFFFFFF, "%s", difficultyText[_selectWheel]);
 
-		 g2_FontDrawText
+		g2_FontDrawText
 		(
 			nFont,
 			{ 750,50,1200,800 },
@@ -372,32 +378,32 @@ void TitleScene::Render()
 			"난이도 선택"
 		);
 
-		if(_selectWheel == 0 && _showText)
-		g2_FontDrawText
-		(
-			nFont,
-			{ 800,150,1200,800 },
-			(_selectWheel == 0) ? 0xFFFFFF00 : 0xFFFFFFFF,
-			"EASY"
-		);
+		if (_selectWheel == 0 && _showText)
+			g2_FontDrawText
+			(
+				nFont,
+				{ 800,150,1200,800 },
+				(_selectWheel == 0) ? 0xFFFFFF00 : 0xFFFFFFFF,
+				"EASY"
+			);
 
 		if (_selectWheel == 1 && _showText)
-		g2_FontDrawText
-		(
-			nFont,
-			{ 800,150 + 100,1200,800 },
-			(_selectWheel == 1) ? 0xFFFFFF00 : 0xFFFFFFFF,
-			"NORMAL"
-		);
+			g2_FontDrawText
+			(
+				nFont,
+				{ 800,150 + 100,1200,800 },
+				(_selectWheel == 1) ? 0xFFFFFF00 : 0xFFFFFFFF,
+				"NORMAL"
+			);
 
 		if (_selectWheel == 2 && _showText)
-		g2_FontDrawText
-		(
-			nFont,
-			{ 800,150 + 200,1200,800 },
-			(_selectWheel == 2) ? 0xFFFFFF00 : 0xFFFFFFFF,
-			"HARD"
-		);
+			g2_FontDrawText
+			(
+				nFont,
+				{ 800,150 + 200,1200,800 },
+				(_selectWheel == 2) ? 0xFFFFFF00 : 0xFFFFFFFF,
+				"HARD"
+			);
 
 
 		g2_FontDrawText
@@ -415,7 +421,15 @@ void TitleScene::Render()
 			(_selectWheel == 3) ? 0xFFFFFF00 : 0xFFFFFFFF,
 			"[%s] 조작 설명 스킵", (_skipIntro) ? "X" : " "
 		);
-	}
+
+		g2_FontDrawText
+		(
+			nFont,
+			{ 50,650,1200,720 },
+			0xFFFFFFFF,
+			"[Z] 선택 [X] 취소"
+		);
+	}break;
 
 	}
 

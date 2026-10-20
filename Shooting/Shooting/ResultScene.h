@@ -3,6 +3,7 @@
 #include "InputManager.h"
 #include "GameData.h"
 #include "InGameScene.h"
+#include "TitleScene.h"
 
 #include <vector>
 using std::vector;

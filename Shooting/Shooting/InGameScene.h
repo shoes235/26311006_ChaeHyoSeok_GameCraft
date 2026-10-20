@@ -68,6 +68,7 @@ private:
 	void SpawnBoss();
 	void TryDropItem(VEC2 pos);
 	void SpawnDeathParticle(VEC2 pos);
+	void SpawnHitParticle(VEC2 pos);
 	float GetRandomSpawnDelay();
 
 	//UI

@@ -10,7 +10,7 @@ private:
 
 public:
 	Particle(VEC2 pos, const std::vector<std::string>& frames,
-		float frameDuration = 0.08f);
+		float frameDuration = 0.08f, float scale = 1.0f);
 	void Update(float delta);
 	bool IsAlive() const { return _lifeTime > .0f; }
 };

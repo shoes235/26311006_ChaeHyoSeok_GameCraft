@@ -29,12 +29,13 @@ private:
 
 
 public:
-	BomParticle(VEC2 pos)
+	BomParticle(VEC2 pos, float scale = 1.0f)
 		: Particle
 		(
 			pos,
 			GetFrames(),
-			.06f
+			.06f,
+			scale
 		)
 	{ }
 };

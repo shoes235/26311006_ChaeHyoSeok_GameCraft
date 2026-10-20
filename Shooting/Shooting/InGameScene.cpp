@@ -355,6 +355,7 @@ void InGameScene::Update()
 			if (!shot.GetCollider().IsEntered(shotPos, enemy->GetCollider(), enemyPos)) continue;
 
 			enemy->TakeDamage(_player.GetShotDamage());
+			SpawnHitParticle(shotPos);
 			if (!enemy->IsAlive())
 			{
 				GameData::g_score += _randomizer.Rand(GameData::g_stageLast * 100, GameData::g_stageLast * 200);
@@ -492,7 +493,12 @@ void InGameScene::TryDropItem(VEC2 pos)
 
 void InGameScene::SpawnDeathParticle(VEC2 pos)
 {
-	_particles.emplace_back(new BomParticle(pos));
+	_particles.emplace_back(new BomParticle(pos, 0.7f));
+}
+
+void InGameScene::SpawnHitParticle(VEC2 pos)
+{
+	_particles.emplace_back(new BomParticle(pos, 0.35f));
 }
 
 float InGameScene::GetRandomSpawnDelay()

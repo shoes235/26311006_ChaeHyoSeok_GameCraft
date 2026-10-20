@@ -95,6 +95,7 @@ void InGameScene::Init()
 		[this]()
 		{
 			if (!_player.UseBomb()) return;
+			_monitorScreen.Play(MonitorScreenType::USE_BOM);
 			for (const auto& enemy : _enemies)
 				for (Bullet& bullet : enemy->GetBullets()) bullet.Deactivate();
 
@@ -120,6 +121,8 @@ void InGameScene::Init()
 	_cloud2.Load();
 
 	_layout.Load();
+	_monitor.Load();
+	_monitorScreen.LoadAnimations();
 	_uiFont = g2_FontCreate("굴림", 20, 0);
 
 
@@ -147,7 +150,8 @@ void InGameScene::Render()
 
 	//============================
 	//UI
-
+	_monitorScreen.Render();
+	_monitor.Print();
 
 	g2_FontDrawText
 	(
@@ -302,6 +306,7 @@ void InGameScene::Update()
 	_inputMgr.UpdateInput();
 
 	_player.Update(dt);
+	_monitorScreen.Update(dt);
 
 	if (_phase == E_StagePhase::WAVE)
 	{
@@ -367,6 +372,7 @@ void InGameScene::Update()
 		if (!item.GetCollider().IsEntered(item.GetPos(), itemPickupCollider, _player.GetCorePos())) continue;
 
 		g_SoundManager.PlaySFX(SoundData::SFX_ItemGet);
+		_monitorScreen.Play(MonitorScreenType::ITEM_GET);
 		switch (item.GetType())
 		{
 		case ItemType::LIFE: ++_lives; break;
@@ -389,7 +395,11 @@ void InGameScene::Update()
 			const VEC2 core = _player.GetCorePos();
 			if (bullet.GetCollider().IsEntered(bulletPos, _player.GetCollider(), core))
 			{
-				if (_player.OnHit()) --_lives;
+				if (_player.OnHit())
+				{
+					--_lives;
+					_monitorScreen.Play(MonitorScreenType::HIT);
+				}
 				bullet.Deactivate();
 			}
 			else if (!bullet.HasGrazed() && bullet.GetCollider().IsEntered(
@@ -429,6 +439,7 @@ void InGameScene::Update()
 	if (_phase == E_StagePhase::BOSS && _enemies.empty())
 	{
 		_phase = E_StagePhase::CLEAR;
+		_monitorScreen.Play(MonitorScreenType::BOSS_CLEAR);
 		GameData::g_score += 1000;
 		_clearTimer = 3.0f;
 		_bossHealthBar.reset();
@@ -490,5 +501,5 @@ float InGameScene::GetRandomSpawnDelay()
 
 void InGameScene::Destroy()
 {
-	g_SoundManager.StopBGM();
+	g_SoundManager.StopAll();
 }

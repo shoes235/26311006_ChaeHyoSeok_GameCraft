@@ -27,6 +27,7 @@ using std::vector;
 #include "Particle.h"
 #include "BomParticle.h"
 #include "Collider.h"
+#include "MonitorScreen.h"
 
 // === Scene ===
 #include "JumpScareScene.h"
@@ -74,6 +75,10 @@ private:
 	Texture _layout{ "rsc/imgs/UI/Layout.png", VEC2(0,0)};
 	Texture _cloud{ "rsc/imgs/cloud.jpg",VEC2(120,0) };
 	Texture _cloud2{ "rsc/imgs/cloud.jpg",VEC2(120,-720) };
+	Texture _monitor{ "rsc/imgs/UI/monitor3.png",VEC2(25,400) };
+	MonitorScreen _monitorScreen{ VEC2(109,435) };
+
+
 
 	//input
 	InputManager _inputMgr;

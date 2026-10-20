@@ -141,6 +141,7 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="Particle.cpp" />
+    <ClCompile Include="MonitorScreen.cpp" />
     <ClCompile Include="ProgressBar.cpp" />
     <ClCompile Include="Randomizer.cpp" />
     <ClCompile Include="ResultScene.cpp" />
@@ -162,6 +163,7 @@
     <ClInclude Include="EnemyData.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="Particle.h" />
+    <ClInclude Include="MonitorScreen.h" />
     <ClInclude Include="E_SceneType.h" />
     <ClInclude Include="Flag.h" />
     <ClInclude Include="GameData.h" />

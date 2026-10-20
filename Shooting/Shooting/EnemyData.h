@@ -159,7 +159,7 @@ inline EnemyConfig MakeRadialShotgunEnemy()
 inline EnemyConfig MakeStageBoss()
 {
 	EnemyConfig config;
-	config.hp = 1000;
+	config.hp = 650;
 	config.radius = 32.0f;
 	config.moveSpeed = 45.0f;
 	config.stopY = 100.0f;
@@ -184,7 +184,7 @@ inline EnemyConfig MakeStageBoss2()
 {
 	EnemyConfig config = MakeStageBoss();
 	config.bossType = 1;
-	config.hp = 1250;
+	config.hp = 800;
 	config.moveSpeed = 35.0f;
 	config.bulletRadius = 6.0f;
 	config.animationPaths = { "rsc/imgs/Enemies/Boss1/0.png" };
@@ -197,7 +197,7 @@ inline EnemyConfig MakeStageBoss3()
 {
 	EnemyConfig config = MakeStageBoss();
 	config.bossType = 2;
-	config.hp = 850;
+	config.hp = 500;
 	config.moveSpeed = 60.0f;
 	config.bulletRadius = 5.0f;
 	config.animationPaths = { "rsc/imgs/Enemies/Boss2/0.png" };

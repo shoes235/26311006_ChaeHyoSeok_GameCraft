@@ -20,10 +20,107 @@ void TitleScene::Init()
 		E_KeyType::DOWN,
 		[=]() 
 		{
-			HowToPlayScene* nextScene = new HowToPlayScene();
-			g_SceneMgr.ChangeScene(nextScene, E_SceneType::HOW_2_PLAY);
+			switch (_curType)
+			{
+			case E_TitleSceneType::MAIN:
+			{
+				_curType = E_TitleSceneType::SELECTOR;
+			}break;
+
+			case E_TitleSceneType::SELECTOR:
+			{
+				if (_selectWheel == 3)
+					_skipIntro = !_skipIntro;
+				else
+					_curType = E_TitleSceneType::SELCTED;
+			}break;
+			case E_TitleSceneType::SELCTED:
+			{
+				GameData::g_diff = _selectWheel;
+
+				_curType = E_TitleSceneType::GO;
+				
+				
+			}break;
+
+			}
+
+			
 		}
 	);
+
+	_inputMgr.RegisterAction
+	(
+		{ 'X' },
+		E_KeyType::DOWN,
+		[=]()
+		{
+			switch (_curType)
+			{
+			case E_TitleSceneType::SELECTOR:
+			{
+				_curType = E_TitleSceneType::MAIN;
+			}break;
+			case E_TitleSceneType::SELCTED:
+			{
+				_curType = E_TitleSceneType::SELECTOR;
+			}break;
+			}
+
+		}
+	);
+
+	_inputMgr.RegisterAction
+	(
+		{ VK_UP },
+		E_KeyType::DOWN,
+		[=]()
+		{
+			if (_curType == E_TitleSceneType::SELECTOR)
+			{
+				_selectWheel--;
+
+				if (_selectWheel > MAX_SELECT_WHEEL)
+					_selectWheel = 0;
+				if (_selectWheel < 0)
+					_selectWheel = MAX_SELECT_WHEEL;
+
+			}
+
+
+
+		}
+	);
+
+
+	_inputMgr.RegisterAction
+	(
+		{ VK_DOWN },
+		E_KeyType::DOWN,
+		[=]()
+		{
+			if (_curType == E_TitleSceneType::SELECTOR)
+			{
+				_selectWheel++;
+
+				if (_selectWheel > MAX_SELECT_WHEEL)
+					_selectWheel = 0;
+				if (_selectWheel < 0)
+					_selectWheel = MAX_SELECT_WHEEL;
+
+			}
+
+
+		}
+	);
+
+
+
+
+
+
+
+
 
 	VEC2 zero = { 0,0 };
 
@@ -39,6 +136,7 @@ void TitleScene::Init()
 	}
 
 	_background->Load();
+	_layOut.Load();
 
 	return;
 }
@@ -47,72 +145,131 @@ void TitleScene::Update()
 {
 	_inputMgr.UpdateInput();
 
-	_blinkTimer += 0.016f;
-
-	if (_blinkTimer >= 10.0f)
+	switch (_curType)
 	{
-		_blinkTimer = 0.0f;
-		_showText = !_showText;
-	}
-
-	_colTime += 0.016f;
-
-	if (_colTime >= 0.1f)
+	case E_TitleSceneType::MAIN: 
 	{
-		_colTime = 0;
+		_layOut.SetPos(VEC2(1280, 0));
 
-		switch (_colorDir)
+		_blinkTimer += 0.016f;
+
+		if (_blinkTimer >= 10.0f)
 		{
-		case 0:
-			_g++;
-			if (_g >= 255) _colorDir++;
-			break;
-
-		case 1:
-			_r--;
-			if (_r <= 0) _colorDir++;
-			break;
-
-		case 2:
-			_b++;
-			if (_b >= 255) _colorDir++;
-			break;
-
-		case 3:
-			_g--;
-			if (_g <= 0) _colorDir++;
-			break;
-
-		case 4:
-			_r++;
-			if (_r >= 255) _colorDir++;
-			break;
-
-		case 5:
-			_b--;
-			if (_b <= 0) _colorDir = 0;
-			break;
+			_blinkTimer = 0.0f;
+			_showText = !_showText;
 		}
 
-		_color = 0xFF000000 | (_r << 16) | (_g << 8) | _b;
-	}
+		_colTime += 0.016f;
 
-	//텍스쳐 랜덤 이동
-	Randomizer randSys;
-
-	_texTimer += 0.016f;
-	if (_texTimer >= TEXTURE_WAIT_TIME)
-	{
-		_texTimer = 0.0f;
-
-		for (auto* texture : _textures)
+		if (_colTime >= 0.1f)
 		{
-			VEC2 rnPos;
-			rnPos.x = randSys.Rand(0, _winSize.cx);
-			rnPos.y = randSys.Rand(0, _winSize.cy);
-			texture->SetPos(rnPos);
+			_colTime = 0;
+
+			switch (_colorDir)
+			{
+			case 0:
+				_g++;
+				if (_g >= 255) _colorDir++;
+				break;
+
+			case 1:
+				_r--;
+				if (_r <= 0) _colorDir++;
+				break;
+
+			case 2:
+				_b++;
+				if (_b >= 255) _colorDir++;
+				break;
+
+			case 3:
+				_g--;
+				if (_g <= 0) _colorDir++;
+				break;
+
+			case 4:
+				_r++;
+				if (_r >= 255) _colorDir++;
+				break;
+
+			case 5:
+				_b--;
+				if (_b <= 0) _colorDir = 0;
+				break;
+			}
+
+			_color = 0xFF000000 | (_r << 16) | (_g << 8) | _b;
+		}
+
+		//텍스쳐 랜덤 이동
+		Randomizer randSys;
+
+		_texTimer += 0.016f;
+		if (_texTimer >= TEXTURE_WAIT_TIME)
+		{
+			_texTimer = 0.0f;
+
+			for (auto* texture : _textures)
+			{
+				VEC2 rnPos;
+				rnPos.x = randSys.Rand(0, _winSize.cx);
+				rnPos.y = randSys.Rand(0, _winSize.cy);
+				texture->SetPos(rnPos);
+			}
 		}
 	}
+	break;
+	case E_TitleSceneType::SELECTOR:
+	{
+		VEC2 pos = _layOut.GetPos();
+		if (pos.x > 720)
+		{
+			pos.x -= g_deltaTimer.GetDeltaTime() * 1000;
+			_layOut.SetPos(pos);
+		}
+			
+	}
+	break;
+	case E_TitleSceneType::SELCTED:
+	{
+		_blinkTimer += 0.016f;
+
+		if (_blinkTimer >= 1.0f)
+		{
+			_blinkTimer = 0.0f;
+			_showText = !_showText;
+		}
+	}
+	break;
+	case E_TitleSceneType::GO:
+	{
+		VEC2 pos = _layOut.GetPos();
+		if (pos.x > 0)
+		{
+			pos.x -= g_deltaTimer.GetDeltaTime() * 1500;
+			_layOut.SetPos(pos);
+		}
+
+		if (pos.x <= 0)
+		{
+
+			if (_skipIntro)
+			{
+				InGameScene* nextScene = new InGameScene();
+				g_SceneMgr.ChangeScene(nextScene, E_SceneType::IN_GAME);
+			}
+			else
+			{
+				HowToPlayScene* nextScene = new HowToPlayScene();
+				g_SceneMgr.ChangeScene(nextScene, E_SceneType::HOW_2_PLAY);
+			}
+		}
+	}break;
+
+
+	}
+
+	
 
 
 	return;
@@ -128,10 +285,136 @@ void TitleScene::Render()
 
 	for (auto* texture : _textures) texture->Print();
 
+	_layOut.Print();
+
+	switch (_curType)
+	{
+	case E_TitleSceneType::MAIN:
+	{
+		if (_showText)
+			g2_FontDrawText(nFont, { 380,500,1000,800 }, _color, "Z 를 눌러 게임시작");
+
+	}break;
+	case E_TitleSceneType::SELECTOR:
+	{
+		g2_FontDrawText
+		(
+			nFont,
+			{ 750,50,1200,800 },
+			0xFFFFFFFF,
+			"난이도 선택"
+		);
 
 
-	if(_showText)
-		g2_FontDrawText(nFont, { 380,500,1000,800 }, _color, "Z 를 눌러 게임시작");
+		g2_FontDrawText
+		(
+			nFont,
+			{ 800,150,1200,800 },
+			(_selectWheel == 0)? 0xFFFFFF00 : 0xFFFFFFFF,
+			"EASY"
+		);
+
+		g2_FontDrawText
+		(
+			nFont,
+			{ 800,150+100,1200,800 },
+			(_selectWheel == 1) ? 0xFFFFFF00 : 0xFFFFFFFF,
+			"NORMAL"
+		);
+
+
+		g2_FontDrawText
+		(
+			nFont,
+			{ 800,150+200,1200,800 },
+			(_selectWheel == 2) ? 0xFFFFFF00 : 0xFFFFFFFF,
+			"HARD"
+		);
+
+
+		g2_FontDrawText
+		(
+			nFont,
+			{ 750,500,1200,800 },
+			0xFFFFFFFF,
+			"설정"
+		);
+
+		g2_FontDrawText
+		(
+			nFont,
+			{ 800,500 + 100,1200,800 },
+			(_selectWheel == 3) ? 0xFFFFFF00 : 0xFFFFFFFF,
+			"[%s] 조작 설명 스킵",(_skipIntro)? "X" : " "
+		);
+
+
+
+
+	}break;
+	case E_TitleSceneType::SELCTED:
+	{
+		const char* difficultyText[] = {
+			"EASY - Score x0.5",
+			"NORMAL - Score x1.0",
+			"HARD - Score x1.5"
+		};
+		g2_FontDrawText(nFont, { 40, 40, 700, 140 }, 0xFFFFFFFF, "%s", difficultyText[_selectWheel]);
+
+		 g2_FontDrawText
+		(
+			nFont,
+			{ 750,50,1200,800 },
+			0xFFFFFFFF,
+			"난이도 선택"
+		);
+
+		if(_selectWheel == 0 && _showText)
+		g2_FontDrawText
+		(
+			nFont,
+			{ 800,150,1200,800 },
+			(_selectWheel == 0) ? 0xFFFFFF00 : 0xFFFFFFFF,
+			"EASY"
+		);
+
+		if (_selectWheel == 1 && _showText)
+		g2_FontDrawText
+		(
+			nFont,
+			{ 800,150 + 100,1200,800 },
+			(_selectWheel == 1) ? 0xFFFFFF00 : 0xFFFFFFFF,
+			"NORMAL"
+		);
+
+		if (_selectWheel == 2 && _showText)
+		g2_FontDrawText
+		(
+			nFont,
+			{ 800,150 + 200,1200,800 },
+			(_selectWheel == 2) ? 0xFFFFFF00 : 0xFFFFFFFF,
+			"HARD"
+		);
+
+
+		g2_FontDrawText
+		(
+			nFont,
+			{ 750,500,1200,800 },
+			0xFFFFFFFF,
+			"설정"
+		);
+
+		g2_FontDrawText
+		(
+			nFont,
+			{ 800,500 + 100,1200,800 },
+			(_selectWheel == 3) ? 0xFFFFFF00 : 0xFFFFFFFF,
+			"[%s] 조작 설명 스킵", (_skipIntro) ? "X" : " "
+		);
+	}
+
+	}
 
 	return;
 }

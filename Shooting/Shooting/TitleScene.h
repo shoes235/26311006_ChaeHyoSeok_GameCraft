@@ -12,17 +12,37 @@ using std::vector;
 class TitleScene : public IScene
 {
 private:
+	enum class E_TitleSceneType
+	{
+		MAIN,
+		SELECTOR,
+		SELCTED,
+		GO
+	};
+
+	E_TitleSceneType _curType{};
+
+
 
 	vector<Texture*> _textures;
 	float _texTimer = 0.0f;
 	const float TEXTURE_WAIT_TIME = 1.5f;
 
+	//Tex
 	Texture* _background = new Texture("rsc/imgs/MainMenu.png", VEC2(0, 0));
+	Texture _layOut{ "rsc/imgs/UI/Black.png",VEC2(1280,0) };
 
 	//text
 	int nFont = 0;
 	float _blinkTimer = .0f;
 	bool _showText = true;
+
+	//Select
+	const int MAX_SELECT_WHEEL{ 3 };
+	// EASY , NOR, HARD, ¼³Á¤
+	int _selectWheel{};
+
+	bool _skipIntro{ false };
 
 	//text-col
 
@@ -33,6 +53,8 @@ private:
 	int _g = 0;
 	int _b = 0;
 	int _colorDir = 0;
+
+
 
 
 	//Input

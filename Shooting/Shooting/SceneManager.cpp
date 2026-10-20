@@ -1,5 +1,6 @@
 #include "SceneManager.h"
 #include "SoundManager.h"
+#include <windows.h>
 
 int FrameMove()
 {
@@ -30,6 +31,17 @@ void SceneManager::InitEngine()
 {
 	g2_InitSdk();
 	g2_CreateWin(100, 100, 1280, 720, "None");
+
+	// Place the custom window icon at rsc/icon.ico.
+	HWND hwnd = GetActiveWindow();
+	HICON icon = static_cast<HICON>(LoadImageW(
+		nullptr, L"rsc/icon.ico", IMAGE_ICON, 0, 0,
+		LR_LOADFROMFILE | LR_DEFAULTSIZE));
+	if (hwnd != nullptr && icon != nullptr)
+	{
+		SendMessageW(hwnd, WM_SETICON, ICON_BIG, reinterpret_cast<LPARAM>(icon));
+		SendMessageW(hwnd, WM_SETICON, ICON_SMALL, reinterpret_cast<LPARAM>(icon));
+	}
 
 
 	g2_SetRender(G_AppRender);

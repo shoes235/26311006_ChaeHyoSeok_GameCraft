@@ -10,7 +10,7 @@ void HowToPlayScene::Init()
 
 	_inputMgr.RegisterAction
 	(
-		{ VK_SPACE },
+		{ 'Z' },
 		E_KeyType::DOWN,
 		[=]()
 		{
@@ -41,7 +41,7 @@ void HowToPlayScene::Render()
 	_img->Print();
 
 	if(_showText)
-		g2_FontDrawText(_font, { 380,500,1000,800 }, 0xFF000000, "SPACE 를 눌러 계속");
+		g2_FontDrawText(_font, { 380,500,1000,800 }, 0xFF000000, "Z 를 눌러 계속");
 
 	return;
 }

@@ -254,6 +254,9 @@ void InGameScene::Render()
 
 
 	g2_FontDrawText(_uiFont, { 0, 200, 1270, 235 }, 0xFFFFFFFF, "STAGE: %d", GameData::g_stageLast);
+	const char* difficultyNames[] = { "EASY", "NORMAL", "HARD" };
+	g2_FontDrawText(_uiFont, { 0, 165, 400, 200 }, 0xFFFFFFFF, "DIFFICULTY: %s",
+		difficultyNames[GameData::g_diff]);
 	if (_phase == E_StagePhase::WAVE)
 		g2_FontDrawText(_uiFont, { 0, 230, 1270, 265 }, 0xFFFFFFFF, "BOSS IN: %.0f", _stageTimer);
 	else if (_phase == E_StagePhase::BOSS)
@@ -460,7 +463,8 @@ void InGameScene::SpawnRandomEnemy()
 	const int x = _randomizer.Rand(350, 900);
 	const int y = _randomizer.Rand(-80, -24);
 	const int type = _randomizer.Rand(0, 4);
-	EnemyConfig config = ScaleEnemyForStage(factories[type](), GameData::g_stageLast);
+	EnemyConfig config = ScaleEnemyForStage(
+		ScaleEnemyForDifficulty(factories[type](), GameData::g_diff), GameData::g_stageLast);
 	_enemies.emplace_back(new Enemy(VEC2(static_cast<float>(x), static_cast<float>(y)), config));
 }
 
@@ -474,7 +478,7 @@ void InGameScene::SpawnBoss()
 	case 2: config = MakeStageBoss3(); break;
 	default: config = MakeStageBoss(); break;
 	}
-	config = ScaleEnemyForStage(config, GameData::g_stageLast);
+	config = ScaleEnemyForStage(ScaleEnemyForDifficulty(config, GameData::g_diff), GameData::g_stageLast);
 	_enemies.emplace_back(new Enemy(VEC2(610.0f, -60.0f), config));
 	_bossHealthBar.reset(new ProgressBar(VEC2(400.0f, 30.0f)));
 	_bossHealthBar->SetProgress(1.0f);
@@ -496,7 +500,9 @@ float InGameScene::GetRandomSpawnDelay()
 	const int stage = GameData::g_stageLast > 0 ? GameData::g_stageLast : 1;
 	const int minTenths = (std::max)(3, 10 - (stage - 1));
 	const int maxTenths = (std::max)(minTenths, 40 - 3 * (stage - 1));
-	return _randomizer.Rand(minTenths, maxTenths) / 10.0f;
+	const float spawnRateScale[] = { 1.25f, 1.0f, 0.8f };
+	const int difficulty = (GameData::g_diff >= 0 && GameData::g_diff <= 2) ? GameData::g_diff : 0;
+	return _randomizer.Rand(minTenths, maxTenths) / 10.0f * spawnRateScale[difficulty];
 }
 
 void InGameScene::Destroy()

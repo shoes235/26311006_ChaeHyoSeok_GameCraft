@@ -20,7 +20,8 @@ void ResultScene::Init()
 	_font = g2_FontCreate("±¼¸²", 48, 0);
 	_rankFont = g2_FontCreate("±Ã¼­", 100, 0);
 
-	_rank = GetRank(GameData::g_score);
+	_finalScore = static_cast<int>(GameData::g_score * GameData::GetScoreMultiplier() + 0.5f);
+	_rank = GetRank(_finalScore);
 
 	g_SoundManager.PlaySFX(SoundData::SFX_ResultDrum);
 
@@ -88,6 +89,8 @@ void ResultScene::Update()
 void ResultScene::Render()
 {
 	g2_FontDrawText(_font, { 380,200,1000,400}, 0xFF000000, "´ç½ÅÀÇ ·©Å©´Â...");
+
+	g2_FontDrawText(_font, { 380, 130, 1000, 180 }, 0xFF000000, "SCORE: %010d", _finalScore);
 
 	if (_showRank)
 	{

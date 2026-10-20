@@ -33,6 +33,8 @@ struct EnemyConfig
 	vector<std::string> animationPaths;
 	float animationFrameDuration;
 	string bulletTexturePath;
+	float difficultyFireIntervalScale;
+	float difficultyBulletSpeedScale;
 
 	EnemyConfig()
 		: hp(3), radius(18.0f), moveSpeed(80.0f), stopY(130.0f),
@@ -41,7 +43,8 @@ struct EnemyConfig
 		shotPattern(E_EnemyShotPattern::AIMED_SINGLE), cycleBossPatterns(false), bossType(0),
 		spritePath("rsc/imgs/Enemies/RiceSpirit.png"),
 		animationFrameDuration(0.1f),
-		bulletTexturePath("rsc/imgs/Bullets/EnemyShot.png")
+		bulletTexturePath("rsc/imgs/Bullets/EnemyShot.png"),
+		difficultyFireIntervalScale(1.0f), difficultyBulletSpeedScale(1.0f)
 	{
 	}
 };

@@ -22,6 +22,24 @@ inline EnemyConfig ScaleEnemyForStage(EnemyConfig config, int stage)
 	return config;
 }
 
+inline EnemyConfig ScaleEnemyForDifficulty(EnemyConfig config, int difficulty)
+{
+	const float hpScale[] = { 0.75f, 1.0f, 1.25f };
+	const float moveSpeedScale[] = { 0.9f, 1.0f, 1.15f };
+	const float fireIntervalScale[] = { 1.25f, 1.0f, 0.8f };
+	const float bulletSpeedScale[] = { 0.8f, 1.0f, 1.2f };
+	if (difficulty < 0 || difficulty > 2) difficulty = 0;
+
+	config.hp = (config.hp > 0) ? static_cast<int>(std::ceil(config.hp * hpScale[difficulty])) : 1;
+	config.moveSpeed *= moveSpeedScale[difficulty];
+	config.initialFireDelay *= fireIntervalScale[difficulty];
+	config.fireInterval *= fireIntervalScale[difficulty];
+	config.bulletSpeed *= bulletSpeedScale[difficulty];
+	config.difficultyFireIntervalScale = fireIntervalScale[difficulty];
+	config.difficultyBulletSpeedScale = bulletSpeedScale[difficulty];
+	return config;
+}
+
 inline BossPatternData GetStageBossPatternData(int bossType, int phase)
 {
 	if (bossType == 1)

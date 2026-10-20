@@ -73,9 +73,9 @@ void Enemy::SetBossPattern()
 	_config.shotPattern = pattern.shotPattern;
 	_config.bulletCount = pattern.bulletCount;
 	_config.spreadAngle = pattern.spreadAngle;
-	_config.fireInterval = pattern.fireInterval;
-	_config.bulletSpeed = pattern.bulletSpeed;
-	_fireCooldown = pattern.startDelay;
+	_config.fireInterval = pattern.fireInterval * _config.difficultyFireIntervalScale;
+	_config.bulletSpeed = pattern.bulletSpeed * _config.difficultyBulletSpeedScale;
+	_fireCooldown = pattern.startDelay * _config.difficultyFireIntervalScale;
 
 	_bossPatternAngle = {};
 }

@@ -61,6 +61,7 @@ private:
 	};
 
 	E_Rank _rank = E_Rank::F;
+	int _finalScore = 0;
 
 	int _font = 0;
 	int _rankFont = 0;

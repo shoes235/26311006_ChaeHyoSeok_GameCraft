@@ -493,7 +493,7 @@ void InGameScene::TryDropItem(VEC2 pos)
 
 void InGameScene::SpawnDeathParticle(VEC2 pos)
 {
-	_particles.emplace_back(new BomParticle(pos, 0.7f));
+	_particles.emplace_back(new BomParticle(pos, 2.0f));
 }
 
 void InGameScene::SpawnHitParticle(VEC2 pos)

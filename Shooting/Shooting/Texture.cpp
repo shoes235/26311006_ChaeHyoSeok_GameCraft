@@ -15,8 +15,9 @@ int Texture::Load()
 int Texture::Print()
 {
 	VEC2 pos(_texturePos);
+	VEC2 scale(_scale);
 	g2_DrawAlphaOption(2);
-	g2_Draw2D(_texture, nullptr, &pos);
+	g2_Draw2D(_texture, nullptr, &pos, &scale);
 	g2_DrawAlphaOption(0);
 
 	return 0;
@@ -35,6 +36,12 @@ int Texture::Release()
 int Texture::SetPos(VEC2 pos)
 {
 	_texturePos = pos;
+	return 0;
+}
+
+int Texture::SetScale(VEC2 scale)
+{
+	_scale = scale;
 	return 0;
 }
 

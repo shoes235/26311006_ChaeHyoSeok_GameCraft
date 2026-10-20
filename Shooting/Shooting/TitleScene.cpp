@@ -149,7 +149,7 @@ void TitleScene::Destroy()
 
 	_textures.clear();
 
-
+	g_SoundManager.StopAll();
 
 	return;
 }

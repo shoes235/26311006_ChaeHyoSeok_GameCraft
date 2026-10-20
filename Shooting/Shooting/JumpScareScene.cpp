@@ -44,4 +44,6 @@ void JumpScareScene::Render()
 }
 
 void JumpScareScene::Destroy()
-{}
+{
+	g_SoundManager.StopAll();
+}

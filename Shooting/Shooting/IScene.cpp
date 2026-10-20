@@ -1,4 +1,5 @@
 #include "IScene.h"
+#include "SoundManager.h"
 
 void IScene::SetWindow(bool setWinPos)
 {
@@ -126,5 +127,5 @@ void IScene::Render()
 
 void IScene::Destroy()
 {
-	return ;
+	g_SoundManager.StopAll();
 }

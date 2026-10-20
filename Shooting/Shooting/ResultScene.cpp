@@ -115,7 +115,9 @@ void ResultScene::Render()
 }
 
 void ResultScene::Destroy()
-{}
+{
+	g_SoundManager.StopAll();
+}
 
 
 E_Rank ResultScene::GetRank(float score)

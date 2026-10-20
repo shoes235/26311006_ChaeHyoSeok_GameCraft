@@ -253,14 +253,14 @@ void InGameScene::Render()
 
 
 
-	g2_FontDrawText(_uiFont, { 0, 200, 1270, 235 }, 0xFFFFFFFF, "STAGE: %d", GameData::g_stageLast);
+	g2_FontDrawText(_uiFont, { 0, 230 , 1270, 250}, 0xFFFFFFFF, "STAGE: %d", GameData::g_stageLast);
 	const char* difficultyNames[] = { "EASY", "NORMAL", "HARD" };
-	g2_FontDrawText(_uiFont, { 0, 165, 400, 200 }, 0xFFFFFFFF, "DIFFICULTY: %s",
+	g2_FontDrawText(_uiFont, { 0, 200, 400, 250 }, 0xFFFFFFFF, "DIFFICULTY: %s",
 		difficultyNames[GameData::g_diff]);
 	if (_phase == E_StagePhase::WAVE)
-		g2_FontDrawText(_uiFont, { 0, 230, 1270, 265 }, 0xFFFFFFFF, "BOSS IN: %.0f", _stageTimer);
+		g2_FontDrawText(_uiFont, { 0, 260, 1270, 280}, 0xFFFFFFFF, "BOSS IN: %.0f", _stageTimer);
 	else if (_phase == E_StagePhase::BOSS)
-		g2_FontDrawText(_uiFont, { 0, 230, 1270, 265 }, 0xFFFFFFFF, "BOSS - %s",
+		g2_FontDrawText(_uiFont, { 0, 260, 1270, 280 }, 0xFFFFFFFF, "BOSS - %s",
 			_enemies.empty() ? "" : _enemies.front()->GetBossPatternName());
 	else
 		g2_FontDrawText(_uiFont, { 430, 300, 900, 360 }, 0xFFFFFFFF, "STAGE CLEAR!");

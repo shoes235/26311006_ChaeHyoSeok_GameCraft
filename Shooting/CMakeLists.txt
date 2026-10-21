@@ -15,11 +15,20 @@ set(PACKAGES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/packages")
 set(GLC2D_DIR "${PACKAGES_DIR}/glc2d.0.1.0.7/build/native")
 set(D3DX_DIR "${PACKAGES_DIR}/Microsoft.DXSDK.D3DX.9.29.952.8/build/native")
 
-file(GLOB SOURCES CONFIGURE_DEPENDS "${SOURCE_DIR}/*.cpp")
-add_executable(Shooting ${SOURCES})
+file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS "${SOURCE_DIR}/*.cpp")
+file(GLOB_RECURSE HEADERS CONFIGURE_DEPENDS "${SOURCE_DIR}/*.h")
+set(PROJECT_FILES ${SOURCES} ${HEADERS})
+source_group(TREE "${SOURCE_DIR}" FILES ${PROJECT_FILES})
+set(SOURCE_INCLUDE_DIRS "${SOURCE_DIR}")
+foreach(HEADER IN LISTS HEADERS)
+    get_filename_component(HEADER_DIR "${HEADER}" DIRECTORY)
+    list(APPEND SOURCE_INCLUDE_DIRS "${HEADER_DIR}")
+endforeach()
+list(REMOVE_DUPLICATES SOURCE_INCLUDE_DIRS)
+add_executable(Shooting ${PROJECT_FILES})
 target_compile_definitions(Shooting PRIVATE UNICODE _UNICODE _CONSOLE)
 target_include_directories(Shooting PRIVATE
-    "${SOURCE_DIR}"
+    ${SOURCE_INCLUDE_DIRS}
     "${GLC2D_DIR}/include"
     "${D3DX_DIR}/include"
 )
@@ -50,3 +59,5 @@ add_custom_command(TARGET Shooting POST_BUILD
         "${D3DX_DIR}/$<IF:$<CONFIG:Debug>,debug,release>/bin/${PLATFORM_DIR}"
         "$<TARGET_FILE_DIR:Shooting>"
 )
+
+

@@ -1,6 +1,21 @@
 #include "InGameScene.h"
 #include "SoundData.h"
 
+namespace
+{
+	std::vector<std::unique_ptr<Texture>>& GetHorrorTextureCache()
+	{
+		static std::vector<std::unique_ptr<Texture>> textures;
+		if (textures.empty())
+		{
+			for (int i = 0; i <= 9; ++i)
+				textures.emplace_back(new Texture("rsc/imgs/Cats/" + std::to_string(i) + ".png", VEC2(0, 0)));
+			textures.emplace_back(new Texture("rsc/imgs/Cats/Uncanny.png", VEC2(0, 0)));
+		}
+		return textures;
+	}
+}
+
 void InGameScene::Init()
 {
 	SetFullScreen();
@@ -16,9 +31,8 @@ void InGameScene::Init()
 	if (GameData::g_stageLast < 1) GameData::g_stageLast = 1;
 	_spawnTimer = GetRandomSpawnDelay();
 	_horrorTextures.clear();
-	for (int i = 0; i <= 9; ++i)
-		_horrorTextures.emplace_back(new Texture("rsc/imgs/Cats/" + std::to_string(i) + ".png", VEC2(0, 0)));
-	_horrorTextures.emplace_back(new Texture("rsc/imgs/Cats/Uncanny.png", VEC2(0, 0)));
+	for (const auto& texture : GetHorrorTextureCache())
+		_horrorTextures.push_back(texture.get());
 	_horrorSoundKeys = { SoundData::SFX_JumpScareProwler, SoundData::SFX_JumpScareScream,
 		SoundData::SFX_JumpScareLuigi, SoundData::SFX_JumpScareDoors, SoundData::SFX_JumpScareFreddy,
 		SoundData::SFX_JumpScareWarn, SoundData::SFX_JumpScareFolder };
@@ -309,7 +323,7 @@ void InGameScene::Update()
 			_randomizer.Rand(0, 999 * 2) == 0)
 		{
 			const int textureIndex = _randomizer.Rand(0, static_cast<int>(_horrorTextures.size()) - 1);
-			_activeHorrorTexture = _horrorTextures[textureIndex].get();
+			_activeHorrorTexture = _horrorTextures[textureIndex];
 			const int catWidths[] = { 812, 736, 387, 374, 162, 287, 287, 498, 735, 736, 800 };
 			const int catHeights[] = { 992, 1229, 516, 498, 283, 252, 292, 498, 602, 626, 756 };
 

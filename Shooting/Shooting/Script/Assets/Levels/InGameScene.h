@@ -45,7 +45,7 @@ private:
 	Randomizer _randomizer;
 
 	//Spooky Scary
-	std::vector<std::unique_ptr<Texture>> _horrorTextures;
+	std::vector<Texture*> _horrorTextures;
 	std::vector<string> _horrorSoundKeys;
 	Texture* _activeHorrorTexture = nullptr;
 

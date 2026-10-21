@@ -15,6 +15,8 @@ public:
 
 	//Setting
 	static int g_diff;
+
+	static float g_scoreMult;
 	static float GetScoreMultiplier();
 
 	static bool g_skipIntro;

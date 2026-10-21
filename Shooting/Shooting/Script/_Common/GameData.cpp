@@ -6,12 +6,22 @@ int GameData::g_diff{static_cast<int>(E_GaneDifficulty::EASY)};
 bool GameData::g_skipIntro{};
 bool GameData::g_doJumpScare{};
 
+float GameData::g_scoreMult{};
+
 float GameData::GetScoreMultiplier()
 {
 	switch (static_cast<E_GaneDifficulty>(g_diff))
 	{
-	case E_GaneDifficulty::NORMAL: return 1.0f;
-	case E_GaneDifficulty::HARD: return 1.5f;
-	default: return 0.5f;
+	case E_GaneDifficulty::NORMAL: g_scoreMult = 1.0f;
+			break;
+	case E_GaneDifficulty::HARD: g_scoreMult = 1.5f;
+			break;
+	default: g_scoreMult = 0.5f;
+			break;
 	}
+
+	if (g_doJumpScare)
+		g_scoreMult += 0.5f;
+
+	return g_scoreMult;
 }

@@ -32,12 +32,16 @@ void TitleScene::Init()
 			{
 				if (_selectWheel == 3)
 					GameData::g_skipIntro = !GameData::g_skipIntro;
+				else if (_selectWheel == 4)
+					GameData::g_doJumpScare = !GameData::g_doJumpScare;
 				else
+				{
 					_curType = E_TitleSceneType::SELCTED;
+					GameData::g_diff = _selectWheel;
+				}
 			}break;
 			case E_TitleSceneType::SELCTED:
 			{
-				GameData::g_diff = _selectWheel;
 
 				_curType = E_TitleSceneType::GO;
 				
@@ -311,12 +315,7 @@ void TitleScene::Render()
 	}break;
 	case E_TitleSceneType::SELCTED:
 	{
-		const char* difficultyText[] = {
-			"EASY - Score x0.5",
-			"NORMAL - Score x1.0",
-			"HARD - Score x1.5"
-		};
-		g2_FontDrawText(nFont, { 40, 40, 700, 140 }, 0xFFFFFFFF, "%s", difficultyText[_selectWheel]);
+
 
 		DrawMenu();
 	}break;
@@ -335,6 +334,23 @@ void TitleScene::DrawMenu()
 			0xFFFFFFFF,
 			"난이도 선택"
 		);
+
+	const string difficultyText[5] = {
+		"EASY - Score x0.5",
+		"NORMAL - Score x1.0",
+		"HARD - Score x1.5",
+		"조작 설명을 스킵",
+		"쫄보는 하지마셈 \n점수 배율 + 0.5"
+	};
+	g2_FontDrawText(nFont, { 40, 40, 700, 140 }, 0xFFFFFFFF, "%s", difficultyText[_selectWheel].c_str());
+	g2_FontDrawText
+	(
+		nFont,
+		{ 50,550,1200,720},
+		0xFFFFFFFF,
+		"현재 점수 배율 : X %.1f",GameData::GetScoreMultiplier()
+	);
+
 
 	if (_curType == E_TitleSceneType::SELECTOR)
 	{
@@ -424,10 +440,19 @@ void TitleScene::DrawMenu()
 	g2_FontDrawText
 	(
 		nFont,
+		{ 800,400 + 75 * 2,1200,800 },
+		(_selectWheel == 4) ? 0xFFFFFF00 : 0xFFFFFFFF,
+		"[%s] 공포 모드",(GameData::g_doJumpScare)? "X" : " "
+	);
+
+	g2_FontDrawText
+	(
+		nFont,
 		{ 50,650,1200,720},
 		0xFFFFFFFF,
 		"[Z] 선택 [X] 취소"
 	);
+
 }
 
 

@@ -40,7 +40,7 @@ private:
 	bool _showText {true};
 
 	//Select
-	const int MAX_SELECT_WHEEL{ 3 };
+	const int MAX_SELECT_WHEEL{ 4 };
 	// EASY , NOR, HARD, ¼³Á¤
 	int _selectWheel{};
 

@@ -18,6 +18,7 @@ namespace SoundData
 	constexpr char SFX_Graze[] = "SFX_Graze";
 	constexpr char SFX_ItemGet[] = "SFX_ItemGet";
 	constexpr char SFX_EnemyDeath[] = "SFX_EnemyDeath";
+	constexpr char SFX_EnemyHit[] = "SFX_EnemyHit";
 	constexpr char SFX_JumpScare[] = "SFX_JumpScare";
 	constexpr char SFX_JumpScareProwler[] = "SFX_JumpScareProwler";
 	constexpr char SFX_JumpScareScream[] = "SFX_JumpScareScream";
@@ -51,6 +52,7 @@ namespace SoundData
 		success &= soundManager.AddSFX(SFX_Graze, "rsc/audio/SFX/graze.mp3");
 		success &= soundManager.AddSFX(SFX_ItemGet, "rsc/audio/SFX/Get.mp3");
 		success &= soundManager.AddSFX(SFX_EnemyDeath, "rsc/audio/SFX/deltarune-explosion.mp3");
+		success &= soundManager.AddSFX(SFX_EnemyHit, "rsc/audio/SFX/sharp-punch-soundbible.wav", 4);
 		success &= soundManager.AddSFX(SFX_JumpScare, "rsc/audio/SFX/JumpScare.mp3");
 
 		success &= soundManager.AddSFX(SFX_JumpScareProwler, "rsc/audio/SFX/JumpScare/prowler.wav");

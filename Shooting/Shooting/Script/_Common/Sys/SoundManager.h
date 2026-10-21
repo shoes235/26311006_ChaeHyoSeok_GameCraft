@@ -3,6 +3,8 @@
 #include <glc2d.h>
 #include <string>
 #include <map>
+#include <cstddef>
+#include <vector>
 
 using std::string;
 
@@ -10,6 +12,8 @@ class SoundManager
 {
 private:
     std::map<string, int> _SFXDict;
+    std::map<string, std::vector<int>> _SFXPools;
+    std::map<string, std::size_t> _SFXNext;
     std::map<string, int> _BGMDict;
     int _curBGM{};
 
@@ -19,7 +23,7 @@ public:
     SoundManager(const SoundManager&) = delete;
     SoundManager& operator=(const SoundManager&) = delete;
 
-    bool AddSFX(const string& key, const string& path);
+    bool AddSFX(const string& key, const string& path, std::size_t count = 1);
     void PlaySFX(const string& key);
     void StopSFX(const string& key);
     void RemoveSFX(const string& key);

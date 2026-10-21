@@ -364,7 +364,7 @@ void TitleScene::DrawMenu()
 			"HARD"
 		);
 
-	}else if (curType == E_TitleSceneType::SELCTED)
+	}else if (_curType == E_TitleSceneType::SELCTED)
 	{
 
 		if (_showText && _selectWheel == 0)
@@ -372,9 +372,9 @@ void TitleScene::DrawMenu()
 			g2_FontDrawText
 			(
 				nFont,
-			{ 800,50 + 75,1200,800 },
+				{ 800,50 + 75,1200,800 },
 				(_selectWheel == 0)? 0xFFFFFF00 : 0xFFFFFFFF,
-			"EASY"
+				"EASY"
 			);
 		}
 
@@ -383,9 +383,9 @@ void TitleScene::DrawMenu()
 			g2_FontDrawText
 			(
 				nFont,
-		{ 800,50 + 75 * 2,1200,800 },
+				{ 800,50 + 75 * 2,1200,800 },
 				(_selectWheel == 1) ? 0xFFFFFF00 : 0xFFFFFFFF,
-			"NORMAL"
+				"NORMAL"
 			);
 		}
 
@@ -394,9 +394,9 @@ void TitleScene::DrawMenu()
 			g2_FontDrawText
 			(
 				nFont,
-			{ 800,50 + 75 * 3,1200,800 },
+				{ 800,50 + 75 * 3,1200,800 },
 				(_selectWheel == 2) ? 0xFFFFFF00 : 0xFFFFFFFF,
-		"HARD"
+				"HARD"
 			);
 		}
 

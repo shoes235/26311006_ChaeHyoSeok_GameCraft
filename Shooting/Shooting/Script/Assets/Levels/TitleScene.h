@@ -66,6 +66,12 @@ public :
 	{
 		_winName = "Title 창";
 		_winColor = 0x000000; // 검은색
+
+		_winPos =
+		{
+			(GetSystemMetrics(SM_CXSCREEN) - _winSize.cx) / 2,
+			(GetSystemMetrics(SM_CYSCREEN) - _winSize.cy) / 2,
+		};
 	}
 public:
 	void Init() override;

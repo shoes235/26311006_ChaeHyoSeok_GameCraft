@@ -352,7 +352,7 @@ void InGameScene::Update()
 			if (!enemy->IsAlive())
 			{
 				GameData::g_score += _randomizer.Rand(GameData::g_stageLast * 100, GameData::g_stageLast * 200);
-				SpawnDeathParticle(enemyPos);
+				SpawnDeathParticle(enemyPos -VEC2(48,48));
 				TryDropItem(enemyPos);
 				g_SoundManager.PlaySFX(SoundData::SFX_EnemyDeath);
 			}

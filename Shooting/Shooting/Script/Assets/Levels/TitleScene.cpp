@@ -230,7 +230,7 @@ void TitleScene::Update()
 		VEC2 pos = _layOut.GetPos();
 		if (pos.x > 720)
 		{
-			pos.x -= g_deltaTimer.GetDeltaTime() * 1000;
+			pos.x -= g_deltaTimer.GetDeltaTime() * 1500;
 			_layOut.SetPos(pos);
 		}
 			

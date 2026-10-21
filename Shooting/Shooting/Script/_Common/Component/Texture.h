@@ -25,7 +25,8 @@ public :
 	}
 	int Load();
 	int Release();
-	int Print();
+	int Print(const RECT* srcRect = nullptr);
+	int PrintHorizontal(float progress);
 
 	int SetPos(VEC2 pos);
 	int SetScale(VEC2 scale);

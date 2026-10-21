@@ -12,17 +12,27 @@ int Texture::Load()
 }
 
 //Life-Cycle 에서 호출
-int Texture::Print()
+int Texture::Print(const RECT* srcRect)
 {
 	VEC2 pos(_texturePos);
 	VEC2 scale(_scale);
 	g2_DrawAlphaOption(2);
-	g2_Draw2D(_texture, nullptr, &pos, &scale);
+	g2_Draw2D(_texture, srcRect, &pos, &scale);
 	g2_DrawAlphaOption(0);
 
 	return 0;
 }
 
+int Texture::PrintHorizontal(float progress)
+{
+	if (progress <= 0.0f) return 0;
+	if (progress > 1.0f) progress = 1.0f;
+
+	const int width = g2_TextureWidth(_texture);
+	const int height = g2_TextureHeight(_texture);
+	RECT srcRect{ 0, 0, static_cast<LONG>(width * progress), height };
+	return Print(&srcRect);
+}
 int Texture::Release()
 {
 	if (_texture == -1) return 0;

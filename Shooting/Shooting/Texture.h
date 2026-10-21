@@ -16,6 +16,7 @@ public :
 		printf("Texture CREATE : %p / %s\n",
 			this,
 			_filePath.c_str());
+		Load();
 	}
 	~Texture()
 	{

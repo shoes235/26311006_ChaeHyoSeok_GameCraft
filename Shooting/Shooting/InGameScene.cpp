@@ -115,13 +115,6 @@ void InGameScene::Init()
 		}
 	);
 
-
-
-	_cloud.Load();
-	_cloud2.Load();
-
-	_layout.Load();
-	_monitor.Load();
 	_monitorScreen.LoadAnimations();
 	_uiFont = g2_FontCreate("굴림", 20, 0);
 

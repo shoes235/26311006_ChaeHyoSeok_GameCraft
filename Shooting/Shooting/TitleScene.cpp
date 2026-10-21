@@ -139,7 +139,6 @@ void TitleScene::Init()
 	}
 
 	_background->Load();
-	_layOut.Load();
 
 	return;
 }

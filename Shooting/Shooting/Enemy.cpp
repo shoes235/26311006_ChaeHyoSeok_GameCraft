@@ -30,7 +30,6 @@ Enemy::Enemy(VEC2 pos, const EnemyConfig& config)
 	}
 	_anim->AddClip("Idle", std::move(clip));
 	_anim->ChangeClip("Idle");
-	_bulletTexture.Load();
 	if (_config.cycleBossPatterns) SetBossPattern();
 }
 

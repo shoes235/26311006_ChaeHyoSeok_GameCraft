@@ -36,9 +36,6 @@ Player::Player()
 	_anim->AddClip("Idle", std::move(idleClip));
 	_anim->ChangeClip("Idle");
 
-	_hurtBoxTex.Load();
-	_shotTex.Load();
-
 }
 
 Player::~Player() = default;

@@ -43,6 +43,19 @@ private:
 	std::vector<std::unique_ptr<Particle>> _particles;
 	std::unique_ptr<ProgressBar> _bossHealthBar;
 	Randomizer _randomizer;
+
+	//Spooky Scary
+	std::vector<std::unique_ptr<Texture>> _horrorTextures;
+	std::vector<string> _horrorSoundKeys;
+	Texture* _activeHorrorTexture = nullptr;
+
+	const float MAX_HORROR_EFFECT_TIME{ 1.0f };
+	float _horrorEffectTimer = 0.0f;
+
+	const float MAX_HORROR_SOUND_TIME{ 3.0f };
+	float _horrorSoundTimer = 0.0f;
+	string _activeHorrorSound;
+
 	enum class E_StagePhase { WAVE, BOSS, CLEAR };
 	E_StagePhase _phase = E_StagePhase::WAVE;
 

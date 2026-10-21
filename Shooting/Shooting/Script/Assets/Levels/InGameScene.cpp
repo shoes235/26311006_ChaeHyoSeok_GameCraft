@@ -15,6 +15,17 @@ void InGameScene::Init()
 	_clearTimer = 0.0f;
 	if (GameData::g_stageLast < 1) GameData::g_stageLast = 1;
 	_spawnTimer = GetRandomSpawnDelay();
+	_horrorTextures.clear();
+	for (int i = 0; i <= 9; ++i)
+		_horrorTextures.emplace_back(new Texture("rsc/imgs/Cats/" + std::to_string(i) + ".png", VEC2(0, 0)));
+	_horrorTextures.emplace_back(new Texture("rsc/imgs/Cats/Uncanny.png", VEC2(0, 0)));
+	_horrorSoundKeys = { SoundData::SFX_JumpScareProwler, SoundData::SFX_JumpScareScream,
+		SoundData::SFX_JumpScareLuigi, SoundData::SFX_JumpScareDoors, SoundData::SFX_JumpScareFreddy,
+		SoundData::SFX_JumpScareWarn, SoundData::SFX_JumpScareFolder };
+	_activeHorrorTexture = nullptr;
+	_horrorEffectTimer = 0.0f;
+	_horrorSoundTimer = 0.0f;
+	_activeHorrorSound.clear();
 
 	const string bgmKeys[] = { SoundData::BGM_Game, SoundData::BGM_GameAlt, SoundData::BGM_Title };
 	g_SoundManager.PlayBGM(bgmKeys[_randomizer.Rand(0, 2)], false);
@@ -261,7 +272,7 @@ void InGameScene::Render()
 
 	//============================
 
-
+	if (_activeHorrorTexture) _activeHorrorTexture->Print();
 
 
 	return;
@@ -275,6 +286,56 @@ void InGameScene::Update()
 	{
 		const string bgmKeys[] = { SoundData::BGM_Game, SoundData::BGM_GameAlt, SoundData::BGM_Title };
 		g_SoundManager.PlayBGM(bgmKeys[_randomizer.Rand(0, 2)], false);
+	}
+
+	if (GameData::g_doJumpScare)
+	{
+		if (_horrorEffectTimer > 0.0f)
+		{
+			_horrorEffectTimer -= dt;
+			if (_horrorEffectTimer <= 0.0f) _activeHorrorTexture = nullptr;
+		}
+		if (_horrorSoundTimer > 0.0f)
+		{
+			_horrorSoundTimer -= dt;
+			if (_horrorSoundTimer <= 0.0f && !_activeHorrorSound.empty())
+			{
+				g_SoundManager.StopSFX(_activeHorrorSound);
+				_activeHorrorSound.clear();
+			}
+		}
+		if (_horrorEffectTimer <= 0.0f && _horrorSoundTimer <= 0.0f &&
+			!_horrorTextures.empty() && !_horrorSoundKeys.empty() &&
+			_randomizer.Rand(0, 999 * 2) == 0)
+		{
+			const int textureIndex = _randomizer.Rand(0, static_cast<int>(_horrorTextures.size()) - 1);
+			_activeHorrorTexture = _horrorTextures[textureIndex].get();
+			const int catWidths[] = { 812, 736, 387, 374, 162, 287, 287, 498, 735, 736, 800 };
+			const int catHeights[] = { 992, 1229, 516, 498, 283, 252, 292, 498, 602, 626, 756 };
+
+			const float scale = (std::max)(1280.0f / catWidths[textureIndex], 720.0f / catHeights[textureIndex]);
+
+			_activeHorrorTexture->SetScale(VEC2(scale, scale));
+			_activeHorrorTexture->SetPos(VEC2((1280.0f - catWidths[textureIndex] * scale) * 0.5f,
+				(720.0f - catHeights[textureIndex] * scale) * 0.5f));
+
+			_horrorEffectTimer = _randomizer.Rand(0.5f, MAX_HORROR_EFFECT_TIME);
+
+			_activeHorrorSound = _horrorSoundKeys[_randomizer.Rand(0, static_cast<int>(_horrorSoundKeys.size()) - 1)];
+			g_SoundManager.PlaySFX(_activeHorrorSound);
+			_horrorSoundTimer = MAX_HORROR_EFFECT_TIME;
+		}
+	}
+	else
+	{
+		_activeHorrorTexture = nullptr;
+		_horrorEffectTimer = 0.0f;
+		if (!_activeHorrorSound.empty())
+		{
+			g_SoundManager.StopSFX(_activeHorrorSound);
+			_activeHorrorSound.clear();
+			_horrorSoundTimer = 0.0f;
+		}
 	}
 
 	VEC2 posC = _cloud.GetPos();

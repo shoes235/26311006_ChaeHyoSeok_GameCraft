@@ -37,14 +37,14 @@ private:
 	//text
 	int nFont = 0;
 	float _blinkTimer = .0f;
-	bool _showText = true;
+	bool _showText {true};
 
 	//Select
 	const int MAX_SELECT_WHEEL{ 3 };
 	// EASY , NOR, HARD, ¼³Á¤
 	int _selectWheel{};
 
-	bool _skipIntro{ false };
+	// bool _skipIntro{};
 
 	//text-col
 

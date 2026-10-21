@@ -31,7 +31,7 @@ void TitleScene::Init()
 			case E_TitleSceneType::SELECTOR:
 			{
 				if (_selectWheel == 3)
-					_skipIntro = !_skipIntro;
+					GameData::g_skipIntro = !GameData::g_skipIntro;
 				else
 					_curType = E_TitleSceneType::SELCTED;
 			}break;
@@ -255,7 +255,7 @@ void TitleScene::Update()
 		if (pos.x <= 0)
 		{
 
-			if (_skipIntro)
+			if (GameData::g_skipIntro)
 			{
 				InGameScene* nextScene = new InGameScene();
 				g_SceneMgr.ChangeScene(nextScene, E_SceneType::IN_GAME);
@@ -418,7 +418,7 @@ void TitleScene::DrawMenu()
 		nFont,
 		{ 800,400 + 75,1200,800 },
 		(_selectWheel == 3) ? 0xFFFFFF00 : 0xFFFFFFFF,
-		"[%s] 조작 설명 스킵",(_skipIntro)? "X" : " "
+		"[%s] 조작 설명 스킵",(GameData::g_skipIntro)? "X" : " "
 	);
 
 	g2_FontDrawText

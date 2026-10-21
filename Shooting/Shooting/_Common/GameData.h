@@ -12,7 +12,12 @@ class GameData
 public:
 	static int g_score;
 	static int g_stageLast;
+
+	//Setting
 	static int g_diff;
 	static float GetScoreMultiplier();
+
+	static bool g_skipIntro;
+	static bool g_doJumpScare;
 };
 

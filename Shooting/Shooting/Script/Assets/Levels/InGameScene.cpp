@@ -409,6 +409,7 @@ void InGameScene::Update()
 			if (!shot.GetCollider().IsEntered(shotPos, enemy->GetCollider(), enemyPos)) continue;
 
 			enemy->TakeDamage(_player.GetShotDamage());
+			g_SoundManager.PlaySFX(SoundData::SFX_EnemyHit);
 			SpawnHitParticle(shotPos);
 			if (!enemy->IsAlive())
 			{

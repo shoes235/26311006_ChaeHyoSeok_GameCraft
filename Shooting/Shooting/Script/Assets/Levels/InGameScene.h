@@ -46,6 +46,7 @@ private:
 
 	//Spooky Scary
 	std::vector<Texture*> _horrorTextures;
+	static std::vector<std::unique_ptr<Texture>>& GetHorrorTextureCache();
 	std::vector<string> _horrorSoundKeys;
 	Texture* _activeHorrorTexture = nullptr;
 

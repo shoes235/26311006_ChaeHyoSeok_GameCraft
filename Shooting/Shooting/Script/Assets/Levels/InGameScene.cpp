@@ -1,19 +1,16 @@
 #include "InGameScene.h"
 #include "SoundData.h"
 
-namespace
+std::vector<std::unique_ptr<Texture>>& InGameScene::GetHorrorTextureCache()
 {
-	std::vector<std::unique_ptr<Texture>>& GetHorrorTextureCache()
+	static std::vector<std::unique_ptr<Texture>> textures;
+	if (textures.empty())
 	{
-		static std::vector<std::unique_ptr<Texture>> textures;
-		if (textures.empty())
-		{
-			for (int i = 0; i <= 9; ++i)
-				textures.emplace_back(new Texture("rsc/imgs/Cats/" + std::to_string(i) + ".png", VEC2(0, 0)));
-			textures.emplace_back(new Texture("rsc/imgs/Cats/Uncanny.png", VEC2(0, 0)));
-		}
-		return textures;
+		for (int i = 0; i <= 9; ++i)
+			textures.emplace_back(new Texture("rsc/imgs/Cats/" + std::to_string(i) + ".png", VEC2(0, 0)));
+		textures.emplace_back(new Texture("rsc/imgs/Cats/Uncanny.png", VEC2(0, 0)));
 	}
+	return textures;
 }
 
 void InGameScene::Init()

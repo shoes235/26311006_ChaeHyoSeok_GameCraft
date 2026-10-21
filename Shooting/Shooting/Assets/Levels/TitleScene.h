@@ -31,6 +31,8 @@ private:
 	//Tex
 	Texture* _background = new Texture("rsc/imgs/MainMenu.png", VEC2(0, 0));
 	Texture _layOut{ "rsc/imgs/UI/Black.png",VEC2(1280,0) };
+	Texture _layOut2{ "rsc/imgs/UI/Black2.png",VEC2(0,0) };
+
 
 	//text
 	int nFont = 0;
@@ -70,6 +72,8 @@ public:
 	void Render() override;
 	void Update() override;
 	void Destroy() override;
+private:
+	void DrawMenu();
 
 };
 

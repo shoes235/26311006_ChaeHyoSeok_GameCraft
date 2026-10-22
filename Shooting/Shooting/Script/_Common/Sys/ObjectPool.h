@@ -9,7 +9,7 @@ private:
     vector<GameObject*> _allObjs;
     const int START_POOL_SIZE{5};
 public:
-    ObjectPool();
+    ObjectPool(GameObject* obj,const int& num );
     ~ObjectPool();
 
     GameObject* Get();

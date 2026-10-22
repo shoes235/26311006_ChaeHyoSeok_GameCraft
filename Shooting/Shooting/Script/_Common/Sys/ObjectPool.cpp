@@ -46,6 +46,6 @@ GameObject* ObjectPool::Get()
 void ObjectPool::Return(GameObject* obj)
 {
         if (obj == nullptr) return;
-        
+
         _availableObjs.push_back(obj);
 }

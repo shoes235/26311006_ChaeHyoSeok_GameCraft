@@ -17,7 +17,9 @@ set(D3DX_DIR "${PACKAGES_DIR}/Microsoft.DXSDK.D3DX.9.29.952.8/build/native")
 
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS "${SOURCE_DIR}/*.cpp")
 file(GLOB_RECURSE HEADERS CONFIGURE_DEPENDS "${SOURCE_DIR}/*.h")
-set(PROJECT_FILES ${SOURCES} ${HEADERS})
+set(PROJECT_FILES ${SOURCES} ${HEADERS}
+        Shooting/Script/_Common/Sys/ObjectPool.cpp
+        Shooting/Script/_Common/Sys/ObjectPool.h)
 source_group(TREE "${SOURCE_DIR}" FILES ${PROJECT_FILES})
 set(SOURCE_INCLUDE_DIRS "${SOURCE_DIR}")
 foreach(HEADER IN LISTS HEADERS)

@@ -6,6 +6,11 @@ Bullet::Bullet(VEC2 pos, VEC2 velocity, float radius)
 {
 }
 
+Bullet::Bullet()
+	: _pos{}, _velocity{}, _collider(4.0f), _active(false), _grazed(false)
+{
+}
+
 void Bullet::Reset(VEC2 pos, VEC2 velocity, float radius)
 {
 	_pos = pos;
@@ -34,30 +39,39 @@ void Bullet::Render(Texture& texture) const
 
 void BulletPool::Spawn(VEC2 pos, VEC2 velocity, float radius)
 {
-	for (Bullet& bullet : _bullets)
+	if (Bullet* bullet = _pool.Get())
 	{
-		if (!bullet.IsActive())
-		{
-			bullet.Reset(pos, velocity, radius);
-			return;
-		}
+		bullet->Reset(pos, velocity, radius);
+		_leased.push_back(bullet);
 	}
-	_bullets.emplace_back(pos, velocity, radius);
 }
 
 void BulletPool::Update(float delta)
 {
-	for (Bullet& bullet : _bullets)
-		if (bullet.IsActive()) bullet.Update(delta);
+	for (auto bullet = _leased.begin(); bullet != _leased.end();)
+	{
+		if ((*bullet)->IsActive()) (*bullet)->Update(delta);
+		if (!(*bullet)->IsActive())
+		{
+			_pool.Return(*bullet);
+			bullet = _leased.erase(bullet);
+		}
+		else ++bullet;
+	}
 }
 
 void BulletPool::Render(Texture& texture) const
 {
-	for (const Bullet& bullet : _bullets)
-		if (bullet.IsActive()) bullet.Render(texture);
+	for (const Bullet* bullet : _pool.GetAll())
+		if (bullet->IsActive()) bullet->Render(texture);
 }
 
 void BulletPool::Clear()
 {
-	for (Bullet& bullet : _bullets) bullet.Deactivate();
+	for (Bullet* bullet : _leased)
+	{
+		bullet->Deactivate();
+		_pool.Return(bullet);
+	}
+	_leased.clear();
 }

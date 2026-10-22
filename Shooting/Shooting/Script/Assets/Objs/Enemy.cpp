@@ -16,7 +16,6 @@ Enemy::Enemy(VEC2 pos, const EnemyConfig& config)
 	if (_config.animationPaths.empty())
 	{
 		auto texture = std::make_unique<Texture>(_config.spritePath, pos);
-		texture->Load();
 		clip->AddTexture(std::move(texture));
 	}
 	else
@@ -24,12 +23,34 @@ Enemy::Enemy(VEC2 pos, const EnemyConfig& config)
 		for (const std::string& path : _config.animationPaths)
 		{
 			auto texture = std::make_unique<Texture>(path, pos);
-			texture->Load();
 			clip->AddTexture(std::move(texture));
 		}
 	}
 	_anim->AddClip("Idle", std::move(clip));
 	_anim->ChangeClip("Idle");
+	if (_config.cycleBossPatterns) SetBossPattern();
+}
+
+bool Enemy::UsesAssets(const EnemyConfig& config) const
+{
+	return _config.spritePath == config.spritePath
+		&& _config.animationPaths == config.animationPaths
+		&& _config.animationFrameDuration == config.animationFrameDuration
+		&& _config.bulletTexturePath == config.bulletTexturePath;
+}
+
+void Enemy::Reset(VEC2 pos, const EnemyConfig& config)
+{
+	_pos = pos;
+	_collider.Radius = config.radius;
+	_config = config;
+	_hp = _maxHp = config.hp;
+	_fireCooldown = config.initialFireDelay;
+	_bossPhaseTimer = 0.0f;
+	_bossPhase = 0;
+	_bossPatternAngle = 0.0f;
+	_bullets.Clear();
+	_anim->Restart();
 	if (_config.cycleBossPatterns) SetBossPattern();
 }
 

@@ -2,6 +2,7 @@
 #include <glc2d.h>
 #include <vector>
 #include "Collider.h"
+#include "ObjectPool.h"
 
 class Texture;
 
@@ -15,6 +16,7 @@ private:
 	bool _grazed;
 
 public:
+	Bullet();
 	Bullet(VEC2 pos, VEC2 velocity, float radius = 4.0f);
 	void Reset(VEC2 pos, VEC2 velocity, float radius = 4.0f);
 	bool Update(float delta);
@@ -31,13 +33,13 @@ public:
 class BulletPool
 {
 private:
-	std::vector<Bullet> _bullets;
+	ObjectPool<Bullet> _pool{ [] { return std::make_unique<Bullet>(); }, 0, 32 };
+	std::vector<Bullet*> _leased;
 
 public:
-	BulletPool() { _bullets.reserve(64); }
 	void Spawn(VEC2 pos, VEC2 velocity, float radius = 4.0f);
 	void Update(float delta);
 	void Render(Texture& texture) const;
 	void Clear();
-	std::vector<Bullet>& GetBullets() { return _bullets; }
+	std::vector<Bullet*>& GetBullets() { return _pool.GetAll(); }
 };

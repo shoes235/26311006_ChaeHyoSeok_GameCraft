@@ -28,6 +28,7 @@ using std::vector;
 #include "BomParticle.h"
 #include "Collider.h"
 #include "MonitorScreen.h"
+#include "ObjectPool.h"
 
 // === Scene ===
 #include "JumpScareScene.h"
@@ -35,12 +36,31 @@ using std::vector;
 class InGameScene : public IScene
 {
 private:
+	struct EnemyPool
+	{
+		EnemyConfig assetConfig;
+		ObjectPool<Enemy> objects;
+
+		EnemyPool(const EnemyConfig& config, VEC2 pos)
+			: assetConfig(config), objects([config, pos] { return std::make_unique<Enemy>(pos, config); }, 0, 1) {}
+		EnemyPool(const EnemyPool&) = delete;
+		EnemyPool& operator=(const EnemyPool&) = delete;
+		EnemyPool(EnemyPool&&) noexcept = default;
+		EnemyPool& operator=(EnemyPool&&) noexcept = default;
+	};
+
 	//objs
 	vector<GameObject> objs;
 	Player _player;
-	std::vector<std::unique_ptr<Enemy>> _enemies;
+	std::vector<Enemy*> _enemies;
+	std::vector<EnemyPool> _enemyPools;
 	std::vector<Item> _items;
-	std::vector<std::unique_ptr<Particle>> _particles;
+	std::vector<BomParticle*> _deathParticles;
+	std::vector<BomParticle*> _hitParticles;
+	ObjectPool<BomParticle> _deathParticlePool{
+		[] { return std::make_unique<BomParticle>(VEC2(0, 0), 2.0f); }, 0, 1 };
+	ObjectPool<BomParticle> _hitParticlePool{
+		[] { return std::make_unique<BomParticle>(VEC2(0, 0), 0.35f); }, 0, 1 };
 	std::unique_ptr<ProgressBar> _bossHealthBar;
 	Randomizer _randomizer;
 
@@ -83,6 +103,9 @@ private:
 	void TryDropItem(VEC2 pos);
 	void SpawnDeathParticle(VEC2 pos);
 	void SpawnHitParticle(VEC2 pos);
+	Enemy* AcquireEnemy(VEC2 pos, const EnemyConfig& config);
+	BomParticle* AcquireParticle(VEC2 pos, bool deathEffect);
+	void ReturnEnemy(Enemy* enemy);
 	float GetRandomSpawnDelay();
 
 	//UI

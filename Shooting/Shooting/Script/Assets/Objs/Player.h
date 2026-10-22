@@ -79,5 +79,5 @@ public:
     const Collider& GetGrazeCollider() const { return _grazeCollider; }
     
     VEC2 GetCorePos() const { return VEC2(_pos.x + 28.0f, _pos.y + 28.0f); }
-    std::vector<Bullet>& GetShots() { return _shots.GetBullets(); }
+    std::vector<Bullet*>& GetShots() { return _shots.GetBullets(); }
 };

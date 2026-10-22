@@ -18,6 +18,8 @@ public :
 			_filePath.c_str());
 		Load();
 	}
+	Texture(const Texture&) = delete;
+	Texture& operator=(const Texture&) = delete;
 	~Texture()
 	{
 		printf("Texture DELETE : %p\n", this);

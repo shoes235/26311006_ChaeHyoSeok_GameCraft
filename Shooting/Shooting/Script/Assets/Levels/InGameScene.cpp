@@ -17,9 +17,13 @@ void InGameScene::Init()
 {
 	SetFullScreen();
 
+	for (Enemy* enemy : _enemies) ReturnEnemy(enemy);
 	_enemies.clear();
 	_items.clear();
-	_particles.clear();
+	for (BomParticle* particle : _deathParticles) _deathParticlePool.Return(particle);
+	for (BomParticle* particle : _hitParticles) _hitParticlePool.Return(particle);
+	_deathParticles.clear();
+	_hitParticles.clear();
 	_bossHealthBar.reset();
 	_grazeCount = 0;
 	_phase = E_StagePhase::WAVE;
@@ -119,7 +123,7 @@ void InGameScene::Init()
 			if (!_player.UseBomb()) return;
 			_monitorScreen.Play(MonitorScreenType::USE_BOM);
 			for (const auto& enemy : _enemies)
-				for (Bullet& bullet : enemy->GetBullets()) bullet.Deactivate();
+				for (Bullet* bullet : enemy->GetBullets()) bullet->Deactivate();
 
 			g_SoundManager.PlaySFX(SoundData::SFX_Bomb);
 		}
@@ -155,7 +159,8 @@ void InGameScene::Render()
 	_player.Render();
 	for (const auto& enemy : _enemies) enemy->Render();
 	for (const Item& item : _items) item.Render(_uiFont);
-	for (const auto& particle : _particles) particle->Render();
+	for (auto* particle : _deathParticles) particle->Render();
+	for (auto* particle : _hitParticles) particle->Render();
 	_layout.Print();
 	if (_phase == E_StagePhase::BOSS && _bossHealthBar)
 	{
@@ -382,6 +387,7 @@ void InGameScene::Update()
 		_spawnTimer -= dt;
 		if (_stageTimer <= 0.0f)
 		{
+			for (Enemy* enemy : _enemies) ReturnEnemy(enemy);
 			_enemies.clear();
 			_phase = E_StagePhase::BOSS;
 			SpawnBoss();
@@ -409,8 +415,9 @@ void InGameScene::Update()
 		_bossHealthBar->SetProgress(static_cast<float>(_enemies.front()->GetHP()) /
 			_enemies.front()->GetMaxHP());
 
-	for (Bullet& shot : _player.GetShots())
+	for (Bullet* shotPtr : _player.GetShots())
 	{
+		Bullet& shot = *shotPtr;
 		if (!shot.IsActive()) continue;
 		for (const auto& enemy : _enemies)
 		{
@@ -458,8 +465,9 @@ void InGameScene::Update()
 
 	for (const auto& enemy : _enemies)
 	{
-		for (Bullet& bullet : enemy->GetBullets())
+		for (Bullet* bulletPtr : enemy->GetBullets())
 		{
+			Bullet& bullet = *bulletPtr;
 			if (!bullet.IsActive()) continue;
 			const VEC2 bulletPos(bullet.GetPos().x + 6.0f, bullet.GetPos().y + 10.0f);
 			const VEC2 core = _player.GetCorePos();
@@ -483,14 +491,20 @@ void InGameScene::Update()
 			}
 		}
 	}
-	for (auto particle = _particles.begin(); particle != _particles.end();)
-	{
-		(*particle)->Update(dt);
-		if (!(*particle)->IsAlive())
-			particle = _particles.erase(particle);
-		else
-			++particle;
-	}
+	auto updateParticles = [dt](std::vector<BomParticle*>& active, ObjectPool<BomParticle>& pool) {
+		for (auto particle = active.begin(); particle != active.end();)
+		{
+			(*particle)->Update(dt);
+			if (!(*particle)->IsAlive())
+			{
+				pool.Return(*particle);
+				particle = active.erase(particle);
+			}
+			else ++particle;
+		}
+	};
+	updateParticles(_deathParticles, _deathParticlePool);
+	updateParticles(_hitParticles, _hitParticlePool);
 	if (_lives <= 0)
 	{
 		if(!_T_gameOver)
@@ -504,8 +518,15 @@ void InGameScene::Update()
 			g_SceneMgr.ChangeScene(new JumpScareScene(), E_SceneType::JUMP_SCARE);
 		return;
 	}
-	_enemies.erase(std::remove_if(_enemies.begin(), _enemies.end(),
-		[](const std::unique_ptr<Enemy>& enemy) { return !enemy->IsAlive(); }), _enemies.end());
+	for (auto enemy = _enemies.begin(); enemy != _enemies.end();)
+	{
+		if (!(*enemy)->IsAlive())
+		{
+			ReturnEnemy(*enemy);
+			enemy = _enemies.erase(enemy);
+		}
+		else ++enemy;
+	}
 	if (_phase == E_StagePhase::BOSS && _enemies.empty())
 	{
 		_phase = E_StagePhase::CLEAR;
@@ -521,6 +542,48 @@ void InGameScene::Update()
 	return;
 }
 
+Enemy* InGameScene::AcquireEnemy(VEC2 pos, const EnemyConfig& config)
+{
+	for (auto& pooled : _enemyPools)
+	{
+		if (pooled.assetConfig.spritePath == config.spritePath
+			&& pooled.assetConfig.animationPaths == config.animationPaths
+			&& pooled.assetConfig.animationFrameDuration == config.animationFrameDuration
+			&& pooled.assetConfig.bulletTexturePath == config.bulletTexturePath)
+		{
+			Enemy* enemy = pooled.objects.Get();
+			if (!enemy) return nullptr;
+			enemy->Reset(pos, config);
+			return enemy;
+		}
+	}
+	_enemyPools.emplace_back(config, pos);
+	Enemy* enemy = _enemyPools.back().objects.Get();
+	if (enemy) enemy->Reset(pos, config);
+	return enemy;
+}
+
+BomParticle* InGameScene::AcquireParticle(VEC2 pos, bool deathEffect)
+{
+	ObjectPool<BomParticle>& pool = deathEffect ? _deathParticlePool : _hitParticlePool;
+	BomParticle* particle = pool.Get();
+	if (particle) particle->Reset(pos);
+	return particle;
+}
+
+void InGameScene::ReturnEnemy(Enemy* enemy)
+{
+	if (!enemy) return;
+	for (auto& pool : _enemyPools)
+	{
+		if (enemy->UsesAssets(pool.assetConfig))
+		{
+			pool.objects.Return(enemy);
+			return;
+		}
+	}
+}
+
 void InGameScene::SpawnRandomEnemy()
 {
 	static EnemyConfig(*factories[])() = {
@@ -532,7 +595,7 @@ void InGameScene::SpawnRandomEnemy()
 	const int type = _randomizer.Rand(0, 4);
 	EnemyConfig config = ScaleEnemyForStage(
 		ScaleEnemyForDifficulty(factories[type](), GameData::g_diff), GameData::g_stageLast);
-	_enemies.emplace_back(new Enemy(VEC2(static_cast<float>(x), static_cast<float>(y)), config));
+	_enemies.push_back(AcquireEnemy(VEC2(static_cast<float>(x), static_cast<float>(y)), config));
 }
 
 void InGameScene::SpawnBoss()
@@ -546,7 +609,7 @@ void InGameScene::SpawnBoss()
 	default: config = MakeStageBoss(); break;
 	}
 	config = ScaleEnemyForStage(ScaleEnemyForDifficulty(config, GameData::g_diff), GameData::g_stageLast);
-	_enemies.emplace_back(new Enemy(VEC2(610.0f, -60.0f), config));
+	_enemies.push_back(AcquireEnemy(VEC2(610.0f, -60.0f), config));
 	_bossHealthBar.reset(new ProgressBar(VEC2(400.0f, 30.0f)));
 	_bossHealthBar->SetProgress(1.0f);
 }
@@ -559,12 +622,12 @@ void InGameScene::TryDropItem(VEC2 pos)
 
 void InGameScene::SpawnDeathParticle(VEC2 pos)
 {
-	_particles.emplace_back(new BomParticle(pos, 2.0f));
+	_deathParticles.push_back(AcquireParticle(pos, true));
 }
 
 void InGameScene::SpawnHitParticle(VEC2 pos)
 {
-	_particles.emplace_back(new BomParticle(pos, 0.35f));
+	_hitParticles.push_back(AcquireParticle(pos, false));
 }
 
 float InGameScene::GetRandomSpawnDelay()

@@ -2,14 +2,13 @@
 
 Particle::Particle(VEC2 pos, const std::vector<std::string>& frames,
 	float frameDuration, float scale)
-	: GameObject(pos), _lifeTime(frameDuration * frames.size())
+	: GameObject(pos), _lifeTime(frameDuration * frames.size()), _maxLifeTime(_lifeTime)
 {
 	auto clip = std::make_unique<AnimationClip>("Particle", frameDuration, false);
 
 	for (const std::string& path : frames)
 	{
 		auto texture = std::make_unique<Texture>(path, pos);
-		texture->Load();
 		texture->SetScale(VEC2(scale, scale));
 		clip->AddTexture(std::move(texture));
 	}
@@ -21,4 +20,11 @@ void Particle::Update(float delta)
 {
 	GameObject::Update(delta);
 	_lifeTime -= delta;
+}
+
+void Particle::Reset(VEC2 pos)
+{
+	_pos = pos;
+	_lifeTime = _maxLifeTime;
+	_anim->Restart();
 }

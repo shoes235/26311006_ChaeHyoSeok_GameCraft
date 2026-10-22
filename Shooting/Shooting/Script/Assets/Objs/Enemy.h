@@ -67,6 +67,8 @@ private:
 
 public:
 	Enemy(VEC2 pos, const EnemyConfig& config = EnemyConfig());
+	void Reset(VEC2 pos, const EnemyConfig& config);
+	bool UsesAssets(const EnemyConfig& config) const;
 	void Update(float delta, VEC2 playerPos);
 	void Render() override;
 	void TakeDamage(int damage = 1);
@@ -74,5 +76,5 @@ public:
 	int GetHP() const { return _hp; }
 	int GetMaxHP() const { return _maxHp; }
 	const char* GetBossPatternName() const;
-	std::vector<Bullet>& GetBullets() { return _bullets.GetBullets(); }
+	std::vector<Bullet*>& GetBullets() { return _bullets.GetBullets(); }
 };

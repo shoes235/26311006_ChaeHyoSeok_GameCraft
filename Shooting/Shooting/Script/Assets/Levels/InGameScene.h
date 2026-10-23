@@ -36,6 +36,15 @@ using std::vector;
 class InGameScene : public IScene
 {
 private:
+	Randomizer _randomizer;
+	
+	//objs
+	vector<GameObject> objs;
+
+	Player _player;
+
+	vector<Enemy*> _enemies;
+
 	struct EnemyPool
 	{
 		EnemyConfig assetConfig;
@@ -49,34 +58,39 @@ private:
 		EnemyPool& operator=(EnemyPool&&) noexcept = default;
 	};
 
-	//objs
-	vector<GameObject> objs;
-	Player _player;
-	std::vector<Enemy*> _enemies;
-	std::vector<EnemyPool> _enemyPools;
-	std::vector<Item> _items;
-	std::vector<BomParticle*> _deathParticles;
-	std::vector<BomParticle*> _hitParticles;
+	vector<EnemyPool> _enemyPools;
+
+	vector<Item> _items;
+
+	vector<BomParticle*> _deathParticles;
+	vector<BomParticle*> _hitParticles;
 	ObjectPool<BomParticle> _deathParticlePool{
 		[] { return std::make_unique<BomParticle>(VEC2(0, 0), 2.0f); }, 0, 1 };
 	ObjectPool<BomParticle> _hitParticlePool{
 		[] { return std::make_unique<BomParticle>(VEC2(0, 0), 0.35f); }, 0, 1 };
+
 	std::unique_ptr<ProgressBar> _bossHealthBar;
-	Randomizer _randomizer;
 
 	//Spooky Scary
-	std::vector<Texture*> _horrorTextures;
-	static std::vector<std::unique_ptr<Texture>>& GetHorrorTextureCache();
-	std::vector<string> _horrorSoundKeys;
+	vector<Texture*> _horrorTextures;
+	static vector<std::unique_ptr<Texture>>& GetHorrorTextureCache();
+	vector<string> _horrorSoundKeys;
 	Texture* _activeHorrorTexture = nullptr;
 
+	//GAME
+
+	//Pause
+	bool _isPuased{};
+
+	//Horror
 	const float MAX_HORROR_EFFECT_TIME{ 1.0f };
-	float _horrorEffectTimer = 0.0f;
+	float _horrorEffectTimer{};
 
 	const float MAX_HORROR_SOUND_TIME{ 3.0f };
-	float _horrorSoundTimer = 0.0f;
+	float _horrorSoundTimer{};
 	string _activeHorrorSound;
 
+	//Stage
 	enum class E_StagePhase { WAVE, BOSS, CLEAR };
 	E_StagePhase _phase = E_StagePhase::WAVE;
 
@@ -84,20 +98,35 @@ private:
 	const float STAGE_TIME{30.0f};
 	float _stageTimer = STAGE_TIME;
 
-	float _spawnTimer = 1.0f;
+	float _spawnTimer{1.0f};
 	float _clearTimer{};
 
-	bool _T_gameOver{};
+	//gameOver
+	bool _isGameOvered{};
 	const float SCENE_CHANGE_TIME {1.0f};
 	float _changeTime{};
 
 	//liv
 	const int MAX_LIVE{ 8 };
 	int _lives = MAX_LIVE;
-	int _grazeCount = 0;
+	int _grazeCount{};
 
 
+	//UI
+	int _uiFont = -1;
+	Texture _layout{ "rsc/imgs/UI/Layout.png", VEC2(0,0)};
+	Texture _pauseUI{ "rsc/imgs/UI/Black2.png",VEC2(0,0) };
 
+
+	Texture _cloud{ "rsc/imgs/cloud.jpg",VEC2(120,0) };
+	Texture _cloud2{ "rsc/imgs/cloud.jpg",VEC2(120,-720) };
+
+	Texture _monitor{ "rsc/imgs/UI/monitor3.png",VEC2(25,400) };
+	MonitorScreen _monitorScreen{ VEC2(109,435) };
+
+	//input
+	InputManager _inputMgr;
+private:
 	void SpawnRandomEnemy();
 	void SpawnBoss();
 	void TryDropItem(VEC2 pos);
@@ -107,27 +136,6 @@ private:
 	BomParticle* AcquireParticle(VEC2 pos, bool deathEffect);
 	void ReturnEnemy(Enemy* enemy);
 	float GetRandomSpawnDelay();
-
-	//UI
-	int _uiFont = -1;
-	Texture _layout{ "rsc/imgs/UI/Layout.png", VEC2(0,0)};
-	Texture _cloud{ "rsc/imgs/cloud.jpg",VEC2(120,0) };
-	Texture _cloud2{ "rsc/imgs/cloud.jpg",VEC2(120,-720) };
-	Texture _monitor{ "rsc/imgs/UI/monitor3.png",VEC2(25,400) };
-	MonitorScreen _monitorScreen{ VEC2(109,435) };
-
-
-
-	//input
-	InputManager _inputMgr;
-
-
-
-
-
-
-private:
-
 public:
 	InGameScene() : IScene(E_SceneType::IN_GAME)
 	{

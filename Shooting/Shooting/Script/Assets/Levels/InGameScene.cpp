@@ -508,10 +508,10 @@ void InGameScene::Update()
 	updateParticles(_hitParticles, _hitParticlePool);
 	if (_lives <= 0)
 	{
-		if(!_T_gameOver)
+		if(!_isGameOvered)
 			g_SoundManager.PlaySFX(SoundData::SFX_PlayerDeath);
 
-		_T_gameOver = true;
+		_isGameOvered = true;
 
 		_changeTime += dt;
 

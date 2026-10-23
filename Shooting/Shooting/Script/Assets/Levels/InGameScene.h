@@ -37,7 +37,7 @@ class InGameScene : public IScene
 {
 private:
 	Randomizer _randomizer;
-	
+
 	//objs
 	vector<GameObject> objs;
 
@@ -80,7 +80,7 @@ private:
 	//GAME
 
 	//Pause
-	bool _isPuased{};
+	bool _isPaused{};
 
 	//Horror
 	const float MAX_HORROR_EFFECT_TIME{ 1.0f };

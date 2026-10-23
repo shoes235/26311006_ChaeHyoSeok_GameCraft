@@ -1,8 +1,6 @@
 #include "IScene.h"
 #include "SoundManager.h"
 
-void RefreshVersionFont();
-
 void IScene::SetWindow(bool setWinPos)
 {
 	HWND hwnd = GetActiveWindow();
@@ -40,7 +38,6 @@ void IScene::SetWindow(bool setWinPos)
 
 	g2_SetWindowTitle(_winName.c_str());
 	g2_SetClearColor(_winColor);
-	RefreshVersionFont();
 
 	return;
 }
@@ -91,7 +88,6 @@ void IScene::SetFullScreen()
 
 	g2_SetWindowTitle(_winName.c_str());
 	g2_SetClearColor(_winColor);
-	RefreshVersionFont();
 }
 
 

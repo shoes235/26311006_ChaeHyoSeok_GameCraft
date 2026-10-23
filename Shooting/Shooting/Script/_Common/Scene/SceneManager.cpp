@@ -2,8 +2,6 @@
 #include "SoundManager.h"
 #include <windows.h>
 
-void DrawVersion();
-
 int FrameMove()
 {
 	g_deltaTimer.Update();
@@ -26,7 +24,6 @@ int G_AppRender()
 	{
 		g_SceneMgr.GetCurrentScene()->Render();
 	}
-	DrawVersion();
 	return 0;
 }
 

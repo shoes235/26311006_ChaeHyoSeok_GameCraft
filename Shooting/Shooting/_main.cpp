@@ -36,7 +36,12 @@ using std::string;
 SceneManager g_SceneMgr;
 
 static int g_verFont{};
-const string VERSION {"v1.0.1"};
+const string VERSION {"v1.0.2"};
+
+void DrawVersion()
+{
+	g2_FontDrawText(g_verFont, { 1180, 680, 1280, 720 }, 0xFFFFFFFF, VERSION.c_str());
+}
 
 //===============================================================================================
 
@@ -51,7 +56,7 @@ int main()
 	g_SceneMgr.InitEngine();
 	SoundData::RegisterAll(g_SoundManager);
 	g_deltaTimer.Init();
-	g_verFont = g2_FontCreate("±¼¸²",12,0);
+	g_verFont = g2_FontCreate("±¼¸²",18,0);
 
 
 	TitleScene* title = new TitleScene();
@@ -60,13 +65,6 @@ int main()
 
 
 	//Life::Update
-	g2_FontDrawText
-	(
-		g_verFont,
-	{1280 - 200,720 - 200,1280,720},
-	0xFFFFFFFF,
-	VERSION.c_str()
-	);
 	g_SceneMgr.Run();
 
 

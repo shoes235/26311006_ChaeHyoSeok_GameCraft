@@ -49,7 +49,7 @@ int main()
 	
 	//Birth
 	g_SceneMgr.InitEngine();
-	// SoundData::RegisterAll(g_SoundManager);
+	SoundData::RegisterAll(g_SoundManager);
 	g_deltaTimer.Init();
 	g_verFont = g2_FontCreate("±¼¸²",12,0);
 

@@ -457,7 +457,7 @@ void InGameScene::Update()
 			case E_ItemType::RAPID_FIRE: _player.AddRapidFire(); break;
 			case E_ItemType::POWER: _player.AddPower(); break;
 			case E_ItemType::SHOTGUN: _player.AddShotgun(); break;
-			case E_ItemType::SHOT: GameData::g_score += 350; break;
+			case E_ItemType::STAR: GameData::g_score += 350; break;
 		}
 		item.Collect();
 	}

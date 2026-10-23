@@ -52,8 +52,11 @@ void InGameScene::Init()
 		E_KeyType::HOLD,
 		[this]()
 		{
-			_player.Move(VEC2(.0f,-1.0f),
-			g_deltaTimer.GetDeltaTime());
+			if (!_isPaused)
+				_player.Move(VEC2(.0f,-1.0f),
+					g_deltaTimer.GetDeltaTime());
+
+
 		}
 	);
 
@@ -63,8 +66,10 @@ void InGameScene::Init()
 		E_KeyType::HOLD,
 		[this]()
 		{
-			_player.Move(VEC2(.0f, 1.0f),
-				g_deltaTimer.GetDeltaTime());
+			if (!_isPaused)
+				_player.Move(VEC2(.0f, 1.0f),
+					g_deltaTimer.GetDeltaTime());
+
 		}
 	);
 
@@ -74,8 +79,10 @@ void InGameScene::Init()
 		E_KeyType::HOLD,
 		[this]()
 		{
-			_player.Move(VEC2(-1.0f, .0f),
-				g_deltaTimer.GetDeltaTime());
+			if (!_isPaused)
+				_player.Move(VEC2(-1.0f, .0f),
+					g_deltaTimer.GetDeltaTime());
+
 		}
 	);
 
@@ -86,8 +93,9 @@ void InGameScene::Init()
 		E_KeyType::HOLD,
 		[this]()
 		{
-			_player.Move(VEC2(1.0f, .0f),
-				g_deltaTimer.GetDeltaTime());
+			if (!_isPaused)
+				_player.Move(VEC2(1.0f, .0f),
+					g_deltaTimer.GetDeltaTime());
 		}
 	);
 
@@ -98,7 +106,8 @@ void InGameScene::Init()
 		E_KeyType::HOLD,
 		[this]()
 		{
-			_player.SetFocus(true);
+			if (!_isPaused)
+				_player.SetFocus(true);
 		}
 	);
 
@@ -108,9 +117,13 @@ void InGameScene::Init()
 		E_KeyType::HOLD,
 		[this]()
 		{
-			_player.Shoot();
+			if (!_isPaused)
+			{
+				_player.Shoot();
 
-			g_SoundManager.PlaySFX(SoundData::SFX_Shot);
+				g_SoundManager.PlaySFX(SoundData::SFX_Shot);
+			}
+
 		}
 	);
 
@@ -120,12 +133,21 @@ void InGameScene::Init()
 		E_KeyType::DOWN,
 		[this]()
 		{
-			if (!_player.UseBomb()) return;
-			_monitorScreen.Play(MonitorScreenType::USE_BOM);
-			for (const auto& enemy : _enemies)
+			if (_isPaused)
+			{
+				JumpScareScene* nextScene = new JumpScareScene();
+				g_SceneMgr.ChangeScene(nextScene, E_SceneType::JUMP_SCARE);
+			}
+			else
+			{
+				if (!_player.UseBomb()) return;
+				_monitorScreen.Play(MonitorScreenType::USE_BOM);
+				for (const auto& enemy : _enemies)
 				for (Bullet* bullet : enemy->GetBullets()) bullet->Deactivate();
 
-			g_SoundManager.PlaySFX(SoundData::SFX_Bomb);
+				g_SoundManager.PlaySFX(SoundData::SFX_Bomb);
+			}
+
 		}
 	);
 
@@ -135,14 +157,16 @@ void InGameScene::Init()
 		E_KeyType::DOWN,
 		[this]()
 		{
-			JumpScareScene* nextScene = new JumpScareScene();
-			g_SceneMgr.ChangeScene(nextScene, E_SceneType::JUMP_SCARE);
+			_isPaused = !_isPaused;
+
+
 
 		}
 	);
 
 	_monitorScreen.LoadAnimations();
-	_uiFont = g2_FontCreate("êµ´ë¦¼", 20, 0);
+	_uiFont = g2_FontCreate("±¼¸²", 20, 0);
+	_pauseUIFont = g2_FontCreate("±¼¸²", 48, 0);
 
 
 	return;
@@ -187,9 +211,9 @@ void InGameScene::Render()
 	for (size_t i = 0; i < MAX_LIVE; ++i)
 	{
 		if (i < _lives)
-			liv += "[*]";
+			liv += "¢¾";
 		else
-			liv += "[ ]";
+			liv += "¢½";
 	}
 
 	g2_FontDrawText
@@ -206,9 +230,9 @@ void InGameScene::Render()
 	for (size_t i = 0; i < _player.GetMaxBomb(); ++i)
 	{
 		if (i < _player.GetBombs())
-			bom += "[*]";
+			bom += "¡Ú";
 		else
-			bom += "[ ]";
+			bom += "¡Ù";
 	}
 
 
@@ -243,7 +267,7 @@ void InGameScene::Render()
 		"POWER\n%s", pow.c_str()
 	);
 
-	//ì•„ì´í…œ
+	//¾ÆÀÌÅÛ
 	if (_player.GetRapidFireTime() > 0.0f)
 		g2_FontDrawText(_uiFont, { 1000, 260, 1270, 290 }, 0xFF60FFFF, "RAPID: %.0fs", _player.GetRapidFireTime());
 	if (_player.GetShotgunTime() > 0.0f)
@@ -286,9 +310,32 @@ void InGameScene::Render()
 		g2_FontDrawText(_uiFont, { 430, 300, 900, 360 }, 0xFFFFFFFF, "STAGE CLEAR!");
 
 
+	if (_isPaused)
+	{
+		_pauseUI.Print();
+
+		g2_FontDrawText
+		(
+			_pauseUIFont,
+			{0,0,350,100},
+			0xFFFFFFFF,
+			"ÀÏ½ÃÁ¤ÁöµÊ"
+		);
+
+		g2_FontDrawText
+		(
+			_pauseUIFont,
+			{0,600,500,720},
+			0xFFFFFFFF,
+			"ESC¸¦ ´Ù½Ã´­·¯ Àç°³\nX¸¦ ´­·¯ Á¾·á"
+		);
+	}
+
 	//============================
 
 	if (_activeHorrorTexture) _activeHorrorTexture->Print();
+
+
 
 
 	return;
@@ -296,6 +343,8 @@ void InGameScene::Render()
 void InGameScene::Update()
 {
 	IScene::Update();
+
+	_inputMgr.UpdateInput();
 
 	if (!_isPaused)
 		UpdateGame();
@@ -388,8 +437,6 @@ void InGameScene::UpdateGame()
 	//py
 
 	_player.SetFocus(false);
-
-	_inputMgr.UpdateInput();
 
 	_player.Update(dt);
 	_monitorScreen.Update(dt);

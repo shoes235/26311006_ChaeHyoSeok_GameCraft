@@ -81,6 +81,10 @@ private:
 
 	//Pause
 	bool _isPaused{};
+	size_t _menuWheel{};
+	const size_t MAX_MENU_WHEEL{2};
+
+	int _pauseUIFont{};
 
 	//Horror
 	const float MAX_HORROR_EFFECT_TIME{ 1.0f };

@@ -184,7 +184,7 @@ void InGameScene::Render()
 
 	string liv{};
 
-	for (int i = 0; i < MAX_LIVE; ++i)
+	for (size_t i = 0; i < MAX_LIVE; ++i)
 	{
 		if (i < _lives)
 			liv += "[*]";
@@ -203,7 +203,7 @@ void InGameScene::Render()
 
 	string bom{};
 
-	for (int i = 0; i < _player.GetMaxBomb(); ++i)
+	for (size_t i = 0; i < _player.GetMaxBomb(); ++i)
 	{
 		if (i < _player.GetBombs())
 			bom += "[*]";
@@ -224,7 +224,7 @@ void InGameScene::Render()
 	string pow{};
 
 	pow += "[";
-	for (int i = 0; i < _player.GetMaxPower(); ++i)
+	for (size_t  i = 0; i < _player.GetMaxPower(); ++i)
 	{
 		if (i < _player.GetPowerLevel())
 			pow += "#";

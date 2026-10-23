@@ -679,7 +679,7 @@ void InGameScene::SpawnBoss()
 void InGameScene::TryDropItem(VEC2 pos)
 {
 	if (_randomizer.Rand(0, 99) >= 35) return;
-	_items.emplace_back(pos, static_cast<E_ItemType>(_randomizer.Rand(0, 4)));
+	_items.emplace_back(pos, static_cast<E_ItemType>(_randomizer.Rand(0, 5)));
 }
 
 void InGameScene::SpawnDeathParticle(VEC2 pos)

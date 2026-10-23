@@ -1,4 +1,5 @@
 #include "JumpScareScene.h"
+#include "ResultScene.h"
 #include "SoundData.h"
 
 void JumpScareScene::Init()

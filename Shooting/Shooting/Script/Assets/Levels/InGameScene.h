@@ -31,7 +31,7 @@ using std::vector;
 #include "ObjectPool.h"
 
 // === Scene ===
-#include "JumpScareScene.h"
+class JumpScareScene;
 
 class InGameScene : public IScene
 {

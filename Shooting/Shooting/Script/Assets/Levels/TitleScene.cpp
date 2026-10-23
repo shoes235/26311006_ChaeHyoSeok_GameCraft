@@ -1,4 +1,7 @@
 #include "TitleScene.h"
+#include "InGameScene.h"
+#include "GameData.h"
+#include "HowToPlayScene.h"
 #include "SoundData.h"
 
 

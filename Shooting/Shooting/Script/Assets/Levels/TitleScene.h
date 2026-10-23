@@ -1,7 +1,7 @@
 #pragma once
 #include <glc2d.h>
 #include "IScene.h"
-#include "HowToPlayScene.h"
+
 #include "Texture.h"
 #include "Randomizer.h"
 #include "InputManager.h"

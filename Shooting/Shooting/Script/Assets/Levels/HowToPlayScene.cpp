@@ -1,4 +1,5 @@
 #include "HowToPlayScene.h"
+#include "InGameScene.h"
 
 void HowToPlayScene::Init()
 {

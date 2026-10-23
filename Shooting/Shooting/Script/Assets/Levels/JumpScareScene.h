@@ -1,7 +1,7 @@
 #pragma once
 #include "IScene.h"
 #include "Texture.h"
-#include "ResultScene.h"
+
 
 class JumpScareScene : public IScene
 {

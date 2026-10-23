@@ -1,4 +1,5 @@
 #include "ResultScene.h"
+#include "InGameScene.h"
 #include "SoundData.h"
 
 void ResultScene::Init()

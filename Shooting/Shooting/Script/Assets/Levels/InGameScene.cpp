@@ -1,4 +1,5 @@
 #include "InGameScene.h"
+#include "JumpScareScene.h"
 #include "SoundData.h"
 
 std::vector<std::unique_ptr<Texture>>& InGameScene::GetHorrorTextureCache()

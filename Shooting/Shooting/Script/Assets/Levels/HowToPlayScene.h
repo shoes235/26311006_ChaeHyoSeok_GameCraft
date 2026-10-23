@@ -2,7 +2,7 @@
 #include "IScene.h"
 #include "Texture.h"
 #include "InputManager.h"
-#include "InGameScene.h"
+class InGameScene;
 
 class HowToPlayScene : public IScene
 {

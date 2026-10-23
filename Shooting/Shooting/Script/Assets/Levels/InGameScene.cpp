@@ -452,11 +452,12 @@ void InGameScene::Update()
 		_monitorScreen.Play(MonitorScreenType::ITEM_GET);
 		switch (item.GetType())
 		{
-		case ItemType::LIFE: ++_lives; break;
-		case ItemType::BOMB: _player.AddBomb(); break;
-		case ItemType::RAPID_FIRE: _player.AddRapidFire(); break;
-		case ItemType::POWER: _player.AddPower(); break;
-		case ItemType::SHOTGUN: _player.AddShotgun(); break;
+			case E_ItemType::LIFE: ++_lives; break;
+			case E_ItemType::BOMB: _player.AddBomb(); break;
+			case E_ItemType::RAPID_FIRE: _player.AddRapidFire(); break;
+			case E_ItemType::POWER: _player.AddPower(); break;
+			case E_ItemType::SHOTGUN: _player.AddShotgun(); break;
+			case E_ItemType::SHOT: GameData::g_score += 350; break;
 		}
 		item.Collect();
 	}
@@ -617,7 +618,7 @@ void InGameScene::SpawnBoss()
 void InGameScene::TryDropItem(VEC2 pos)
 {
 	if (_randomizer.Rand(0, 99) >= 35) return;
-	_items.emplace_back(pos, static_cast<ItemType>(_randomizer.Rand(0, 4)));
+	_items.emplace_back(pos, static_cast<E_ItemType>(_randomizer.Rand(0, 4)));
 }
 
 void InGameScene::SpawnDeathParticle(VEC2 pos)

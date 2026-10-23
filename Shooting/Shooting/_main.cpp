@@ -36,7 +36,12 @@ using std::string;
 SceneManager g_SceneMgr;
 
 static int g_verFont{};
-const string VERSION {"v1.0.2"};
+const string VERSION {"v1.0.21"};
+
+void RefreshVersionFont()
+{
+	g_verFont = g2_FontCreate("Arial", 18, 0);
+}
 
 void DrawVersion()
 {
@@ -56,7 +61,6 @@ int main()
 	g_SceneMgr.InitEngine();
 	SoundData::RegisterAll(g_SoundManager);
 	g_deltaTimer.Init();
-	g_verFont = g2_FontCreate("±¼¸²",18,0);
 
 
 	TitleScene* title = new TitleScene();

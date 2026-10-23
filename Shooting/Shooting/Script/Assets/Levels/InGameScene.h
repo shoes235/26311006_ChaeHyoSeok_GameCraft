@@ -127,6 +127,8 @@ private:
 	//input
 	InputManager _inputMgr;
 private:
+	void UpdateGame();
+
 	void SpawnRandomEnemy();
 	void SpawnBoss();
 	void TryDropItem(VEC2 pos);

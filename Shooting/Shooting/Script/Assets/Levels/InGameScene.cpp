@@ -296,6 +296,19 @@ void InGameScene::Render()
 void InGameScene::Update()
 {
 	IScene::Update();
+
+	if (!_isPaused)
+		UpdateGame();
+
+
+	return;
+}
+
+
+
+void InGameScene::UpdateGame()
+{
+
 	float dt = g_deltaTimer.GetDeltaTime();
 
 	if (!g_SoundManager.IsBGMPlaying())
@@ -536,12 +549,12 @@ void InGameScene::Update()
 		_clearTimer = 3.0f;
 		_bossHealthBar.reset();
 	}
-
-
-
-
-	return;
 }
+
+
+
+
+
 
 Enemy* InGameScene::AcquireEnemy(VEC2 pos, const EnemyConfig& config)
 {

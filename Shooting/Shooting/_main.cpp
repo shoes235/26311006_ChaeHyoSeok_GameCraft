@@ -1,4 +1,8 @@
 #include <iostream>
+
+#include <string>
+using std::string;
+
 #include <glc2d.h>
 
 // link the 2d game library
@@ -31,7 +35,8 @@
 
 SceneManager g_SceneMgr;
 
-
+static int g_verFont{};
+const string VERSION {"v1.0.0"};
 
 //===============================================================================================
 
@@ -43,8 +48,10 @@ int main()
 	
 	//Birth
 	g_SceneMgr.InitEngine();
-	SoundData::RegisterAll(g_SoundManager);
+	// SoundData::RegisterAll(g_SoundManager);
 	g_deltaTimer.Init();
+	g_verFont = g2_FontCreate("±¼¸²",12,0);
+
 
 	TitleScene* title = new TitleScene();
 	g_SceneMgr.ChangeScene(title, E_SceneType::TITLE);
@@ -52,6 +59,13 @@ int main()
 
 
 	//Life::Update
+	g2_FontDrawText
+	(
+		g_verFont,
+	{1280 - 200,720 - 200,1280,720},
+	0xFFFFFFFF,
+	VERSION.c_str()
+	);
 	g_SceneMgr.Run();
 
 

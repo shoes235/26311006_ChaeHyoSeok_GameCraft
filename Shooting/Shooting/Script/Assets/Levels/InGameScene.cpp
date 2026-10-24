@@ -389,14 +389,15 @@ void InGameScene::UpdateGame()
 		{
 			const int textureIndex = _randomizer.Rand(0, static_cast<int>(_horrorTextures.size()) - 1);
 			_activeHorrorTexture = _horrorTextures[textureIndex];
-			const int catWidths[] = { 812, 736, 387, 374, 162, 287, 287, 498, 735, 736, 800 };
-			const int catHeights[] = { 992, 1229, 516, 498, 283, 252, 292, 498, 602, 626, 756 };
-
-			const float scale = (std::max)(1280.0f / catWidths[textureIndex], 720.0f / catHeights[textureIndex]);
-
-			_activeHorrorTexture->SetScale(VEC2(scale, scale));
-			_activeHorrorTexture->SetPos(VEC2((1280.0f - catWidths[textureIndex] * scale) * 0.5f,
-				(720.0f - catHeights[textureIndex] * scale) * 0.5f));
+			const float width = static_cast<float>(_activeHorrorTexture->GetWidth());
+			const float height = static_cast<float>(_activeHorrorTexture->GetHeight());
+			if (width > 0.0f && height > 0.0f)
+			{
+				const float scale = (std::max)(1280.0f / width, 720.0f / height);
+				_activeHorrorTexture->SetScale(VEC2(scale, scale));
+				_activeHorrorTexture->SetPos(VEC2((1280.0f - width * scale) * 0.5f,
+					(720.0f - height * scale) * 0.5f));
+			}
 
 			_horrorEffectTimer = _randomizer.Rand(0.5f, MAX_HORROR_EFFECT_TIME);
 

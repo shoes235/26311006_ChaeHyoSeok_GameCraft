@@ -34,6 +34,8 @@ public :
 	int SetScale(VEC2 scale);
 
 	VEC2 GetPos();
+	int GetWidth() const;
+	int GetHeight() const;
 
 	std::string GetFilePath();
 };

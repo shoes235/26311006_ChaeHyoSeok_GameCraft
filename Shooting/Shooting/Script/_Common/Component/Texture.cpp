@@ -99,6 +99,16 @@ VEC2 Texture::GetPos()
 	return _texturePos;
 }
 
+int Texture::GetWidth() const
+{
+	return _texture == -1 ? 0 : g2_TextureWidth(_texture);
+}
+
+int Texture::GetHeight() const
+{
+	return _texture == -1 ? 0 : g2_TextureHeight(_texture);
+}
+
 std::string Texture::GetFilePath()
 {
 	return _filePath;

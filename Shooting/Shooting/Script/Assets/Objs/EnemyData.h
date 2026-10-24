@@ -46,27 +46,36 @@ inline BossPatternData GetStageBossPatternData(int bossType, int phase)
 	{
 		switch (phase)
 		{
-		case 1: return { "SPELL 1 - GASTER BLAST", 10.0f, E_EnemyShotPattern::AIMED_SINGLE, 1, 0.0f, 0.18f, 290.0f, .65f };
-		case 2: return { "SPELL 2 - SPIRAL BONE", 14.0f, E_EnemyShotPattern::ROTATING_BURST, 14, 0.0f, 0.32f, 185.0f, .65f };
-		default: return { "NORMAL - THOROW BONE", 8.0f, E_EnemyShotPattern::AIMED_SPREAD, 3, 0.55f, 1.2f, 190.0f, .65f };
+		case 0: return { "SPELL 1 - GASTER BLAST", 10.0f, E_EnemyShotPattern::AIMED_SINGLE, 1, 0.0f, 0.18f, 290.0f, .65f };
+		case 1: return { "SPELL 2 - SPIRAL BONE", 14.0f, E_EnemyShotPattern::ROTATING_BURST, 14, 0.0f, 0.32f, 185.0f, .65f };
+		case 2: return { "SPELL 3 - THOROW BONE", 8.0f, E_EnemyShotPattern::AIMED_SPREAD, 3, 0.55f, 1.2f, 190.0f, .65f };
+		case 3: return { "SPELL 4 - GASTER BLAST", 10.0f, E_EnemyShotPattern::AIMED_SPREAD, 5, 0.7f, 0.75f, 230.0f, .65f };
+		case 4: return { "SPELL 5 - SPIRAL BONE", 14.0f, E_EnemyShotPattern::ROTATING_BURST, 20, 0.0f, 0.25f, 200.0f, .65f };
+		default: return { "SPELL 6 - BONE RAIN", 8.0f, E_EnemyShotPattern::RADIAL_BURST, 24, 0.0f, 0.9f, 175.0f, .65f };
 		}
 	}
 	if (bossType == 2)
 	{
 		switch (phase)
 		{
-		case 1: return { "SPELL 1 - SAL RAIN", 11.0f, E_EnemyShotPattern::STRAIGHT_SPREAD, 9, 0.8f, 0.75f, 245.0f, .65f };
-		case 2: return { "SPELL 2 - RADIAL", 13.0f, E_EnemyShotPattern::RADIAL_BURST, 20, 0.0f, 1.1f, 165.0f, .65f };
-		default: return { "NORMAL - AIMED SALVO", 8.0f, E_EnemyShotPattern::AIMED_SPREAD, 3, 0.45f, 1.0f, 200.0f, .65f };
+		case 0: return { "SPELL 1 - SAL RAIN", 11.0f, E_EnemyShotPattern::STRAIGHT_SPREAD, 9, 0.8f, 0.75f, 245.0f, .65f };
+		case 1: return { "SPELL 2 - RADIAL", 13.0f, E_EnemyShotPattern::RADIAL_BURST, 20, 0.0f, 1.1f, 165.0f, .65f };
+		case 2: return { "SPELL 3 - AIMED SALVO", 8.0f, E_EnemyShotPattern::AIMED_SPREAD, 3, 0.45f, 1.0f, 200.0f, .65f };
+		case 3: return { "SPELL 4 - SAL RAIN", 11.0f, E_EnemyShotPattern::STRAIGHT_SPREAD, 13, 1.0f, 0.6f, 270.0f, .65f };
+		case 4: return { "SPELL 5 - RADIAL", 13.0f, E_EnemyShotPattern::RADIAL_BURST, 28, 0.0f, 0.8f, 190.0f, .65f };
+		default: return { "SPELL 6 - AIMED SALVO", 8.0f, E_EnemyShotPattern::AIMED_SPREAD, 5, 0.65f, 0.75f, 230.0f, .65f };
 		}
 	}
 
 	//Default
 	switch (phase)
 	{
-	case 1: return { "SPELL 1", 12.0f, E_EnemyShotPattern::AIMED_SPREAD, 5, .65f, 0.9f, 230.0f, .65f };
-	case 2: return { "SPELL 2", 12.0f, E_EnemyShotPattern::ROTATING_BURST, 18, .65f, .5f, 150.0f, .65f };
-	default: return { "NORMAL", 8.0f, E_EnemyShotPattern::AIMED_SINGLE, 1, .0f, .75f, 210.0f, .65f };
+	case 0: return { "SPELL 1", 12.0f, E_EnemyShotPattern::AIMED_SPREAD, 5, .65f, 0.9f, 230.0f, .65f };
+	case 1: return { "SPELL 2", 12.0f, E_EnemyShotPattern::ROTATING_BURST, 18, .65f, .5f, 150.0f, .65f };
+	case 2: return { "SPELL 3", 8.0f, E_EnemyShotPattern::AIMED_SINGLE, 1, .0f, .75f, 210.0f, .65f };
+	case 3: return { "SPELL 4", 12.0f, E_EnemyShotPattern::STRAIGHT_SPREAD, 9, .8f, .7f, 240.0f, .65f };
+	case 4: return { "SPELL 5", 12.0f, E_EnemyShotPattern::ROTATING_BURST, 24, .0f, .35f, 175.0f, .65f };
+	default: return { "SPELL 6", 8.0f, E_EnemyShotPattern::RADIAL_BURST, 24, .0f, .9f, 180.0f, .65f };
 	}
 }
 

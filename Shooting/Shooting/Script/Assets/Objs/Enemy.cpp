@@ -64,13 +64,23 @@ void Enemy::Update(float delta, VEC2 playerPos)
 
 	if (_config.cycleBossPatterns)
 	{
-		_bossPhaseTimer += delta;
-		const float phaseDuration = GetStageBossPatternData(_config.bossType, _bossPhase).duration;
-		if (_bossPhaseTimer >= phaseDuration)
+		const int phaseStart = _hp * 2 <= _maxHp ? 3 : 0;
+		if (_bossPhase < phaseStart)
 		{
-			_bossPhaseTimer -= phaseDuration;
-			_bossPhase = (_bossPhase + 1) % 3;
+			_bossPhase = phaseStart;
+			_bossPhaseTimer = 0.0f;
 			SetBossPattern();
+		}
+		else
+		{
+			_bossPhaseTimer += delta;
+			const float phaseDuration = GetStageBossPatternData(_config.bossType, _bossPhase).duration;
+			if (_bossPhaseTimer >= phaseDuration)
+			{
+				_bossPhaseTimer -= phaseDuration;
+				_bossPhase = phaseStart + (_bossPhase - phaseStart + 1) % 3;
+				SetBossPattern();
+			}
 		}
 	}
 

@@ -3,6 +3,8 @@
 #include "InputManager.h"
 #include "GameData.h"
 
+#include "Fumo.h"
+#include "Randomizer.h"
 
 #include "TitleScene.h"
 
@@ -11,6 +13,8 @@ using std::vector;
 
 #include <string>
 using std::string;
+
+#include <memory>
 
 enum class E_Rank
 {
@@ -79,7 +83,12 @@ private:
 	//Input text
 	bool _showInputTxt = false;
 
-
+	vector<std::unique_ptr<Fumo>> _fumoPool;
+	vector<Fumo*> _fumos;
+	Randomizer _randomizer;
+	float _fumoSpawnTimer = 0.0f;
+	const float FUMO_SPAWN_INTERVAL = 1.5f;
+	const std::size_t MAX_ACTIVE_FUMOS = 3;
 
 	InputManager _inputMgr;
 public:
@@ -103,5 +112,7 @@ public:
 
 private:
 	E_Rank GetRank(float score);
+	void UpdateFumos(float delta);
+	void SpawnFumo();
 };
 

@@ -309,7 +309,8 @@ void InGameScene::Render()
 			_enemies.empty() ? "" : _enemies.front()->GetBossPatternName());
 	else
 		g2_FontDrawText(_uiFont, { 430, 300, 900, 360 }, 0xFFFFFFFF, "STAGE CLEAR!");
-
+	
+	if (_activeHorrorTexture) _activeHorrorTexture->Print();
 
 	if (_isPaused)
 	{
@@ -334,7 +335,6 @@ void InGameScene::Render()
 
 	//============================
 
-	if (_activeHorrorTexture) _activeHorrorTexture->Print();
 
 
 

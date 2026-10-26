@@ -25,6 +25,11 @@ public :
 			: keys(k),callback(cb) { }
 	};
 
+	InputManager();
+	InputManager(const InputManager&) = delete;
+	InputManager& operator=(const InputManager&) = delete;
+	InputManager(InputManager&&) = delete;
+	InputManager& operator=(InputManager&&) = delete;
 	~InputManager();
 
 	void RegisterAction(const vector<unsigned char>& keys, E_KeyType type, function<void()> callback);

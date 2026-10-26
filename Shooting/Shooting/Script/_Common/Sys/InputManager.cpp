@@ -1,4 +1,7 @@
 #include "InputManager.h"
+#include <utility>
+
+InputManager::InputManager() : _holdBind{}, _downBind{}, _preKeyUp{} {}
 InputManager::~InputManager()
 {
 	_holdBind.clear();
@@ -10,10 +13,10 @@ void InputManager::RegisterAction(const vector<unsigned char>& keys,E_KeyType ty
 	switch (type)
 	{
 	case E_KeyType::HOLD:
-		_holdBind.push_back({ keys,callback });
+		_holdBind.emplace_back(keys, std::move(callback));
 		break;
 	case E_KeyType::DOWN:
-		_downBind.push_back({ keys,callback });
+		_downBind.emplace_back(keys, std::move(callback));
 		break;
 	}
 

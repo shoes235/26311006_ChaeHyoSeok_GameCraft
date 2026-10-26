@@ -171,6 +171,30 @@ void Enemy::FirePattern(VEC2 playerPos)
 
 
 	}break;
+	case E_EnemyShotPattern::AIMED_GAP_RING:
+	{
+		const int count = (_config.bulletCount > 0) ? _config.bulletCount : 1;
+		const float gapAngle = aimAngle + _bossPatternAngle;
+		const float gapWidth = 2.0f * PI / count * 1.2f;
+		for (int i = 0; i < count; ++i)
+		{
+			const float angle = 2.0f * PI * i / count + _bossPatternAngle;
+			const float difference = atan2f(sinf(angle - gapAngle), cosf(angle - gapAngle));
+			if (fabsf(difference) >= gapWidth) AddBullet(angle);
+		}
+		_bossPatternAngle += 0.18f;
+	}break;
+	case E_EnemyShotPattern::WAVING_SPREAD:
+	{
+		const int count = (_config.bulletCount > 0) ? _config.bulletCount : 1;
+		const float center = aimAngle + sinf(_bossPatternAngle) * _config.spreadAngle;
+		for (int i = 0; i < count; ++i)
+		{
+			const float offset = count == 1 ? 0.0f : -_config.spreadAngle + 2.0f * _config.spreadAngle * i / (count - 1);
+			AddBullet(center + offset);
+		}
+		_bossPatternAngle += 0.55f;
+	}break;
 	}
 }
 

@@ -2,6 +2,7 @@
 #include "JumpScareScene.h"
 #include "SoundData.h"
 
+
 std::vector<std::unique_ptr<Texture>>& InGameScene::GetHorrorTextureCache()
 {
 	static std::vector<std::unique_ptr<Texture>> textures;
@@ -31,6 +32,7 @@ void InGameScene::Init()
 	_stageTimer = STAGE_TIME;
 	_clearTimer = 0.0f;
 	if (GameData::g_stageLast < 1) GameData::g_stageLast = 1;
+
 	_spawnTimer = GetRandomSpawnDelay();
 	_horrorTextures.clear();
 	for (const auto& texture : GetHorrorTextureCache())
@@ -178,8 +180,22 @@ void InGameScene::Render()
 
 	//============================
 	//OBJS
-	_cloud.Print();
-	_cloud2.Print();
+	const E_StageType stageType = GetCurrentStageType();
+	if (stageType == E_StageType::LAST)
+	{
+		_thirdCloud.Print();
+		_thirdCloud2.Print();
+	}
+	else if (stageType == E_StageType::MIDDLE)
+	{
+		_secondCloud.Print();
+		_secondCloud2.Print();
+	}
+	else
+	{
+		_cloud.Print();
+		_cloud2.Print();
+	}
 
 	_player.Render();
 	for (const auto& enemy : _enemies) enemy->Render();
@@ -421,22 +437,25 @@ void InGameScene::UpdateGame()
 	}
 
 	//CLOUD
-	VEC2 posC = _cloud.GetPos();
+	const E_StageType stageType = GetCurrentStageType();
+	Texture& cloud = stageType == E_StageType::LAST ? _thirdCloud : (stageType == E_StageType::MIDDLE ? _secondCloud : _cloud);
+	Texture& cloud2 = stageType == E_StageType::LAST ? _thirdCloud2 : (stageType == E_StageType::MIDDLE ? _secondCloud2 : _cloud2);
+	VEC2 posC = cloud.GetPos();
 	posC.y += dt * 1000;
 
 	if (posC.y > 720.0f)
 		posC.y = -720.0f;
 
-	_cloud.SetPos(posC);
+	cloud.SetPos(posC);
 
 
-	VEC2 posC2 = _cloud2.GetPos();
+	VEC2 posC2 = cloud2.GetPos();
 	posC2.y += dt * 1000;
 
 	if (posC2.y > 720.0f)
 		posC2.y = -720.0f;
 
-	_cloud2.SetPos(posC2);
+	cloud2.SetPos(posC2);
 
 
 	//py
@@ -469,6 +488,7 @@ void InGameScene::UpdateGame()
 		if (_clearTimer <= .0f)
 		{
 			++GameData::g_stageLast;
+
 			_phase = E_StagePhase::WAVE;
 			_stageTimer = STAGE_TIME;
 			_spawnTimer = GetRandomSpawnDelay();
@@ -522,7 +542,7 @@ void InGameScene::UpdateGame()
 			case E_ItemType::RAPID_FIRE: _player.AddRapidFire(); break;
 			case E_ItemType::POWER: _player.AddPower(); break;
 			case E_ItemType::SHOTGUN: _player.AddShotgun(); break;
-		case E_ItemType::STAR: GameData::g_score += (350 + static_cast<int>(350.0f * 0.1 * GameData::g_score)); break;
+			case E_ItemType::STAR: GameData::g_score += 350; break;
 		}
 		item.Collect();
 	}
@@ -666,13 +686,26 @@ void InGameScene::SpawnRandomEnemy()
 
 void InGameScene::SpawnBoss()
 {
-	const int bossType = _randomizer.Rand(0, 2);
 	EnemyConfig config;
-	switch (bossType)
+	if (GetCurrentStageType() == E_StageType::START
+		|| GetCurrentStageType() == E_StageType::MIDDLE
+		|| GetCurrentStageType() == E_StageType::LAST)
 	{
-	case 1: config = MakeStageBoss2(); break;
-	case 2: config = MakeStageBoss3(); break;
-	default: config = MakeStageBoss(); break;
+		switch (GetCurrentStageType())
+		{
+		case (E_StageType::START): config = MakeFinalBoss(); break;
+		case (E_StageType::MIDDLE): config = MakeFinalBoss2(); break;
+		case (E_StageType::LAST): config = MakeFinalBoss3(); break;
+		}
+	}
+	else
+	{
+		switch (_randomizer.Rand(0, 2))
+		{
+		case 1: config = MakeStageBoss2(); break;
+		case 2: config = MakeStageBoss3(); break;
+		default: config = MakeStageBoss(); break;
+		}
 	}
 	config = ScaleEnemyForStage(ScaleEnemyForDifficulty(config, GameData::g_diff), GameData::g_stageLast);
 	_enemies.push_back(AcquireEnemy(VEC2(610.0f, -60.0f), config));
@@ -705,6 +738,17 @@ float InGameScene::GetRandomSpawnDelay()
 	const int difficulty = (GameData::g_diff >= 0 && GameData::g_diff <= 2) ? GameData::g_diff : 0;
 	return _randomizer.Rand(minTenths, maxTenths) / 10.0f * spawnRateScale[difficulty];
 }
+
+
+E_StageType InGameScene::GetCurrentStageType() const
+{
+	const int cycleLength = static_cast<int>(E_StageType::LAST);
+	const int stageInCycle = (GameData::g_stageLast - 1) % cycleLength + 1;
+	if (stageInCycle > static_cast<int>(E_StageType::MIDDLE)) return E_StageType::LAST;
+	if (stageInCycle > static_cast<int>(E_StageType::START)) return E_StageType::MIDDLE;
+	return E_StageType::START;
+}
+
 
 void InGameScene::Destroy()
 {

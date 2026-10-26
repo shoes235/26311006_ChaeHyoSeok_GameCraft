@@ -42,6 +42,42 @@ inline EnemyConfig ScaleEnemyForDifficulty(EnemyConfig config, int difficulty)
 
 inline BossPatternData GetStageBossPatternData(int bossType, int phase)
 {
+	if (bossType == 4)
+	{
+		switch (phase)
+		{
+		case 0: return { "SPELL 1 - SHATTERED ORBIT", 12.0f, E_EnemyShotPattern::RADIAL_BURST, 16, 0.0f, 0.8f, 180.0f, 0.9f };
+		case 1: return { "SPELL 2 - FALLING COMETS", 12.0f, E_EnemyShotPattern::STRAIGHT_SPREAD, 13, 1.3f, 0.65f, 240.0f, 0.8f };
+		case 2: return { "SPELL 3 - SHATTERED ORBIT", 10.0f, E_EnemyShotPattern::RADIAL_BURST, 24, 0.0f, 0.65f, 210.0f, 0.8f };
+		case 3: return { "SPELL 4 - COMET CROSSING", 12.0f, E_EnemyShotPattern::STRAIGHT_SPREAD, 17, 1.8f, 0.5f, 275.0f, 0.7f };
+		case 4: return { "SPELL 5 - STAR COLLAPSE", 10.0f, E_EnemyShotPattern::RADIAL_BURST, 30, 0.0f, 0.55f, 235.0f, 0.7f };
+		default: return { "SPELL 6 - COMET STORM", 10.0f, E_EnemyShotPattern::STRAIGHT_SPREAD, 21, 2.2f, 0.38f, 300.0f, 0.7f };
+		}
+	}
+	if (bossType == 5)
+	{
+		switch (phase)
+		{
+		case 0: return { "SPELL 1 - HUNTER'S LATTICE", 12.0f, E_EnemyShotPattern::AIMED_SPREAD, 7, 0.7f, 0.8f, 215.0f, 0.9f };
+		case 1: return { "SPELL 2 - ROTATING CAGE", 12.0f, E_EnemyShotPattern::ROTATING_BURST, 16, 0.0f, 0.42f, 165.0f, 0.8f };
+		case 2: return { "SPELL 3 - HUNTER'S LATTICE", 10.0f, E_EnemyShotPattern::AIMED_SPREAD, 11, 1.0f, 0.65f, 240.0f, 0.8f };
+		case 3: return { "SPELL 4 - ROTATING CAGE", 12.0f, E_EnemyShotPattern::ROTATING_BURST, 22, 0.0f, 0.34f, 190.0f, 0.7f };
+		case 4: return { "SPELL 5 - LAST HUNT", 10.0f, E_EnemyShotPattern::AIMED_SPREAD, 15, 1.25f, 0.5f, 270.0f, 0.7f };
+		default: return { "SPELL 6 - CLOSING CAGE", 10.0f, E_EnemyShotPattern::ROTATING_BURST, 28, 0.0f, 0.27f, 215.0f, 0.7f };
+		}
+	}
+	if (bossType == 3)
+	{
+		switch (phase)
+		{
+		case 0: return { "SPELL 1 - SEEKING GAP", 12.0f, E_EnemyShotPattern::AIMED_GAP_RING, 18, 0.0f, 1.25f, 170.0f, 1.0f };
+		case 1: return { "SPELL 2 - WAVING BLADES", 12.0f, E_EnemyShotPattern::WAVING_SPREAD, 11, 1.8f, 0.55f, 235.0f, 0.8f };
+		case 2: return { "SPELL 3 - SEEKING GAP", 10.0f, E_EnemyShotPattern::AIMED_GAP_RING, 24, 0.0f, 0.9f, 190.0f, 0.8f };
+		case 3: return { "SPELL 4 - LAST HORIZON", 12.0f, E_EnemyShotPattern::WAVING_SPREAD, 15, 2.2f, 0.4f, 270.0f, 0.7f };
+		case 4: return { "SPELL 5 - COLLAPSING GAP", 12.0f, E_EnemyShotPattern::AIMED_GAP_RING, 30, 0.0f, 0.7f, 215.0f, 0.7f };
+		default: return { "SPELL 6 - FINAL WAVE", 10.0f, E_EnemyShotPattern::WAVING_SPREAD, 19, 2.6f, 0.32f, 300.0f, 0.7f };
+		}
+	}
 	if (bossType == 1)
 	{
 		switch (phase)
@@ -228,5 +264,33 @@ inline EnemyConfig MakeStageBoss3()
 	config.moveSpeed = 60.0f;
 	config.bulletRadius = 5.0f;
 	config.animationPaths = { "rsc/imgs/Enemies/Boss2/0.png" };
+	return config;
+}
+
+inline EnemyConfig MakeFinalBoss()
+{
+	EnemyConfig config = MakeStageBoss3();
+	config.hp = 1200;
+	config.moveSpeed = 45.0f;
+	config.bossType = 3;
+	return config;
+}
+
+inline EnemyConfig MakeFinalBoss2()
+{
+	EnemyConfig config = MakeStageBoss();
+	config.hp = 1450;
+	config.radius = 36.0f;
+	config.moveSpeed = 32.0f;
+	config.bossType = 4;
+	return config;
+}
+
+inline EnemyConfig MakeFinalBoss3()
+{
+	EnemyConfig config = MakeStageBoss2();
+	config.hp = 1650;
+	config.moveSpeed = 28.0f;
+	config.bossType = 5;
 	return config;
 }

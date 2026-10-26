@@ -33,6 +33,9 @@ using std::vector;
 // === Scene ===
 class JumpScareScene;
 
+
+enum class E_StageType{ START = 3,MIDDLE = 6,LAST = 9};
+
 class InGameScene : public IScene
 {
 private:
@@ -95,6 +98,7 @@ private:
 	enum class E_StagePhase { WAVE, BOSS, CLEAR };
 	E_StagePhase _phase = E_StagePhase::WAVE;
 
+
 	//time
 	const float STAGE_TIME{30.0f};
 	float _stageTimer = STAGE_TIME;
@@ -118,9 +122,13 @@ private:
 	Texture _layout{ "rsc/imgs/UI/Layout.png", VEC2(0,0)};
 	Texture _pauseUI{ "rsc/imgs/UI/Black2.png",VEC2(0,0) };
 
-
+	//Cloud
 	Texture _cloud{ "rsc/imgs/cloud.jpg",VEC2(120,0) };
 	Texture _cloud2{ "rsc/imgs/cloud.jpg",VEC2(120,-720) };
+	Texture _secondCloud{ "rsc/imgs/cloud2.jpg", VEC2(120, 0) };
+	Texture _secondCloud2{ "rsc/imgs/cloud2.jpg", VEC2(120, -720) };
+	Texture _thirdCloud{ "rsc/imgs/cloud3.jpg", VEC2(120, 0) };
+	Texture _thirdCloud2{ "rsc/imgs/cloud3.jpg", VEC2(120, -720) };
 
 	Texture _monitor{ "rsc/imgs/UI/monitor3.png",VEC2(25,400) };
 	MonitorScreen _monitorScreen{ VEC2(109,435) };
@@ -129,6 +137,8 @@ private:
 	InputManager _inputMgr;
 private:
 	void UpdateGame();
+
+	E_StageType GetCurrentStageType() const;
 
 	void SpawnRandomEnemy();
 	void SpawnBoss();

@@ -460,10 +460,12 @@ void InGameScene::UpdateGame()
 
 	//py
 
-	_player.SetFocus(false);
 
 	_player.Update(dt);
 	_monitorScreen.Update(dt);
+
+	_player.SetFocus(false);
+
 
 	if (_phase == E_StagePhase::WAVE)
 	{

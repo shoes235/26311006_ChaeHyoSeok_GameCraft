@@ -13,7 +13,7 @@ private:
 public:
 	explicit Fumo(float frameDuration = 0.1f);
 
-	void Reset(float x, float stopY, float speed = 180.0f);
+	void Reset(float x, float stopY);
 	void Update(float delta) override;
 	void Render() override;
 	bool IsActive() const { return _state != State::INACTIVE; }

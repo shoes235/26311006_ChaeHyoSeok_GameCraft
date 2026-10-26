@@ -24,16 +24,18 @@ void ResultScene::SpawnFumo()
 	}
 
 	fumo->Reset(static_cast<float>(_randomizer.Rand(0, _winSize.cx - 64)),
-		_randomizer.Rand(250.0f, 560.0f), 220.0f);
+		_randomizer.Rand(250.0f, 560.0f));
 	_fumos.push_back(fumo);
 }
-
 void ResultScene::UpdateFumos(float delta)
 {
 	for (auto it = _fumos.begin(); it != _fumos.end();)
 	{
 		(*it)->Update(delta);
-		if (!(*it)->IsActive()) it = _fumos.erase(it);
+		if (!(*it)->IsActive())
+		{
+			it = _fumos.erase(it);
+		}
 		else ++it;
 	}
 

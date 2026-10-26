@@ -18,11 +18,10 @@ Fumo::Fumo(float frameDuration)
 	_anim->ChangeClip("Idle");
 }
 
-void Fumo::Reset(float x, float stopY, float speed)
+void Fumo::Reset(float x, float stopY)
 {
 	_pos = VEC2(x, 720.0f);
 	_stopY = stopY;
-	_speed = speed;
 	_state = State::RISING;
 	_anim->Restart();
 }

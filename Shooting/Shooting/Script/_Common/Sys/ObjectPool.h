@@ -1,7 +1,9 @@
 #pragma once
 
+#include <algorithm>
 #include <cstddef>
 #include <functional>
+#include <limits>
 #include <memory>
 #include <unordered_set>
 #include <utility>
@@ -13,10 +15,11 @@ class ObjectPool
 public:
 	using Factory = std::function<std::unique_ptr<T>()>;
 
-	ObjectPool(Factory factory, std::size_t initialSize = 5, std::size_t growthSize = 5)
-		: _factory(std::move(factory)), _growthSize(growthSize ? growthSize : 1)
+	ObjectPool(Factory factory, std::size_t initialSize = 5, std::size_t growthSize = 5,
+		std::size_t maxSize = (std::numeric_limits<std::size_t>::max)())
+		: _factory(std::move(factory)), _growthSize(growthSize ? growthSize : 1), _maxSize(maxSize)
 	{
-		Grow(initialSize);
+		Grow((std::min)(initialSize, _maxSize));
 	}
 	ObjectPool(const ObjectPool&) = delete;
 	ObjectPool& operator=(const ObjectPool&) = delete;
@@ -25,7 +28,8 @@ public:
 
 	T* Get()
 	{
-		if (_available.empty()) Grow(_growthSize);
+		if (_available.empty() && _owned.size() < _maxSize)
+			Grow((std::min)(_growthSize, _maxSize - _owned.size()));
 		if (_available.empty()) return nullptr;
 
 		T* object = _available.back();
@@ -45,6 +49,7 @@ public:
 private:
 	Factory _factory;
 	std::size_t _growthSize;
+	std::size_t _maxSize;
 	std::vector<std::unique_ptr<T>> _owned;
 	std::vector<T*> _all;
 	std::vector<T*> _available;
@@ -52,6 +57,7 @@ private:
 
 	void Grow(std::size_t count)
 	{
+		count = (std::min)(count, _maxSize - _owned.size());
 		for (std::size_t i = 0; i < count; ++i)
 		{
 			auto object = _factory();

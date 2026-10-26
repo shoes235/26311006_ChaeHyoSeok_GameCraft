@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\glc2d.0.1.0.7\build\native\glc2d.props" Condition="Exists('..\packages\glc2d.0.1.0.7\build\native\glc2d.props')" />
   <ItemGroup Label="ProjectConfigurations">
@@ -77,7 +77,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)_Common;$(ProjectDir)_Common\Sys;$(ProjectDir)_Common\Scene;$(ProjectDir)_Common\Component;$(ProjectDir)_Common\Component\Animation;$(ProjectDir)Assets;$(ProjectDir)Assets\Levels;$(ProjectDir)Assets\Obj;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)Script\_Common;$(ProjectDir)Script\_Common\Sys;$(ProjectDir)Script\_Common\Scene;$(ProjectDir)Script\_Common\Component;$(ProjectDir)Script\_Common\Component\Animation;$(ProjectDir)Script\Assets;$(ProjectDir)Script\Assets\Levels;$(ProjectDir)Script\Assets\Objs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -92,7 +92,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)_Common;$(ProjectDir)_Common\Sys;$(ProjectDir)_Common\Scene;$(ProjectDir)_Common\Component;$(ProjectDir)_Common\Component\Animation;$(ProjectDir)Assets;$(ProjectDir)Assets\Levels;$(ProjectDir)Assets\Obj;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)Script\_Common;$(ProjectDir)Script\_Common\Sys;$(ProjectDir)Script\_Common\Scene;$(ProjectDir)Script\_Common\Component;$(ProjectDir)Script\_Common\Component\Animation;$(ProjectDir)Script\Assets;$(ProjectDir)Script\Assets\Levels;$(ProjectDir)Script\Assets\Objs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -105,7 +105,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)_Common;$(ProjectDir)_Common\Sys;$(ProjectDir)_Common\Scene;$(ProjectDir)_Common\Component;$(ProjectDir)_Common\Component\Animation;$(ProjectDir)Assets;$(ProjectDir)Assets\Levels;$(ProjectDir)Assets\Obj;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)Script\_Common;$(ProjectDir)Script\_Common\Sys;$(ProjectDir)Script\_Common\Scene;$(ProjectDir)Script\_Common\Component;$(ProjectDir)Script\_Common\Component\Animation;$(ProjectDir)Script\Assets;$(ProjectDir)Script\Assets\Levels;$(ProjectDir)Script\Assets\Objs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -120,7 +120,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)_Common;$(ProjectDir)_Common\Sys;$(ProjectDir)_Common\Scene;$(ProjectDir)_Common\Component;$(ProjectDir)_Common\Component\Animation;$(ProjectDir)Assets;$(ProjectDir)Assets\Levels;$(ProjectDir)Assets\Obj;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)Script\_Common;$(ProjectDir)Script\_Common\Sys;$(ProjectDir)Script\_Common\Scene;$(ProjectDir)Script\_Common\Component;$(ProjectDir)Script\_Common\Component\Animation;$(ProjectDir)Script\Assets;$(ProjectDir)Script\Assets\Levels;$(ProjectDir)Script\Assets\Objs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -128,68 +128,67 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="_Common\Component\Animation\AnimationClip.cpp" />
-    <ClCompile Include="_Common\Component\Animation\Animator.cpp" />
-    <ClCompile Include="Assets\Obj\Cat.cpp" />
-    <ClCompile Include="Assets\Obj\Flag.cpp" />
-    <ClCompile Include="_Common\GameData.cpp" />
-    <ClCompile Include="_Common\Component\GameObject.cpp" />
-    <ClCompile Include="Assets\Levels\HowToPlayScene.cpp" />
-    <ClCompile Include="Assets\Levels\InGameScene.cpp" />
-    <ClCompile Include="_Common\Sys\InputManager.cpp" />
-    <ClCompile Include="_Common\Scene\IScene.cpp" />
-    <ClCompile Include="Assets\Levels\JumpScareScene.cpp" />
-    <ClCompile Include="Assets\Obj\Player.cpp" />
-    <ClCompile Include="Assets\Obj\Bullet.cpp" />
-    <ClCompile Include="_Common\Component\Collider.cpp" />
-    <ClCompile Include="Assets\Obj\Enemy.cpp" />
-    <ClCompile Include="Assets\Obj\Item.cpp" />
-    <ClCompile Include="Assets\Obj\Particle.cpp" />
-    <ClCompile Include="Assets\Obj\MonitorScreen.cpp" />
-    <ClCompile Include="Assets\Obj\ProgressBar.cpp" />
-    <ClCompile Include="_Common\Sys\Randomizer.cpp" />
-    <ClCompile Include="Assets\Levels\ResultScene.cpp" />
-    <ClCompile Include="_Common\Sys\SoundManager.cpp" />
-    <ClCompile Include="_Common\Component\Texture.cpp" />
-    <ClCompile Include="_Common\Scene\SceneManager.cpp" />
-    <ClCompile Include="_Common\Sys\DeltaTimer.cpp" />
-    <ClCompile Include="Assets\Levels\TitleScene.cpp" />
+    <ClCompile Include="Script\_Common\Component\Animation\AnimationClip.cpp" />
+    <ClCompile Include="Script\_Common\Component\Animation\Animator.cpp" />
+    <ClCompile Include="Script\_Common\GameData.cpp" />
+    <ClCompile Include="Script\_Common\Component\GameObject.cpp" />
+    <ClCompile Include="Script\Assets\Levels\HowToPlayScene.cpp" />
+    <ClCompile Include="Script\Assets\Levels\InGameScene.cpp" />
+    <ClCompile Include="Script\_Common\Sys\InputManager.cpp" />
+    <ClCompile Include="Script\_Common\Scene\IScene.cpp" />
+    <ClCompile Include="Script\Assets\Levels\JumpScareScene.cpp" />
+    <ClCompile Include="Script\Assets\Objs\Player.cpp" />
+    <ClCompile Include="Script\Assets\Objs\Bullet.cpp" />
+    <ClCompile Include="Script\_Common\Component\Collider.cpp" />
+    <ClCompile Include="Script\Assets\Objs\Enemy.cpp" />
+    <ClCompile Include="Script\Assets\Objs\Fumo.cpp" />
+    <ClCompile Include="Script\Assets\Objs\Item.cpp" />
+    <ClCompile Include="Script\Assets\Objs\Particle.cpp" />
+    <ClCompile Include="Script\Assets\Objs\MonitorScreen.cpp" />
+    <ClCompile Include="Script\Assets\Objs\ProgressBar.cpp" />
+    <ClCompile Include="Script\_Common\Sys\Randomizer.cpp" />
+    <ClCompile Include="Script\Assets\Levels\ResultScene.cpp" />
+    <ClCompile Include="Script\_Common\Sys\SoundManager.cpp" />
+    <ClCompile Include="Script\_Common\Component\Texture.cpp" />
+    <ClCompile Include="Script\_Common\Scene\SceneManager.cpp" />
+    <ClCompile Include="Script\_Common\Sys\DeltaTimer.cpp" />
+    <ClCompile Include="Script\Assets\Levels\TitleScene.cpp" />
     <ClCompile Include="_main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="_Common\Component\Animation\AnimationClip.h" />
-    <ClInclude Include="_Common\Component\Animation\Animator.h" />
-    <ClInclude Include="Assets\Obj\BomParticle.h" />
-    <ClInclude Include="Assets\Obj\Cat.h" />
-    <ClInclude Include="Assets\Obj\EnemyData.h" />
-    <ClInclude Include="Assets\Obj\Item.h" />
-    <ClInclude Include="Assets\Obj\Particle.h" />
-    <ClInclude Include="Assets\Obj\MonitorScreen.h" />
-    <ClInclude Include="_Common\Scene\E_SceneType.h" />
-    <ClInclude Include="Assets\Obj\Flag.h" />
-    <ClInclude Include="_Common\GameData.h" />
-    <ClInclude Include="_Common\Component\GameObject.h" />
-    <ClInclude Include="Assets\Levels\HowToPlayScene.h" />
-    <ClInclude Include="Assets\Levels\InGameScene.h" />
-    <ClInclude Include="_Common\Sys\InputManager.h" />
-    <ClInclude Include="_Common\Scene\IScene.h" />
-    <ClInclude Include="Assets\Levels\JumpScareScene.h" />
-    <ClInclude Include="Assets\Obj\Player.h" />
-    <ClInclude Include="Assets\Obj\Bullet.h" />
-    <ClInclude Include="_Common\Component\Collider.h" />
-    <ClInclude Include="Assets\Obj\Enemy.h" />
-    <ClInclude Include="Assets\Obj\ProgressBar.h" />
-    <ClInclude Include="_Common\Sys\Randomizer.h" />
-    <ClInclude Include="Assets\Levels\ResultScene.h" />
-    <ClInclude Include="_Common\Sys\SoundData.h" />
-    <ClInclude Include="_Common\Sys\SoundManager.h" />
-    <ClInclude Include="_Common\Component\Texture.h" />
-    <ClInclude Include="_Common\Scene\SceneManager.h" />
-    <ClInclude Include="_Common\Sys\DeltaTimer.h" />
-    <ClInclude Include="Assets\Levels\TitleScene.h" />
+    <ClInclude Include="Script\_Common\Component\Animation\AnimationClip.h" />
+    <ClInclude Include="Script\_Common\Component\Animation\Animator.h" />
+    <ClInclude Include="Script\Assets\Objs\BomParticle.h" />
+    <ClInclude Include="Script\Assets\Objs\EnemyData.h" />
+    <ClInclude Include="Script\Assets\Objs\Item.h" />
+    <ClInclude Include="Script\Assets\Objs\Particle.h" />
+    <ClInclude Include="Script\Assets\Objs\MonitorScreen.h" />
+    <ClInclude Include="Script\_Common\Scene\E_SceneType.h" />
+    <ClInclude Include="Script\_Common\GameData.h" />
+    <ClInclude Include="Script\_Common\Component\GameObject.h" />
+    <ClInclude Include="Script\Assets\Levels\HowToPlayScene.h" />
+    <ClInclude Include="Script\Assets\Levels\InGameScene.h" />
+    <ClInclude Include="Script\_Common\Sys\InputManager.h" />
+    <ClInclude Include="Script\_Common\Scene\IScene.h" />
+    <ClInclude Include="Script\Assets\Levels\JumpScareScene.h" />
+    <ClInclude Include="Script\Assets\Objs\Player.h" />
+    <ClInclude Include="Script\Assets\Objs\Bullet.h" />
+    <ClInclude Include="Script\_Common\Component\Collider.h" />
+    <ClInclude Include="Script\Assets\Objs\Enemy.h" />
+    <ClInclude Include="Script\Assets\Objs\Fumo.h" />
+    <ClInclude Include="Script\_Common\Sys\ObjectPool.h" />
+    <ClInclude Include="Script\Assets\Objs\ProgressBar.h" />
+    <ClInclude Include="Script\_Common\Sys\Randomizer.h" />
+    <ClInclude Include="Script\Assets\Levels\ResultScene.h" />
+    <ClInclude Include="Script\_Common\Sys\SoundData.h" />
+    <ClInclude Include="Script\_Common\Sys\SoundManager.h" />
+    <ClInclude Include="Script\_Common\Component\Texture.h" />
+    <ClInclude Include="Script\_Common\Scene\SceneManager.h" />
+    <ClInclude Include="Script\_Common\Sys\DeltaTimer.h" />
+    <ClInclude Include="Script\Assets\Levels\TitleScene.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

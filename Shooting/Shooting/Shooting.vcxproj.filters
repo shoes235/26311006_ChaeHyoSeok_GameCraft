@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="리소스 파일">
@@ -32,174 +32,171 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="_main.cpp"></ClCompile>
-    <ClCompile Include="_Common\Scene\SceneManager.cpp">
+    <ClCompile Include="Script\_Common\Scene\SceneManager.cpp">
       <Filter>_Common\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="_Common\Sys\SoundManager.cpp">
+    <ClCompile Include="Script\_Common\Sys\SoundManager.cpp">
       <Filter>_Common\Sys</Filter>
     </ClCompile>
-    <ClCompile Include="Assets\Levels\InGameScene.cpp">
+    <ClCompile Include="Script\Assets\Levels\InGameScene.cpp">
       <Filter>Assets\Levels</Filter>
     </ClCompile>
-    <ClCompile Include="Assets\Levels\TitleScene.cpp">
+    <ClCompile Include="Script\Assets\Levels\TitleScene.cpp">
       <Filter>Assets\Levels</Filter>
     </ClCompile>
-    <ClCompile Include="_Common\Sys\Randomizer.cpp">
+    <ClCompile Include="Script\_Common\Sys\Randomizer.cpp">
       <Filter>_Common\Sys</Filter>
     </ClCompile>
-    <ClCompile Include="_Common\Sys\InputManager.cpp">
+    <ClCompile Include="Script\_Common\Sys\InputManager.cpp">
       <Filter>_Common\Sys</Filter>
     </ClCompile>
-    <ClCompile Include="_Common\Component\Texture.cpp">
+    <ClCompile Include="Script\_Common\Component\Texture.cpp">
       <Filter>_Common\Component</Filter>
     </ClCompile>
-    <ClCompile Include="_Common\Component\Animation\Animator.cpp">
+    <ClCompile Include="Script\_Common\Component\Animation\Animator.cpp">
       <Filter>_Common\Component\Animation</Filter>
     </ClCompile>
-    <ClCompile Include="_Common\Component\Animation\AnimationClip.cpp">
+    <ClCompile Include="Script\_Common\Component\Animation\AnimationClip.cpp">
       <Filter>_Common\Component\Animation</Filter>
     </ClCompile>
-    <ClCompile Include="_Common\Component\GameObject.cpp">
+    <ClCompile Include="Script\_Common\Component\GameObject.cpp">
       <Filter>_Common\Component</Filter>
     </ClCompile>
-    <ClCompile Include="Assets\Obj\Flag.cpp">
+    <ClCompile Include="Script\Assets\Objs\ProgressBar.cpp">
       <Filter>Assets\Obj</Filter>
     </ClCompile>
-    <ClCompile Include="Assets\Obj\ProgressBar.cpp">
-      <Filter>Assets\Obj</Filter>
-    </ClCompile>
-    <ClCompile Include="_Common\GameData.cpp">
+    <ClCompile Include="Script\_Common\GameData.cpp">
       <Filter>_Common</Filter>
     </ClCompile>
-    <ClCompile Include="_Common\Sys\DeltaTimer.cpp">
+    <ClCompile Include="Script\_Common\Sys\DeltaTimer.cpp">
       <Filter>_Common\Sys</Filter>
     </ClCompile>
-    <ClCompile Include="_Common\Scene\IScene.cpp">
+    <ClCompile Include="Script\_Common\Scene\IScene.cpp">
       <Filter>_Common\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Assets\Levels\JumpScareScene.cpp">
+    <ClCompile Include="Script\Assets\Levels\JumpScareScene.cpp">
       <Filter>Assets\Levels</Filter>
     </ClCompile>
-    <ClCompile Include="Assets\Levels\HowToPlayScene.cpp">
+    <ClCompile Include="Script\Assets\Levels\HowToPlayScene.cpp">
       <Filter>Assets\Levels</Filter>
     </ClCompile>
-    <ClCompile Include="Assets\Obj\Cat.cpp">
+    <ClCompile Include="Script\Assets\Levels\ResultScene.cpp">
+      <Filter>Assets\Levels</Filter>
+    </ClCompile>
+    <ClCompile Include="Script\Assets\Objs\Bullet.cpp">
       <Filter>Assets\Obj</Filter>
     </ClCompile>
-    <ClCompile Include="Assets\Levels\ResultScene.cpp">
-      <Filter>Assets\Levels</Filter>
-    </ClCompile>
-    <ClCompile Include="Assets\Obj\Bullet.cpp">
-      <Filter>Assets\Obj</Filter>
-    </ClCompile>
-    <ClCompile Include="_Common\Component\Collider.cpp">
+    <ClCompile Include="Script\_Common\Component\Collider.cpp">
       <Filter>_Common\Component</Filter>
     </ClCompile>
-    <ClCompile Include="Assets\Obj\Enemy.cpp">
+    <ClCompile Include="Script\Assets\Objs\Enemy.cpp">
       <Filter>Assets\Obj</Filter>
     </ClCompile>
-    <ClCompile Include="Assets\Obj\Item.cpp">
+    <ClCompile Include="Script\Assets\Objs\Fumo.cpp">
       <Filter>Assets\Obj</Filter>
     </ClCompile>
-    <ClCompile Include="Assets\Obj\Particle.cpp">
+    <ClCompile Include="Script\Assets\Objs\Item.cpp">
       <Filter>Assets\Obj</Filter>
     </ClCompile>
-    <ClCompile Include="Assets\Obj\MonitorScreen.cpp">
+    <ClCompile Include="Script\Assets\Objs\Particle.cpp">
       <Filter>Assets\Obj</Filter>
     </ClCompile>
-    <ClCompile Include="Assets\Obj\Player.cpp">
+    <ClCompile Include="Script\Assets\Objs\MonitorScreen.cpp">
+      <Filter>Assets\Obj</Filter>
+    </ClCompile>
+    <ClCompile Include="Script\Assets\Objs\Player.cpp">
       <Filter>Assets\Obj</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="_Common\Scene\E_SceneType.h">
+    <ClInclude Include="Script\_Common\Scene\E_SceneType.h">
       <Filter>_Common\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="_Common\Scene\IScene.h">
+    <ClInclude Include="Script\_Common\Scene\IScene.h">
       <Filter>_Common\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="_Common\Scene\SceneManager.h">
+    <ClInclude Include="Script\_Common\Scene\SceneManager.h">
       <Filter>_Common\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="_Common\Sys\SoundManager.h">
+    <ClInclude Include="Script\_Common\Sys\SoundManager.h">
       <Filter>_Common\Sys</Filter>
     </ClInclude>
-    <ClInclude Include="_Common\Sys\SoundData.h">
+    <ClInclude Include="Script\_Common\Sys\SoundData.h">
       <Filter>_Common\Sys</Filter>
     </ClInclude>
-    <ClInclude Include="Assets\Levels\InGameScene.h">
+    <ClInclude Include="Script\Assets\Levels\InGameScene.h">
       <Filter>Assets\Levels</Filter>
     </ClInclude>
-    <ClInclude Include="Assets\Levels\TitleScene.h">
+    <ClInclude Include="Script\Assets\Levels\TitleScene.h">
       <Filter>Assets\Levels</Filter>
     </ClInclude>
-    <ClInclude Include="_Common\Sys\InputManager.h">
+    <ClInclude Include="Script\_Common\Sys\InputManager.h">
       <Filter>_Common\Sys</Filter>
     </ClInclude>
-    <ClInclude Include="_Common\Sys\Randomizer.h">
+    <ClInclude Include="Script\_Common\Sys\Randomizer.h">
       <Filter>_Common\Sys</Filter>
     </ClInclude>
-    <ClInclude Include="_Common\Component\Animation\Animator.h">
+    <ClInclude Include="Script\_Common\Component\Animation\Animator.h">
       <Filter>_Common\Component\Animation</Filter>
     </ClInclude>
-    <ClInclude Include="_Common\Component\Animation\AnimationClip.h">
+    <ClInclude Include="Script\_Common\Component\Animation\AnimationClip.h">
       <Filter>_Common\Component\Animation</Filter>
     </ClInclude>
-    <ClInclude Include="_Common\Component\Texture.h">
+    <ClInclude Include="Script\_Common\Component\Texture.h">
       <Filter>_Common\Component</Filter>
     </ClInclude>
-    <ClInclude Include="_Common\Component\GameObject.h">
+    <ClInclude Include="Script\_Common\Component\GameObject.h">
       <Filter>_Common\Component</Filter>
     </ClInclude>
-    <ClInclude Include="Assets\Obj\Flag.h">
-      <Filter>Assets\Obj</Filter>
-    </ClInclude>
-    <ClInclude Include="_Common\GameData.h">
+    <ClInclude Include="Script\_Common\GameData.h">
       <Filter>_Common</Filter>
     </ClInclude>
-    <ClInclude Include="_Common\Sys\DeltaTimer.h">
+    <ClInclude Include="Script\_Common\Sys\DeltaTimer.h">
       <Filter>_Common\Sys</Filter>
     </ClInclude>
-    <ClInclude Include="Assets\Levels\JumpScareScene.h">
+    <ClInclude Include="Script\Assets\Levels\JumpScareScene.h">
       <Filter>Assets\Levels</Filter>
     </ClInclude>
-    <ClInclude Include="Assets\Levels\HowToPlayScene.h">
+    <ClInclude Include="Script\Assets\Levels\HowToPlayScene.h">
       <Filter>Assets\Levels</Filter>
     </ClInclude>
-    <ClInclude Include="Assets\Obj\ProgressBar.h">
+    <ClInclude Include="Script\Assets\Objs\ProgressBar.h">
       <Filter>Assets\Obj</Filter>
     </ClInclude>
-    <ClInclude Include="Assets\Obj\Cat.h">
-      <Filter>Assets\Obj</Filter>
-    </ClInclude>
-    <ClInclude Include="Assets\Levels\ResultScene.h">
+    <ClInclude Include="Script\Assets\Levels\ResultScene.h">
       <Filter>Assets\Levels</Filter>
     </ClInclude>
-    <ClInclude Include="Assets\Obj\Bullet.h">
+    <ClInclude Include="Script\Assets\Objs\Bullet.h">
       <Filter>Assets\Obj</Filter>
     </ClInclude>
-    <ClInclude Include="_Common\Component\Collider.h">
+    <ClInclude Include="Script\_Common\Component\Collider.h">
       <Filter>_Common\Component</Filter>
     </ClInclude>
-    <ClInclude Include="Assets\Obj\Enemy.h">
+    <ClInclude Include="Script\Assets\Objs\Enemy.h">
       <Filter>Assets\Obj</Filter>
     </ClInclude>
-    <ClInclude Include="Assets\Obj\EnemyData.h">
+    <ClInclude Include="Script\_Common\Sys\ObjectPool.h">
+      <Filter>_Common\Sys</Filter>
+    </ClInclude>
+    <ClInclude Include="Script\Assets\Objs\Fumo.h">
       <Filter>Assets\Obj</Filter>
     </ClInclude>
-    <ClInclude Include="Assets\Obj\Item.h">
+    <ClInclude Include="Script\Assets\Objs\EnemyData.h">
       <Filter>Assets\Obj</Filter>
     </ClInclude>
-    <ClInclude Include="Assets\Obj\Particle.h">
+    <ClInclude Include="Script\Assets\Objs\Item.h">
       <Filter>Assets\Obj</Filter>
     </ClInclude>
-    <ClInclude Include="Assets\Obj\MonitorScreen.h">
+    <ClInclude Include="Script\Assets\Objs\Particle.h">
       <Filter>Assets\Obj</Filter>
     </ClInclude>
-    <ClInclude Include="Assets\Obj\BomParticle.h">
+    <ClInclude Include="Script\Assets\Objs\MonitorScreen.h">
       <Filter>Assets\Obj</Filter>
     </ClInclude>
-    <ClInclude Include="Assets\Obj\Player.h">
+    <ClInclude Include="Script\Assets\Objs\BomParticle.h">
+      <Filter>Assets\Obj</Filter>
+    </ClInclude>
+    <ClInclude Include="Script\Assets\Objs\Player.h">
       <Filter>Assets\Obj</Filter>
     </ClInclude>
   </ItemGroup>

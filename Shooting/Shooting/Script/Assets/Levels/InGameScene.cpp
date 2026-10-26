@@ -687,9 +687,11 @@ void InGameScene::SpawnRandomEnemy()
 void InGameScene::SpawnBoss()
 {
 	EnemyConfig config;
-	if (GetCurrentStageType() == E_StageType::START
+
+	if (!GameData::g_stageLast % static_cast<int>(E_StageType::START)
+	   && (GetCurrentStageType() == E_StageType::START
 		|| GetCurrentStageType() == E_StageType::MIDDLE
-		|| GetCurrentStageType() == E_StageType::LAST)
+		|| GetCurrentStageType() == E_StageType::LAST))
 	{
 		switch (GetCurrentStageType())
 		{

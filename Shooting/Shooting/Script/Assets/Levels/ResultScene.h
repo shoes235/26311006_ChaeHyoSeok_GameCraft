@@ -88,7 +88,7 @@ private:
 	Randomizer _randomizer;
 	float _fumoSpawnTimer = 0.0f;
 	const float FUMO_SPAWN_INTERVAL = 0.35f;
-	const std::size_t MAX_ACTIVE_FUMOS = 30;
+	const size_t MAX_ACTIVE_FUMOS = 30;
 
 	InputManager _inputMgr;
 public:

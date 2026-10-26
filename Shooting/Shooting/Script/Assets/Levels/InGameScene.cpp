@@ -299,9 +299,9 @@ void InGameScene::Render()
 
 
 	g2_FontDrawText(_uiFont, { 0, 230 , 1270, 250}, 0xFFFFFFFF, "STAGE: %d", GameData::g_stageLast);
-	const char* difficultyNames[] = { "EASY", "NORMAL", "HARD" };
+	const string difficultyNames[] = { "EASY", "NORMAL", "HARD" };
 	g2_FontDrawText(_uiFont, { 0, 200, 400, 250 }, 0xFFFFFFFF, "DIFFICULTY: %s",
-		difficultyNames[GameData::g_diff]);
+		difficultyNames[GameData::g_diff].c_str());
 	if (_phase == E_StagePhase::WAVE)
 		g2_FontDrawText(_uiFont, { 0, 260, 1270, 280}, 0xFFFFFFFF, "BOSS IN: %.0f", _stageTimer);
 	else if (_phase == E_StagePhase::BOSS)
@@ -309,7 +309,7 @@ void InGameScene::Render()
 			_enemies.empty() ? "" : _enemies.front()->GetBossPatternName());
 	else
 		g2_FontDrawText(_uiFont, { 430, 300, 900, 360 }, 0xFFFFFFFF, "STAGE CLEAR!");
-	
+
 	if (_activeHorrorTexture) _activeHorrorTexture->Print();
 
 	if (_isPaused)
@@ -361,12 +361,14 @@ void InGameScene::UpdateGame()
 
 	float dt = g_deltaTimer.GetDeltaTime();
 
+	//BGM
 	if (!g_SoundManager.IsBGMPlaying())
 	{
 		const string bgmKeys[] = { SoundData::BGM_Game, SoundData::BGM_GameAlt, SoundData::BGM_Title };
 		g_SoundManager.PlayBGM(bgmKeys[_randomizer.Rand(0, 2)], false);
 	}
 
+	//SPOOKY
 	if (GameData::g_doJumpScare)
 	{
 		if (_horrorEffectTimer > 0.0f)
@@ -418,6 +420,7 @@ void InGameScene::UpdateGame()
 		}
 	}
 
+	//CLOUD
 	VEC2 posC = _cloud.GetPos();
 	posC.y += dt * 1000;
 
@@ -519,7 +522,7 @@ void InGameScene::UpdateGame()
 			case E_ItemType::RAPID_FIRE: _player.AddRapidFire(); break;
 			case E_ItemType::POWER: _player.AddPower(); break;
 			case E_ItemType::SHOTGUN: _player.AddShotgun(); break;
-			case E_ItemType::STAR: GameData::g_score += 350; break;
+		case E_ItemType::STAR: GameData::g_score += (350 + static_cast<int>(350.0f * 0.1 * GameData::g_score)); break;
 		}
 		item.Collect();
 	}

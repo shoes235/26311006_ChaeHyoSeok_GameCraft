@@ -47,6 +47,7 @@ int Texture::Load()
 //Life-Cycle 에서 호출
 int Texture::Print(const RECT* srcRect)
 {
+	if (_texture == -1) return 0;
 	VEC2 pos(_texturePos);
 	VEC2 scale(_scale);
 	g2_DrawAlphaOption(2);
@@ -58,7 +59,7 @@ int Texture::Print(const RECT* srcRect)
 
 int Texture::PrintHorizontal(float progress)
 {
-	if (progress <= 0.0f) return 0;
+	if (_texture == -1 || progress <= 0.0f) return 0;
 	if (progress > 1.0f) progress = 1.0f;
 
 	const int width = g2_TextureWidth(_texture);

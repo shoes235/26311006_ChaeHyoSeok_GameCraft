@@ -299,7 +299,7 @@ inline EnemyConfig MakeFinalBoss3()
 	config.bossType = 5;
 
 	vector<string> paths{};
-	for (int i = 1; i < 127; ++i)
+	for (int i = 1; i < 265; ++i)
 		paths.push_back("rsc/imgs/Enemies/Boss5/(" + std::to_string(i) + ").png");
 	config.animationPaths = paths;
 

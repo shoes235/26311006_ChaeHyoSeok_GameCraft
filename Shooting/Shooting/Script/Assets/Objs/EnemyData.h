@@ -46,12 +46,12 @@ inline BossPatternData GetStageBossPatternData(int bossType, int phase)
 	{
 		switch (phase)
 		{
-		case 0: return { "SPELL 1 - SHATTERED ORBIT", 12.0f, E_EnemyShotPattern::RADIAL_BURST, 16, 0.0f, 0.8f, 180.0f, 0.9f };
-		case 1: return { "SPELL 2 - FALLING COMETS", 12.0f, E_EnemyShotPattern::STRAIGHT_SPREAD, 13, 1.3f, 0.65f, 240.0f, 0.8f };
-		case 2: return { "SPELL 3 - SHATTERED ORBIT", 10.0f, E_EnemyShotPattern::RADIAL_BURST, 24, 0.0f, 0.65f, 210.0f, 0.8f };
-		case 3: return { "SPELL 4 - COMET CROSSING", 12.0f, E_EnemyShotPattern::STRAIGHT_SPREAD, 17, 1.8f, 0.5f, 275.0f, 0.7f };
-		case 4: return { "SPELL 5 - STAR COLLAPSE", 10.0f, E_EnemyShotPattern::RADIAL_BURST, 30, 0.0f, 0.55f, 235.0f, 0.7f };
-		default: return { "SPELL 6 - COMET STORM", 10.0f, E_EnemyShotPattern::STRAIGHT_SPREAD, 21, 2.2f, 0.38f, 300.0f, 0.7f };
+		case 0: return { "SPELL 1 - BONE THROW", 12.0f, E_EnemyShotPattern::RADIAL_BURST, 16, 0.0f, 0.8f, 180.0f, 0.9f };
+		case 1: return { "SPELL 2 - GASTER BLAST", 12.0f, E_EnemyShotPattern::STRAIGHT_SPREAD, 13, 1.3f, 0.65f, 240.0f, 0.8f };
+		case 2: return { "SPELL 3 - TRIPLE BONE", 10.0f, E_EnemyShotPattern::RADIAL_BURST, 24, 0.0f, 0.65f, 210.0f, 0.8f };
+		case 3: return { "SPELL 4 - CROSSING GASTER BLAST", 12.0f, E_EnemyShotPattern::STRAIGHT_SPREAD, 17, 1.8f, 0.5f, 275.0f, 0.7f };
+		case 4: return { "SPELL 5 - RADIAL BONE", 10.0f, E_EnemyShotPattern::RADIAL_BURST, 30, 0.0f, 0.55f, 235.0f, 0.7f };
+		default: return { "SPELL 6 - BONE THROW", 10.0f, E_EnemyShotPattern::STRAIGHT_SPREAD, 21, 2.2f, 0.38f, 300.0f, 0.7f };
 		}
 	}
 	if (bossType == 5)
@@ -273,6 +273,9 @@ inline EnemyConfig MakeFinalBoss()
 	config.hp = 1200;
 	config.moveSpeed = 45.0f;
 	config.bossType = 3;
+	config.animationPaths = { "rsc/imgs/Enemies/Boss3/0.png" };
+	config.bulletTexturePath = "rsc/imgs/Bullets/EnemyShot.png";
+
 	return config;
 }
 
@@ -283,6 +286,8 @@ inline EnemyConfig MakeFinalBoss2()
 	config.radius = 36.0f;
 	config.moveSpeed = 32.0f;
 	config.bossType = 4;
+	config.animationPaths = { "rsc/imgs/Enemies/Boss4/0.png" };
+	config.bulletTexturePath = "rsc/imgs/Bullets/BoneShot.png";
 	return config;
 }
 
@@ -292,5 +297,13 @@ inline EnemyConfig MakeFinalBoss3()
 	config.hp = 1650;
 	config.moveSpeed = 28.0f;
 	config.bossType = 5;
+
+	vector<string> paths{};
+	for (int i = 1; i < 127; ++i)
+		paths.push_back("rsc/imgs/Enemies/Boss5/(" + std::to_string(i) + ").png");
+	config.animationPaths = paths;
+
+	config.bulletTexturePath = "rsc/imgs/Bullets/EnemyShot.png";
+
 	return config;
 }

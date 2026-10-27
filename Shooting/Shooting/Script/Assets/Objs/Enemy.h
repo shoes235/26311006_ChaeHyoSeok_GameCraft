@@ -32,7 +32,7 @@ struct EnemyConfig
 	bool cycleBossPatterns;
 	int bossType;
 	string spritePath;
-	vector<std::string> animationPaths;
+	vector<string> animationPaths;
 	float animationFrameDuration;
 	string bulletTexturePath;
 	float difficultyFireIntervalScale;

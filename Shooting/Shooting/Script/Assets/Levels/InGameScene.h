@@ -34,7 +34,7 @@ using std::vector;
 class JumpScareScene;
 
 
-enum class E_StageType{ START = 1,MIDDLE = 6,LAST = 9};
+enum class E_StageType{ START = 3,MIDDLE = 6,LAST = 9};
 
 class InGameScene : public IScene
 {

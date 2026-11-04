@@ -40,12 +40,17 @@ namespace SoundData
 
 		//&= 연산자
 		//true / false 를 반환
-		//전체 로딩 실패시 무조건 false 
-		success &= soundManager.AddBGM(BGM_Title, "rsc/audio/MainTheme.wav");
-		success &= soundManager.AddBGM(BGM_Result, "rsc/audio/Result.mp3");
-		success &= soundManager.AddBGM(BGM_Game, "rsc/audio/InGameTheme.wav");
-		success &= soundManager.AddBGM(BGM_GameAlt, "rsc/audio/theme.wav");
+		//전체 로딩 실패시 무조건 false
 
+		//BGM
+		success &= soundManager.AddBGM(BGM_Title, "rsc/audio/BGM/MainTheme.wav");
+		success &= soundManager.AddBGM(BGM_Result, "rsc/audio/BGM/Result.mp3");
+		success &= soundManager.AddBGM(BGM_Game, "rsc/audio/BGM/InGameTheme.wav");
+		success &= soundManager.AddBGM(BGM_GameAlt, "rsc/audio/BGM/theme.wav");
+
+
+
+		//SFX
 		success &= soundManager.AddSFX(SFX_Shot, "rsc/audio/SFX/baka-cirno.mp3");
 		success &= soundManager.AddSFX(SFX_Bomb, "rsc/audio/SFX/fart.mp3");
 		success &= soundManager.AddSFX(SFX_PlayerDeath, "rsc/audio/SFX/pichuun.mp3");

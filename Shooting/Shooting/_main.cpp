@@ -45,7 +45,10 @@ int main()
 	
 	//Birth
 	g_SceneMgr.InitEngine();
+
+	//사운드 연결장치가 없다면 밑 코드를 주석처리
 	SoundData::RegisterAll(g_SoundManager);
+
 	g_deltaTimer.Init();
 
 

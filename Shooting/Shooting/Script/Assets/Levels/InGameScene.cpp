@@ -440,8 +440,9 @@ void InGameScene::UpdateGame()
 	const E_StageType stageType = GetCurrentStageType();
 	Texture& cloud = stageType == E_StageType::LAST ? _thirdCloud : (stageType == E_StageType::MIDDLE ? _secondCloud : _cloud);
 	Texture& cloud2 = stageType == E_StageType::LAST ? _thirdCloud2 : (stageType == E_StageType::MIDDLE ? _secondCloud2 : _cloud2);
+
 	VEC2 posC = cloud.GetPos();
-	posC.y += dt * 1000;
+	posC.y += dt * CLOUD_SPEED;
 
 	if (posC.y > 720.0f)
 		posC.y = -720.0f;
@@ -450,7 +451,7 @@ void InGameScene::UpdateGame()
 
 
 	VEC2 posC2 = cloud2.GetPos();
-	posC2.y += dt * 1000;
+	posC2.y += dt * CLOUD_SPEED;
 
 	if (posC2.y > 720.0f)
 		posC2.y = -720.0f;

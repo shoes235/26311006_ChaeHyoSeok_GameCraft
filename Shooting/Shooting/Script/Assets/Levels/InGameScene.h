@@ -123,6 +123,8 @@ private:
 	Texture _pauseUI{ "rsc/imgs/UI/Black2.png",VEC2(0,0) };
 
 	//Cloud
+	const float CLOUD_SPEED = 250.0f;
+
 	Texture _cloud{ "rsc/imgs/cloud.jpg",VEC2(120,0) };
 	Texture _cloud2{ "rsc/imgs/cloud.jpg",VEC2(120,-720) };
 	Texture _secondCloud{ "rsc/imgs/cloud2.jpg", VEC2(120, 0) };

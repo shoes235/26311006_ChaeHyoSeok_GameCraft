@@ -83,12 +83,13 @@ private:
 	//Input text
 	bool _showInputTxt = false;
 
-	vector<std::unique_ptr<Fumo>> _fumoPool;
-	vector<Fumo*> _fumos;
 	Randomizer _randomizer;
-	float _fumoSpawnTimer = 0.0f;
-	const float FUMO_SPAWN_INTERVAL = 0.35f;
-	const size_t MAX_ACTIVE_FUMOS = 30;
+	
+	// vector<std::unique_ptr<Fumo>> _fumoPool;
+	// vector<Fumo*> _fumos;
+	// float _fumoSpawnTimer = 0.0f;
+	// const float FUMO_SPAWN_INTERVAL = 0.35f;
+	// const size_t MAX_ACTIVE_FUMOS = 30;
 
 	InputManager _inputMgr;
 public:

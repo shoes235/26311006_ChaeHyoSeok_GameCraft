@@ -1,57 +1,57 @@
 #include "ResultScene.h"
 #include "InGameScene.h"
 #include "SoundData.h"
-
-void ResultScene::SpawnFumo()
-{
-	if (_fumos.size() >= MAX_ACTIVE_FUMOS) return;
-
-	Fumo* fumo = nullptr;
-	for (const auto& pooledFumo : _fumoPool)
-	{
-		if (!pooledFumo->IsActive())
-		{
-			fumo = pooledFumo.get();
-			break;
-		}
-	}
-
-	if (!fumo)
-	{
-		if (_fumoPool.size() >= MAX_ACTIVE_FUMOS) return;
-		_fumoPool.push_back(std::make_unique<Fumo>(0.05f));
-		fumo = _fumoPool.back().get();
-	}
-
-	fumo->Reset(static_cast<float>(_randomizer.Rand(0, _winSize.cx - 64)),
-		_randomizer.Rand(250.0f, 560.0f));
-	_fumos.push_back(fumo);
-}
-void ResultScene::UpdateFumos(float delta)
-{
-	for (auto it = _fumos.begin(); it != _fumos.end();)
-	{
-		(*it)->Update(delta);
-		if (!(*it)->IsActive())
-		{
-			it = _fumos.erase(it);
-		}
-		else ++it;
-	}
-
-	_fumoSpawnTimer += delta;
-	if (_fumoSpawnTimer >= FUMO_SPAWN_INTERVAL)
-	{
-		_fumoSpawnTimer -= FUMO_SPAWN_INTERVAL;
-		SpawnFumo();
-	}
-}
+//
+// void ResultScene::SpawnFumo()
+// {
+// 	if (_fumos.size() >= MAX_ACTIVE_FUMOS) return;
+//
+// 	Fumo* fumo = nullptr;
+// 	for (const auto& pooledFumo : _fumoPool)
+// 	{
+// 		if (!pooledFumo->IsActive())
+// 		{
+// 			fumo = pooledFumo.get();
+// 			break;
+// 		}
+// 	}
+//
+// 	if (!fumo)
+// 	{
+// 		if (_fumoPool.size() >= MAX_ACTIVE_FUMOS) return;
+// 		_fumoPool.push_back(std::make_unique<Fumo>(0.05f));
+// 		fumo = _fumoPool.back().get();
+// 	}
+//
+// 	fumo->Reset(static_cast<float>(_randomizer.Rand(0, _winSize.cx - 64)),
+// 		_randomizer.Rand(250.0f, 560.0f));
+// 	_fumos.push_back(fumo);
+// }
+// void ResultScene::UpdateFumos(float delta)
+// {
+// 	for (auto it = _fumos.begin(); it != _fumos.end();)
+// 	{
+// 		(*it)->Update(delta);
+// 		if (!(*it)->IsActive())
+// 		{
+// 			it = _fumos.erase(it);
+// 		}
+// 		else ++it;
+// 	}
+//
+// 	_fumoSpawnTimer += delta;
+// 	if (_fumoSpawnTimer >= FUMO_SPAWN_INTERVAL)
+// 	{
+// 		_fumoSpawnTimer -= FUMO_SPAWN_INTERVAL;
+// 		SpawnFumo();
+// 	}
+// }
 void ResultScene::Init()
 {
 	SetWindow(true);
-	_fumos.clear();
-	_fumoPool.clear();
-	_fumoSpawnTimer = FUMO_SPAWN_INTERVAL;
+	// _fumos.clear();
+	// _fumoPool.clear();
+	// _fumoSpawnTimer = FUMO_SPAWN_INTERVAL;
 
 	_inputMgr.RegisterAction
 	(
@@ -151,8 +151,8 @@ void ResultScene::Update()
 
 void ResultScene::Render()
 {
-	if (_state == E_ResultState::GET_INPUT)
-		for (Fumo* fumo : _fumos) fumo->Render();
+	// if (_state == E_ResultState::GET_INPUT)
+	// 	for (Fumo* fumo : _fumos) fumo->Render();
 
 	g2_FontDrawText(_font, { 380,200,1000,400}, 0xFF000000, "당신의 랭크는...");
 
@@ -185,8 +185,8 @@ void ResultScene::Render()
 
 void ResultScene::Destroy()
 {
-	_fumos.clear();
-	_fumoPool.clear();
+	// _fumos.clear();
+	// _fumoPool.clear();
 	g_SoundManager.StopAll();
 }
 

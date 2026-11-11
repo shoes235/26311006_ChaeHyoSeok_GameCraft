@@ -467,7 +467,36 @@ void InGameScene::UpdateGame()
 
 	_player.SetFocus(false);
 
+	//py-Bullet
+	for (Bullet* shotPtr : _player.GetShots())
+	{
+		Bullet& shot = *shotPtr;
+		if (!shot.IsActive()) continue;
+		for (const auto& enemy : _enemies)
+		{
+			if (!enemy->IsAlive()) continue;
+			const VEC2 enemyPos(enemy->GetPos().x + 24.0f, enemy->GetPos().y + 24.0f);
+			const VEC2 shotPos(shot.GetPos().x + 6.0f, shot.GetPos().y + 10.0f);
+			if (!shot.GetCollider().IsEntered(shotPos, enemy->GetCollider(), enemyPos)) continue;
 
+			enemy->TakeDamage(_player.GetShotDamage());
+			g_SoundManager.PlaySFX(SoundData::SFX_EnemyHit);
+			SpawnHitParticle(shotPos);
+			if (!enemy->IsAlive())
+			{
+				GameData::g_score += _randomizer.Rand(GameData::g_stageLast * 100, GameData::g_stageLast * 200);
+				SpawnDeathParticle(enemyPos -VEC2(48,48));
+				TryDropItem(enemyPos);
+				g_SoundManager.PlaySFX(SoundData::SFX_EnemyDeath);
+			}
+			shot.Deactivate();
+			break;
+		}
+	}
+
+
+
+	//WAVE
 	if (_phase == E_StagePhase::WAVE)
 	{
 		_stageTimer -= dt;
@@ -498,60 +527,25 @@ void InGameScene::UpdateGame()
 		}
 	}
 
+	if (_phase == E_StagePhase::BOSS && _enemies.empty())
+	{
+		_phase = E_StagePhase::CLEAR;
+		_monitorScreen.Play(MonitorScreenType::BOSS_CLEAR);
+		GameData::g_score += 1000;
+		_clearTimer = 3.0f;
+		_bossHealthBar.reset();
+	}
+
+	//Enemy-Bullet: 충돌처리
 	for (const auto& enemy : _enemies) enemy->Update(dt, _player.GetCorePos());
 	if (_phase == E_StagePhase::BOSS && _bossHealthBar && !_enemies.empty())
 		_bossHealthBar->SetProgress(static_cast<float>(_enemies.front()->GetHP()) /
 			_enemies.front()->GetMaxHP());
 
-	for (Bullet* shotPtr : _player.GetShots())
-	{
-		Bullet& shot = *shotPtr;
-		if (!shot.IsActive()) continue;
-		for (const auto& enemy : _enemies)
-		{
-			if (!enemy->IsAlive()) continue;
-			const VEC2 enemyPos(enemy->GetPos().x + 24.0f, enemy->GetPos().y + 24.0f);
-			const VEC2 shotPos(shot.GetPos().x + 6.0f, shot.GetPos().y + 10.0f);
-			if (!shot.GetCollider().IsEntered(shotPos, enemy->GetCollider(), enemyPos)) continue;
 
-			enemy->TakeDamage(_player.GetShotDamage());
-			g_SoundManager.PlaySFX(SoundData::SFX_EnemyHit);
-			SpawnHitParticle(shotPos);
-			if (!enemy->IsAlive())
-			{
-				GameData::g_score += _randomizer.Rand(GameData::g_stageLast * 100, GameData::g_stageLast * 200);
-				SpawnDeathParticle(enemyPos -VEC2(48,48));
-				TryDropItem(enemyPos);
-				g_SoundManager.PlaySFX(SoundData::SFX_EnemyDeath);
-			}
-			shot.Deactivate();
-			break;
-		}
-	}
-	const Collider itemPickupCollider(_player.GetCollider().Radius + 32.0f);
-	for (Item& item : _items)
-	{
-		if (!item.IsActive()) continue;
-		item.Update(dt);
-		if (!item.IsActive()) continue;
-		if (!item.GetCollider().IsEntered(item.GetPos(), itemPickupCollider, _player.GetCorePos())) continue;
 
-		g_SoundManager.PlaySFX(SoundData::SFX_ItemGet);
-		_monitorScreen.Play(MonitorScreenType::ITEM_GET);
-		switch (item.GetType())
-		{
-			case E_ItemType::LIFE: ++_lives; break;
-			case E_ItemType::BOMB: _player.AddBomb(); break;
-			case E_ItemType::RAPID_FIRE: _player.AddRapidFire(); break;
-			case E_ItemType::POWER: _player.AddPower(); break;
-			case E_ItemType::SHOTGUN: _player.AddShotgun(); break;
-			case E_ItemType::STAR: GameData::g_score += 350; break;
-		}
-		item.Collect();
-	}
-	_items.erase(std::remove_if(_items.begin(), _items.end(),
-		[](const Item& item) { return !item.IsActive(); }), _items.end());
 
+	//Enemy
 	for (const auto& enemy : _enemies)
 	{
 		for (Bullet* bulletPtr : enemy->GetBullets())
@@ -594,6 +588,49 @@ void InGameScene::UpdateGame()
 	};
 	updateParticles(_deathParticles, _deathParticlePool);
 	updateParticles(_hitParticles, _hitParticlePool);
+
+
+
+	//Enemy - Pool
+	for (auto enemy = _enemies.begin(); enemy != _enemies.end();)
+	{
+		if (!(*enemy)->IsAlive())
+		{
+			ReturnEnemy(*enemy);
+			enemy = _enemies.erase(enemy);
+		}
+		else ++enemy;
+	}
+
+	//Item
+	const Collider itemPickupCollider(_player.GetCollider().Radius + 32.0f);
+	for (Item& item : _items)
+	{
+		if (!item.IsActive()) continue;
+		item.Update(dt);
+		if (!item.IsActive()) continue;
+		if (!item.GetCollider().IsEntered(item.GetPos(), itemPickupCollider, _player.GetCorePos())) continue;
+
+		g_SoundManager.PlaySFX(SoundData::SFX_ItemGet);
+		_monitorScreen.Play(MonitorScreenType::ITEM_GET);
+		switch (item.GetType())
+		{
+			case E_ItemType::LIFE: ++_lives; break;
+			case E_ItemType::BOMB: _player.AddBomb(); break;
+			case E_ItemType::RAPID_FIRE: _player.AddRapidFire(); break;
+			case E_ItemType::POWER: _player.AddPower(); break;
+			case E_ItemType::SHOTGUN: _player.AddShotgun(); break;
+			case E_ItemType::STAR: GameData::g_score += 350; break;
+		}
+		item.Collect();
+	}
+	_items.erase(std::remove_if(_items.begin(), _items.end(),
+		[](const Item& item) { return !item.IsActive(); }), _items.end());
+
+
+
+
+	//GameOver
 	if (_lives <= 0)
 	{
 		if(!_isGameOvered)
@@ -606,23 +643,6 @@ void InGameScene::UpdateGame()
 		if(_changeTime > SCENE_CHANGE_TIME)
 			g_SceneMgr.ChangeScene(new JumpScareScene(), E_SceneType::JUMP_SCARE);
 		return;
-	}
-	for (auto enemy = _enemies.begin(); enemy != _enemies.end();)
-	{
-		if (!(*enemy)->IsAlive())
-		{
-			ReturnEnemy(*enemy);
-			enemy = _enemies.erase(enemy);
-		}
-		else ++enemy;
-	}
-	if (_phase == E_StagePhase::BOSS && _enemies.empty())
-	{
-		_phase = E_StagePhase::CLEAR;
-		_monitorScreen.Play(MonitorScreenType::BOSS_CLEAR);
-		GameData::g_score += 1000;
-		_clearTimer = 3.0f;
-		_bossHealthBar.reset();
 	}
 }
 

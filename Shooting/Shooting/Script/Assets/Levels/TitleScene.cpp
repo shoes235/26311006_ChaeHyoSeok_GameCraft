@@ -131,19 +131,19 @@ void TitleScene::Init()
 
 
 
-
-	VEC2 zero = { 0,0 };
-
-	string prefix = "rsc/imgs/cats/";
-	vector<Texture*>texes(10);
-
-	for (int i = 0; i < texes.size(); ++i)
-	{
-		texes[i] = new Texture(prefix + std::to_string(i) + ".png",zero);
-		texes[i]->Load();
-
-		_textures.push_back(texes[i]);
-	}
+	//
+	// VEC2 zero = { 0,0 };
+	//
+	// string prefix = "rsc/imgs/cats/";
+	// vector<Texture*>texes(10);
+	//
+	// for (int i = 0; i < texes.size(); ++i)
+	// {
+	// 	texes[i] = new Texture(prefix + std::to_string(i) + ".png",zero);
+	// 	texes[i]->Load();
+	//
+	// 	_textures.push_back(texes[i]);
+	// }
 
 	_background->Load();
 
@@ -213,19 +213,19 @@ void TitleScene::Update()
 		//텍스쳐 랜덤 이동
 		Randomizer randSys;
 
-		_texTimer += 0.016f;
-		if (_texTimer >= TEXTURE_WAIT_TIME)
-		{
-			_texTimer = 0.0f;
-
-			for (auto* texture : _textures)
-			{
-				VEC2 rnPos;
-				rnPos.x = randSys.Rand(0, _winSize.cx);
-				rnPos.y = randSys.Rand(0, _winSize.cy);
-				texture->SetPos(rnPos);
-			}
-		}
+		// _texTimer += 0.016f;
+		// if (_texTimer >= TEXTURE_WAIT_TIME)
+		// {
+		// 	_texTimer = 0.0f;
+		//
+		// 	for (auto* texture : _textures)
+		// 	{
+		// 		VEC2 rnPos;
+		// 		rnPos.x = randSys.Rand(0, _winSize.cx);
+		// 		rnPos.y = randSys.Rand(0, _winSize.cy);
+		// 		texture->SetPos(rnPos);
+		// 	}
+		// }
 	}
 	break;
 	case E_TitleSceneType::SELECTOR:
@@ -278,8 +278,6 @@ void TitleScene::Update()
 
 	}
 
-	
-
 
 	return;
 }
@@ -292,7 +290,7 @@ void TitleScene::Render()
 
 	_background->Print();
 
-	for (auto* texture : _textures) texture->Print();
+	// for (auto* texture : _textures) texture->Print();
 
 	_layOut.Print();
 
@@ -466,13 +464,13 @@ void TitleScene::Destroy()
 	delete _background;
 	_background = nullptr;
 
-	for (auto& texture : _textures)
-	{
-		delete texture;
-		texture = nullptr;
-	}
+	// for (auto& texture : _textures)
+	// {
+	// 	delete texture;
+	// 	texture = nullptr;
+	// }
 
-	_textures.clear();
+	// _textures.clear();
 
 	g_SoundManager.StopAll();
 

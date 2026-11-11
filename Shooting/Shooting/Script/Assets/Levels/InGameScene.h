@@ -132,8 +132,8 @@ private:
 	Texture _thirdCloud{ "rsc/imgs/cloud3.jpg", VEC2(120, 0) };
 	Texture _thirdCloud2{ "rsc/imgs/cloud3.jpg", VEC2(120, -720) };
 
-	Texture _monitor{ "rsc/imgs/UI/monitor3.png",VEC2(25,400) };
-	MonitorScreen _monitorScreen{ VEC2(109,435) };
+	// Texture _monitor{ "rsc/imgs/UI/monitor3.png",VEC2(25,400) };
+	// MonitorScreen _monitorScreen{ VEC2(109,435) };
 
 	//input
 	InputManager _inputMgr;

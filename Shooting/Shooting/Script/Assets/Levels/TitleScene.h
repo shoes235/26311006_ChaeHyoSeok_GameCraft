@@ -24,9 +24,9 @@ private:
 
 
 
-	vector<Texture*> _textures;
-	float _texTimer = 0.0f;
-	const float TEXTURE_WAIT_TIME = 1.5f;
+	// vector<Texture*> _textures;
+	// float _texTimer = 0.0f;
+	// const float TEXTURE_WAIT_TIME = 1.5f;
 
 	//Tex
 	Texture* _background = new Texture("rsc/imgs/MainMenu.png", VEC2(0, 0));

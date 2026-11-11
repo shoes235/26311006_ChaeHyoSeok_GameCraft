@@ -57,13 +57,13 @@ private:
 
 	const vector<string> RANK_TEXT_LIST
 	{
-		"º≥ªÁ",
-		"∂À",
-		"ø¿¡‹",
-		"¿œπ›",
-		"¬Ø",
-		"ø’",
-		"Ω≈"
+		"S",
+		"A",
+		"B",
+		"C",
+		"D",
+		"E",
+		"F"
 	};
 
 	E_Rank _rank = E_Rank::F;

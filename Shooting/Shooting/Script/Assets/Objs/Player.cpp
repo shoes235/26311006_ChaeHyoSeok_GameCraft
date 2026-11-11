@@ -26,7 +26,7 @@ Player::Player()
 
 	//auto idleTex = std::make_unique<Texture>(prefix +)
 	auto idleClip = std::make_unique<AnimationClip>("Idle", .05f, true);
-	for (int i = 0; i < 11; i++)
+	for (int i = 0; i < 1; i++)
 	{
 		auto idleTex = std::make_unique<Texture>(prefix + std::to_string(i) + ".png", _pos);
 		idleTex->Load();

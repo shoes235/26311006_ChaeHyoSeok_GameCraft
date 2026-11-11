@@ -1,5 +1,6 @@
 #include "InGameScene.h"
 #include "JumpScareScene.h"
+#include "ResultScene.h"
 #include "SoundData.h"
 
 
@@ -138,13 +139,13 @@ void InGameScene::Init()
 		{
 			if (_isPaused)
 			{
-				JumpScareScene* nextScene = new JumpScareScene();
-				g_SceneMgr.ChangeScene(nextScene, E_SceneType::JUMP_SCARE);
+				ResultScene* nextScene = new ResultScene();
+				g_SceneMgr.ChangeScene(nextScene, E_SceneType::RESULT);
 			}
 			else
 			{
 				if (!_player.UseBomb()) return;
-				_monitorScreen.Play(MonitorScreenType::USE_BOM);
+				// _monitorScreen.Play(MonitorScreenType::USE_BOM);
 				for (const auto& enemy : _enemies)
 				for (Bullet* bullet : enemy->GetBullets()) bullet->Deactivate();
 
@@ -167,7 +168,7 @@ void InGameScene::Init()
 		}
 	);
 
-	_monitorScreen.LoadAnimations();
+	// _monitorScreen.LoadAnimations();
 	_uiFont = g2_FontCreate("±¼¸²", 20, 0);
 	_pauseUIFont = g2_FontCreate("±¼¸²", 48, 0);
 
@@ -211,8 +212,8 @@ void InGameScene::Render()
 
 	//============================
 	//UI
-	_monitorScreen.Render();
-	_monitor.Print();
+	// _monitorScreen.Render();
+	// _monitor.Print();
 
 	g2_FontDrawText
 	(
@@ -463,7 +464,7 @@ void InGameScene::UpdateGame()
 
 
 	_player.Update(dt);
-	_monitorScreen.Update(dt);
+	// _monitorScreen.Update(dt);
 
 	_player.SetFocus(false);
 
@@ -530,7 +531,7 @@ void InGameScene::UpdateGame()
 	if (_phase == E_StagePhase::BOSS && _enemies.empty())
 	{
 		_phase = E_StagePhase::CLEAR;
-		_monitorScreen.Play(MonitorScreenType::BOSS_CLEAR);
+		// _monitorScreen.Play(MonitorScreenType::BOSS_CLEAR);
 		GameData::g_score += 1000;
 		_clearTimer = 3.0f;
 		_bossHealthBar.reset();
@@ -559,7 +560,7 @@ void InGameScene::UpdateGame()
 				if (_player.OnHit())
 				{
 					--_lives;
-					_monitorScreen.Play(MonitorScreenType::HIT);
+					// _monitorScreen.Play(MonitorScreenType::HIT);
 				}
 				bullet.Deactivate();
 			}
@@ -612,7 +613,7 @@ void InGameScene::UpdateGame()
 		if (!item.GetCollider().IsEntered(item.GetPos(), itemPickupCollider, _player.GetCorePos())) continue;
 
 		g_SoundManager.PlaySFX(SoundData::SFX_ItemGet);
-		_monitorScreen.Play(MonitorScreenType::ITEM_GET);
+		// _monitorScreen.Play(MonitorScreenType::ITEM_GET);
 		switch (item.GetType())
 		{
 			case E_ItemType::LIFE: ++_lives; break;
@@ -641,7 +642,7 @@ void InGameScene::UpdateGame()
 		_changeTime += dt;
 
 		if(_changeTime > SCENE_CHANGE_TIME)
-			g_SceneMgr.ChangeScene(new JumpScareScene(), E_SceneType::JUMP_SCARE);
+			g_SceneMgr.ChangeScene(new ResultScene(), E_SceneType::RESULT);
 		return;
 	}
 }

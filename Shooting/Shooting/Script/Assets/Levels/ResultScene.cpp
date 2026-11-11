@@ -77,7 +77,7 @@ void ResultScene::Init()
 	);
 
 
-	SpawnFumo();
+	// SpawnFumo();
 
 	_font = g2_FontCreate("±¼¸²", 48, 0);
 	_rankFont = g2_FontCreate("±Ã¼­", 100, 0);
@@ -142,7 +142,7 @@ void ResultScene::Update()
 	case E_ResultState::GET_INPUT:
 	{
 		_inputMgr.UpdateInput();
-		UpdateFumos(dt);
+		// UpdateFumos(dt);
 
 	}break;
 	}

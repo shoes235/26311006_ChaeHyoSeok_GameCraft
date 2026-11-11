@@ -57,13 +57,13 @@ private:
 
 	const vector<string> RANK_TEXT_LIST
 	{
-		"S",
-		"A",
-		"B",
-		"C",
-		"D",
+		"F",
 		"E",
-		"F"
+		"D",
+		"C",
+		"B",
+		"A",
+		"S"
 	};
 
 	E_Rank _rank = E_Rank::F;

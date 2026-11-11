@@ -251,7 +251,7 @@ inline EnemyConfig MakeStageBoss2()
 	config.moveSpeed = 35.0f;
 	config.bulletRadius = 6.0f;
 	config.animationPaths = { "rsc/imgs/Enemies/Boss1/0.png" };
-	config.bulletTexturePath = "rsc/imgs/Bullets/BoneShot.png";
+	// config.bulletTexturePath = "rsc/imgs/Bullets/BoneShot.png";
 	return config;
 
 }
@@ -287,7 +287,7 @@ inline EnemyConfig MakeFinalBoss2()
 	config.moveSpeed = 32.0f;
 	config.bossType = 4;
 	config.animationPaths = { "rsc/imgs/Enemies/Boss4/0.png" };
-	config.bulletTexturePath = "rsc/imgs/Bullets/BoneShot.png";
+	// config.bulletTexturePath = "rsc/imgs/Bullets/BoneShot.png";
 	return config;
 }
 

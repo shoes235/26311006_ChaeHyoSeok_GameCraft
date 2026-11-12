@@ -103,7 +103,7 @@ public:
 			(GetSystemMetrics(SM_CYSCREEN) - _winSize.cy) / 2,
 		};
 
-		_winColor = 0xFFFFFFFF;
+		_winColor = 0x00000000;
 	}
 
 	void Init() override;

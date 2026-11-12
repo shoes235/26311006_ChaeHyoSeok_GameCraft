@@ -154,7 +154,7 @@ void ResultScene::Render()
 	// if (_state == E_ResultState::GET_INPUT)
 	// 	for (Fumo* fumo : _fumos) fumo->Render();
 
-	g2_FontDrawText(_font, { 380,200,1000,400}, 0xFF000000, "당신의 랭크는...");
+	g2_FontDrawText(_font, { 380,200,1000,400}, 0xFFFFFFFF, "당신의 랭크는...");
 
 	//g2_FontDrawText(_font, { 380, 130, 1000, 180 }, 0xFF000000, "SCORE: %010d", _finalScore);
 
@@ -164,7 +164,7 @@ void ResultScene::Render()
 		(
 			_rankFont,
 			{ 500, 300, 800, 500 },
-			0xFF000000,
+			0xFFFFFFFF,
 			RANK_TEXT_LIST[static_cast<int>(_rank)].c_str()
 		);
 	}
@@ -175,7 +175,7 @@ void ResultScene::Render()
 		(
 			_font,
 			{ 380, 500, 1000, 800 },
-			0xFF000000,
+			0xFFFFFFFF,
 			"Z 를 눌러 다시 시작\nX 를 눌러 타이틀로"
 		);
 	}

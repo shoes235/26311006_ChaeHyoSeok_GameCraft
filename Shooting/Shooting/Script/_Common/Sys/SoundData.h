@@ -52,7 +52,7 @@ namespace SoundData
 
 		//SFX
 		success &= soundManager.AddSFX(SFX_Shot, "rsc/audio/SFX/baka-cirno.mp3");
-		success &= soundManager.AddSFX(SFX_Bomb, "rsc/audio/SFX/fart.mp3");
+		success &= soundManager.AddSFX(SFX_Bomb, "rsc/audio/SFX/powerup01.mp3");
 		success &= soundManager.AddSFX(SFX_PlayerDeath, "rsc/audio/SFX/pichuun.mp3");
 		success &= soundManager.AddSFX(SFX_Graze, "rsc/audio/SFX/graze.mp3");
 		success &= soundManager.AddSFX(SFX_ItemGet, "rsc/audio/SFX/Get.mp3");

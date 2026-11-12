@@ -37,3 +37,6 @@ itch.io 에 게임 업로드....
 	
 - 결과 화면 :
 	![인게임 화면 예시](./_doc/imgs/Result.png)
+
+- 클래스 다이어그램 :
+	![다이어그램](./_doc/imgs/Dialgram.png)
